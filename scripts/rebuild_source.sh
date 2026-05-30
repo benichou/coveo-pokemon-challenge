@@ -58,11 +58,12 @@ echo ""
 echo "Polling source status until idle..."
 max_attempts=60   # ~5 minutes at 5s intervals
 attempt=0
+seen_non_idle=false   # avoid catching IDLE before the rebuild has even started
 
 while (( attempt < max_attempts )); do
   attempt=$((attempt + 1))
   status_payload=$(curl -sS -H "$AUTH_HEADER" "$SOURCE_URL")
-  status=$(
+  src_status=$(
     echo "$status_payload" | python3 -c "
 import json, sys
 d = json.load(sys.stdin)
@@ -78,20 +79,24 @@ print(n if n is not None else '?')
 "
   )
 
-  printf "  [%02d] status=%s items=%s\n" "$attempt" "$status" "$items"
+  printf "  [%02d] status=%s items=%s\n" "$attempt" "$src_status" "$items"
 
-  if [[ "$status" == "IDLE" ]]; then
+  if [[ "$src_status" == "ERROR" ]]; then
+    echo "" >&2
+    echo "Rebuild failed with ERROR status." >&2
+    exit 1
+  fi
+
+  if [[ "$src_status" != "IDLE" ]]; then
+    seen_non_idle=true
+  elif [[ "$seen_non_idle" == "true" ]]; then
+    # We saw the source go busy and now it's back to IDLE — that's a real completion.
     echo ""
     echo "Rebuild complete."
     echo "  Items indexed: $items"
     exit 0
   fi
-
-  if [[ "$status" == "ERROR" ]]; then
-    echo "" >&2
-    echo "Rebuild failed with ERROR status." >&2
-    exit 1
-  fi
+  # else: IDLE but we haven't seen the operation start yet — keep waiting.
 
   sleep 5
 done

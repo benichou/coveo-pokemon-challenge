@@ -1,0 +1,63 @@
+[
+  {
+    "name": "[Default Coveo web scraping configuration]",
+    "for": { "urls": [".*"] },
+    "exclude": [
+      { "type": "CSS", "path": "script" },
+      { "type": "CSS", "path": "noscript" },
+      { "type": "CSS", "path": "iframe" },
+      { "type": "CSS", "path": "menu" },
+      { "type": "CSS", "path": "nav" },
+      { "type": "CSS", "path": "header" },
+      { "type": "CSS", "path": "footer" },
+      { "type": "CSS", "path": "video" },
+      { "type": "CSS", "path": "audio" },
+      { "type": "CSS", "path": ".menu" },
+      { "type": "CSS", "path": ".nav" },
+      { "type": "CSS", "path": ".navigation" },
+      { "type": "CSS", "path": ".navbar" },
+      { "type": "CSS", "path": ".nav-bar" },
+      { "type": "CSS", "path": ".head" },
+      { "type": "CSS", "path": ".header" },
+      { "type": "CSS", "path": ".foot" },
+      { "type": "CSS", "path": ".footer" },
+      { "type": "CSS", "path": ".sidebar" },
+      { "type": "CSS", "path": ".sidenav" },
+      { "type": "CSS", "path": ".banner" },
+      { "type": "CSS", "path": ".ad" },
+      { "type": "CSS", "path": ".advert" },
+      { "type": "CSS", "path": ".advertisement" },
+      { "type": "CSS", "path": ".adsbygoogle" },
+      { "type": "CSS", "path": ".popup" },
+      { "type": "CSS", "path": ".modal" }
+    ],
+    "metadata": {}
+  },
+  {
+    "name": "Pokemon page metadata extraction",
+    "for": { "urls": ["^https://pokemondb\\.net/pokedex/[a-z0-9-]+$"] },
+    "exclude": [],
+    "metadata": {
+      "pokemon_name": {
+        "type": "CSS",
+        "path": "h1::text"
+      },
+      "pokemon_type": {
+        "type": "XPATH",
+        "path": "(//table[contains(@class, 'vitals-table')])[1]//a[contains(@class, 'type-icon')]/text()"
+      },
+      "image_url": {
+        "type": "XPATH",
+        "path": "(//img[contains(@src, '/artwork/')])[1]/@src"
+      },
+      "dex_number": {
+        "type": "CSS",
+        "path": ".vitals-table tr:first-of-type td strong::text"
+      },
+      "generation": {
+        "type": "XPATH",
+        "path": "(//abbr[starts-with(@title, 'Pokémon')])[1]/text()"
+      }
+    }
+  }
+]

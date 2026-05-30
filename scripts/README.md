@@ -82,6 +82,38 @@ Trigger a source rebuild for changes to apply to indexed items.
 Done: 0 created, 5 skipped.
 ```
 
+### `update_scraping_config.sh`
+
+Applies the web scraping configuration from `config/scraping_config.json` to the `pokemondb-sitemap` source.
+
+The scraping config is what tells Coveo how to extract metadata (name, type, image, dex number, generation) from each Pokemon page using CSS/XPath selectors. Keeping it as a versioned JSON file means selector changes are diff-able in git and reproducible across orgs.
+
+```bash
+# edit config/scraping_config.json
+scripts/update_scraping_config.sh
+scripts/rebuild_source.sh
+```
+
+The config file lives at `config/scraping_config.json` at the repo root. It's a JSON array of configurations — typically the Coveo default (which excludes headers/footers/etc.) and our custom "Pokemon page metadata extraction" configuration.
+
+### `widen_source.sh`
+
+Updates the `pokemondb-sitemap` source's URL inclusion filter to one of three preset scopes, used to stage the crawl from a single Pokemon up to all ~1,025.
+
+```bash
+scripts/widen_source.sh narrow       # only bulbasaur (fast iteration)
+scripts/widen_source.sh spot-check   # 8 diverse Pokemon (edge-case sweep)
+scripts/widen_source.sh all          # all ~1,025 + 9 exclusion rules
+```
+
+Run a rebuild after to apply the new filter to indexed items:
+
+```bash
+scripts/rebuild_source.sh
+```
+
+The `spot-check` mode is recommended before `all`: it indexes 8 deliberately diverse Pokemon (Bulbasaur, Pikachu, Charizard, Mewtwo, Ho-Oh, Mr-Mime, Decidueye, Miraidon) covering multiple generations, single/dual types, and hyphenated names — so any scraping-config bugs surface in 30 seconds instead of after a 17-minute full crawl.
+
 ### `rebuild_source.sh`
 
 Triggers a rebuild of `pokemondb-sitemap` via the REST API and polls the source status every 5 seconds until it returns to `IDLE`. Use this after any source-config change (mappings, URL filters, web scraping config) to apply the change to indexed items.
