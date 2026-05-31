@@ -1,0 +1,95 @@
+{
+  // -------------------------------------------------------------------------
+  // Python — point VS Code at the tests/ virtualenv that uv manages.
+  // -------------------------------------------------------------------------
+  "python.defaultInterpreterPath": "${workspaceFolder}/tests/.venv/bin/python",
+
+  // python.envFile makes VS Code's Python debugger / test runner load .env
+  // automatically. Our existing scripts source .env themselves; this is for
+  // when you're running pytest or a Python file through the VS Code UI.
+  "python.envFile": "${workspaceFolder}/.env",
+
+  // Wire pytest to the tests/ directory so the Testing panel auto-discovers
+  // our suite. Run/debug-by-click works out of the box.
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": ["tests"],
+
+  // -------------------------------------------------------------------------
+  // Terminal — auto-load .env into every new terminal.
+  //
+  // Why this is a custom profile (not terminal.integrated.env.osx):
+  //   .env contains secrets. Hardcoding them into settings.json (which is
+  //   committed to git) would leak them. A profile that sources the
+  //   gitignored .env at terminal launch gives us injection without ever
+  //   embedding values in version control.
+  //
+  // The profile launches zsh with `set -a; source .env; set +a` first,
+  // then `exec zsh -l -i` to drop you into your normal interactive shell —
+  // the exported variables survive the exec via the process environment.
+  // The `[ -f .env ]` guard makes it a no-op on a fresh clone with no .env.
+  // -------------------------------------------------------------------------
+  "terminal.integrated.profiles.osx": {
+    "zsh (.env auto-loaded)": {
+      "path": "zsh",
+      "args": [
+        "-c",
+        "set -a; [ -f \"${PWD}/.env\" ] && . \"${PWD}/.env\"; set +a; exec zsh -l -i"
+      ]
+    }
+  },
+  "terminal.integrated.profiles.linux": {
+    "bash (.env auto-loaded)": {
+      "path": "bash",
+      "args": [
+        "-c",
+        "set -a; [ -f \"${PWD}/.env\" ] && . \"${PWD}/.env\"; set +a; exec bash -l -i"
+      ]
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "zsh (.env auto-loaded)",
+  "terminal.integrated.defaultProfile.linux": "bash (.env auto-loaded)",
+
+  // -------------------------------------------------------------------------
+  // File / editor hygiene
+  // -------------------------------------------------------------------------
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true,
+    "**/.mypy_cache": true,
+    "**/*.pyc": true
+  },
+  "files.associations": {
+    ".env": "properties",
+    ".env.example": "properties",
+    ".env.*": "properties"
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  // Vertical rulers at the column(s) listed below — visible in every file
+  // type. Kept in sync with ruff.toml's `line-length`, so the bar you see
+  // in the editor is the same threshold pre-commit + CI will enforce.
+  "editor.rulers": [80],
+
+  // -------------------------------------------------------------------------
+  // Format on save with ruff — matches the pre-commit hooks in
+  // .pre-commit-config.yaml. The two are configured by the same ruff.toml,
+  // so VS Code save and `git commit` produce identical output.
+  // -------------------------------------------------------------------------
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+  "[shellscript]": { "editor.tabSize": 2 },
+  "[json]": { "editor.tabSize": 2 },
+  "[jsonc]": { "editor.tabSize": 2 },
+  "[yaml]": { "editor.tabSize": 2 },
+  "[markdown]": { "editor.wordWrap": "on" }
+}

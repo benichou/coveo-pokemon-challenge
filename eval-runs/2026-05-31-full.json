@@ -1,0 +1,2093 @@
+{
+  "timestamp": "2026-05-31T17:15:32.643544+00:00",
+  "coveo_org_id": "benichouu9fose4g",
+  "judge_model": "claude-sonnet-4-5-20250929",
+  "overall": {
+    "accuracy": 0.62,
+    "precision": 0.71,
+    "hard_recall": 0.8706666666666666,
+    "citation_precision": 0.7725,
+    "n_questions": 100
+  },
+  "by_layer": {
+    "1": {
+      "accuracy": 0.68,
+      "precision": 0.64,
+      "hard_recall": 0.99,
+      "citation_precision": 0.935,
+      "n_questions": 50
+    },
+    "2": {
+      "accuracy": 0.45714285714285713,
+      "precision": 0.7142857142857143,
+      "hard_recall": 0.6447619047619048,
+      "citation_precision": 0.5571428571428572,
+      "n_questions": 35
+    },
+    "3": {
+      "accuracy": 0.8,
+      "precision": 0.9333333333333333,
+      "hard_recall": 1.0,
+      "citation_precision": 0.7333333333333333,
+      "n_questions": 15
+    }
+  },
+  "per_question": [
+    {
+      "question_id": "q-l1-type-charizard",
+      "question": "what type is charizard",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Charizard is a Fire/Flying type Pokémon. It evolves from Charmeleon at level 36 and is known for its dragon-like appearance and fiery abilities.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/charizard",
+        "https://pokemondb.net/pokedex/charizard"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Charizard as a Fire/Flying type Pokémon, covering both expected key facts. The additional information about evolving from Charmeleon at level 36 and its dragon-like appearance is also accurate."
+      }
+    },
+    {
+      "question_id": "q-l1-type-pikachu",
+      "question": "what type is pikachu",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Pikachu is an Electric type Pokémon. It is introduced in Generation 1 and has a Gigantamax form in Pokémon Sword/Shield. Pikachu has abilities like Static and Lightning Rod, with the latter being its hidden ability.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/pikachu",
+        "https://pokemondb.net/pokedex/raichu"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.5,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly states that Pikachu is an Electric type, which is the key fact required. The additional information about Generation 1, Gigantamax form, and abilities (Static and Lightning Rod as hidden ability) are all accurate canonical Pokemon facts."
+      }
+    },
+    {
+      "question_id": "q-l1-type-bulbasaur",
+      "question": "what type is bulbasaur",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Bulbasaur is a Grass/Poison type Pokémon. It is a small, mainly turquoise amphibian with a green bulb on its back, resembling a plant bulb. Introduced in Generation 1, it is one of the three starter Pokémon in the original Game Boy games, alongside Charmander and Squirtle.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/bulbasaur",
+        "https://pokemondb.net/pokedex/bulbasaur"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Bulbasaur as a Grass/Poison type Pokémon, covering both expected key facts. The additional descriptive information about its appearance and status as a Generation 1 starter is also accurate."
+      }
+    },
+    {
+      "question_id": "q-l1-type-gyarados",
+      "question": "what type is gyarados",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Gyarados is a Water/Flying type Pokémon. It is known for its serpentine, dragon-like appearance and its volatile temper, often associated with tales of destruction.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/gyarados",
+        "https://pokemondb.net/pokedex/gyarados"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Gyarados as a Water/Flying type Pokémon, covering both expected key facts. The additional descriptive information about its appearance and temperament is also accurate and canonical."
+      }
+    },
+    {
+      "question_id": "q-l1-type-alakazam",
+      "question": "what type is alakazam",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Alakazam is a Psychic type Pokémon. It evolves from Kadabra and is known for its high intelligence, with an IQ of 5,000. Alakazam has a base Special stat of 135 and a base Special Defense of 95 in Generation 6. It can learn various moves through leveling up, TMs, and the Remember Moves feature.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/alakazam",
+        "https://pokemondb.net/pokedex/alakazam",
+        "https://pokemondb.net/pokedex/alakazam"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Alakazam as a Psychic type Pokemon, which is the expected key fact. The additional information provided (evolution from Kadabra, high IQ, stats) is also accurate according to Pokemon canon."
+      }
+    },
+    {
+      "question_id": "q-l1-type-dragonite",
+      "question": "what type is dragonite",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Dragonite is a Dragon/Flying type Pokémon. It is a pseudo-legendary Pokémon introduced in Generation 1.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/dragonite",
+        "https://pokemondb.net/pokedex/dragonite"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Dragonite as a Dragon/Flying type Pokémon, covering both expected key facts. The additional information about it being a pseudo-legendary from Generation 1 is also accurate and enhances the answer without introducing any errors."
+      }
+    },
+    {
+      "question_id": "q-l1-type-mewtwo",
+      "question": "what type is mewtwo",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Mewtwo is a Psychic type Pokémon. It was created through genetic manipulation and is known for its powerful battle abilities. Unlike Mew, which is gentle, Mewtwo is aggressive and focused on defeating its opponents.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/mewtwo",
+        "https://pokemondb.net/pokedex/mewtwo"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Mewtwo as a Psychic type, which is the expected key fact. The additional information about its creation through genetic manipulation and its powerful, aggressive nature is also accurate according to Pokemon canon."
+      }
+    },
+    {
+      "question_id": "q-l1-type-mew",
+      "question": "what type is mew",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Mew is a Psychic type Pokémon. It is known for its ability to learn a wide variety of moves, leading many to believe it is the ancestor of Pokémon. Mew does not evolve and has a base experience yield of 64 in Generations 1-4, and 270 in Generations 5-7. It can be found through trading or migrating from other games in various Pokémon titles.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/mew",
+        "https://pokemondb.net/pokedex/mew"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Mew as a Psychic type, which is the key expected fact. The additional information provided about Mew's ability to learn many moves, its status as a potential ancestor of Pokémon, and other details are all accurate according to Pokemon canon."
+      }
+    },
+    {
+      "question_id": "q-l1-type-gengar",
+      "question": "what type is gengar",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Gengar is a Ghost/Poison type Pokémon. It evolves from Gastly at level 25 and can further evolve into Mega Gengar using a Mega Stone. Gengar is known for its ability to absorb heat from its surroundings, causing a chilling effect. It has a base Special Attack stat of 130 and a base experience yield of 190 in Generations 1-4, and 225 in Generations 5-7. Gengar's abilities include Levitate in Generations 3-6 and Cursed Body in later generations.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/gengar",
+        "https://pokemondb.net/pokedex/gengar",
+        "https://pokemondb.net/pokedex/gengar"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": true,
+        "false_claims": [
+          "Gengar evolves from Gastly - this is incorrect. Gengar evolves from Haunter (which evolves from Gastly). Gastly evolves into Haunter at level 25, and Haunter evolves into Gengar through trade.",
+          "Gengar does not evolve into Mega Gengar through evolution - Mega Evolution is a temporary transformation during battle using Gengarite, not a permanent evolution."
+        ],
+        "reasoning": "The answer correctly identifies Gengar as Ghost/Poison type (the expected key facts), but contains factual errors about its evolution chain. Gengar evolves from Haunter, not directly from Gastly, and Mega Gengar is a temporary battle form, not an evolution."
+      }
+    },
+    {
+      "question_id": "q-l1-type-lucario",
+      "question": "what type is lucario",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Lucario is a Fighting/Steel type Pokémon. It is a bipedal canine-like Pokémon with blue and black coloring, red eyes, and round spikes on its forepaw and chest. Lucario can sense auras, allowing it to read thoughts and movements, and it is based on the mythical creature Anubis.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/lucario",
+        "https://pokemondb.net/pokedex/lucario"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Lucario as a Fighting/Steel type Pokémon, covering both expected key facts. The additional information provided about its appearance, aura-sensing ability, and inspiration from Anubis is accurate and consistent with Pokémon canon."
+      }
+    },
+    {
+      "question_id": "q-l1-type-garchomp",
+      "question": "what type is garchomp",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Garchomp is a Dragon/Ground type Pokémon. It is a large, bipedal, dragon-like Pokémon with a navy blue body, red and gold accents, and a shark-like head. Garchomp is known for its high speed and powerful attacks, making it a formidable opponent in battles.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/garchomp",
+        "https://pokemondb.net/pokedex/garchomp"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Garchomp as a Dragon/Ground type Pokémon, covering both expected key facts. The additional descriptive details about Garchomp's appearance and battle characteristics are accurate and enhance the answer without introducing any factual errors."
+      }
+    },
+    {
+      "question_id": "q-l1-type-greninja",
+      "question": "what type is greninja",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Greninja is a Water/Dark type Pokémon. It evolves from Frogadier at level 36 and has a unique form called Ash-Greninja. Greninja is known for its high-speed movements and ability to compress water into shuriken.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/greninja",
+        "https://pokemondb.net/pokedex/greninja",
+        "https://pokemondb.net/pokedex/greninja"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Greninja as a Water/Dark type Pokémon, covering both expected key facts. The additional information about evolution level, Ash-Greninja form, and its characteristics are all accurate and enhance the response without introducing any factual errors."
+      }
+    },
+    {
+      "question_id": "q-l1-type-decidueye",
+      "question": "what type is decidueye",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Decidueye is a Grass/Ghost type Pokémon. It can move stealthily and attack opponents by firing arrow quills from its wings.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/decidueye",
+        "https://pokemondb.net/pokedex/decidueye"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Decidueye as a Grass/Ghost type Pokémon, covering both expected key facts. The additional information about its stealthy movement and arrow quill attacks is also accurate to Decidueye's canonical characteristics."
+      }
+    },
+    {
+      "question_id": "q-l1-type-incineroar",
+      "question": "what type is incineroar",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Incineroar is a Fire/Dark type Pokémon. It is introduced in Generation 7 and is known for its aggressive behavior and fiery attacks.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/incineroar",
+        "https://pokemondb.net/pokedex/incineroar"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Incineroar as a Fire/Dark type Pokémon, covering both expected key facts. The additional information about Generation 7 and its characteristics is also accurate."
+      }
+    },
+    {
+      "question_id": "q-l1-type-sylveon",
+      "question": "what type is sylveon",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Sylveon is a Fairy type Pokémon. It is introduced in Generation 6 and evolves from Eevee when exposed to a Water Stone. Sylveon has a unique ability called Pixilate, which increases the power of its Fairy-type moves when its HP is low.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/sylveon",
+        "https://pokemondb.net/pokedex/sylveon",
+        "https://pokemondb.net/pokedex/sylveon"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Sylveon does not evolve from Eevee using a Water Stone. It evolves from Eevee when leveled up with high friendship while knowing a Fairy-type move (Gen 6-7) or with high friendship and 2 Affection hearts in Pokemon-Amie/Refresh (Gen 6-7), or just high friendship in later generations.",
+          "Pixilate does not increase the power of Fairy-type moves when HP is low. Pixilate converts Normal-type moves into Fairy-type moves and gives them a power boost (typically 1.2x). The description confuses Pixilate with abilities like Torrent/Blaze that activate at low HP."
+        ],
+        "reasoning": "While the answer correctly identifies Sylveon as a Fairy type (the key expected fact), it contains two significant factual errors: Sylveon does not evolve via Water Stone (it evolves through friendship + Fairy move or affection), and the description of Pixilate is incorrect (it converts Normal moves to Fairy type with a boost, not a low-HP power increase)."
+      }
+    },
+    {
+      "question_id": "q-l1-gen-bulbasaur",
+      "question": "what generation is bulbasaur from",
+      "layer": 1,
+      "category": "generation-lookup",
+      "rga_fired": true,
+      "answer_text": "Bulbasaur is from Generation 1. It is a Grass/Poison type Pokémon introduced in the original Game Boy games, Pokémon Red & Blue (Red & Green in Japan). It is one of the three starter Pokémon choices, along with Charmander and Squirtle.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/bulbasaur",
+        "https://pokemondb.net/pokedex/bulbasaur"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly states that Bulbasaur is from Generation 1, which is the expected key fact. All additional information provided (Grass/Poison typing, being a starter alongside Charmander and Squirtle, and being introduced in Red/Blue/Green) is factually accurate."
+      }
+    },
+    {
+      "question_id": "q-l1-gen-mewtwo",
+      "question": "what generation is mewtwo from",
+      "layer": 1,
+      "category": "generation-lookup",
+      "rga_fired": true,
+      "answer_text": "Mewtwo is from Generation 1. It is a Psychic-type Pokémon introduced in the first generation of Pokémon games.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/mewtwo",
+        "https://pokemondb.net/pokedex/mewtwo"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Mewtwo as a Generation 1 Pokémon and provides additional accurate information that it is a Psychic-type. All claims are factually correct according to Pokémon canon."
+      }
+    },
+    {
+      "question_id": "q-l1-gen-rayquaza",
+      "question": "what generation is rayquaza from",
+      "layer": 1,
+      "category": "generation-lookup",
+      "rga_fired": true,
+      "answer_text": "Rayquaza is from Generation 3. It is a Dragon/Flying type Pokémon introduced in Pokémon Ruby and Sapphire. Rayquaza can be found in various locations across different generations, such as the Sky Pillar in Ruby, Sapphire, and Omega Ruby/Alpha Sapphire, and through trading or migration in other games.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/rayquaza",
+        "https://pokemondb.net/pokedex/rayquaza",
+        "https://pokemondb.net/pokedex/rayquaza"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Rayquaza as a Generation 3 Pokémon, which is the key expected fact. All additional information provided (Dragon/Flying type, introduction in Ruby/Sapphire, Sky Pillar location) is accurate and adds helpful context without any factual errors."
+      }
+    },
+    {
+      "question_id": "q-l1-gen-dialga",
+      "question": "what generation is dialga from",
+      "layer": 1,
+      "category": "generation-lookup",
+      "rga_fired": true,
+      "answer_text": "Dialga is from Generation 4. It is a Steel/Dragon type Pokémon introduced in the Sinnoh region games, including Diamond, Pearl, Platinum, HeartGold, and SoulSilver.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/dialga",
+        "https://pokemondb.net/pokedex/dialga",
+        "https://pokemondb.net/pokedex/dialga"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "HeartGold and SoulSilver are Generation 4 games but they are remakes of Gold and Silver set in the Johto region, not the Sinnoh region. The answer incorrectly groups them with the Sinnoh region games."
+        ],
+        "reasoning": "The answer correctly states Dialga is from Generation 4 and provides accurate type information. However, it incorrectly describes HeartGold and SoulSilver as Sinnoh region games when they are actually Johto region remakes, despite being Gen 4 games."
+      }
+    },
+    {
+      "question_id": "q-l1-gen-reshiram",
+      "question": "what generation is reshiram from",
+      "layer": 1,
+      "category": "generation-lookup",
+      "rga_fired": true,
+      "answer_text": "Reshiram is from Generation 5. It is a Dragon/Fire type Pokémon introduced in this generation.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/reshiram",
+        "https://pokemondb.net/pokedex/reshiram",
+        "https://pokemondb.net/pokedex/reshiram"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly states that Reshiram is from Generation 5, which is the expected key fact. The additional information about its Dragon/Fire typing is also accurate."
+      }
+    },
+    {
+      "question_id": "q-l1-gen-xerneas",
+      "question": "what generation is xerneas from",
+      "layer": 1,
+      "category": "generation-lookup",
+      "rga_fired": true,
+      "answer_text": "Xerneas is from Generation 6. It is a Fairy-type legendary Pokémon exclusive to Pokémon X.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/xerneas",
+        "https://pokemondb.net/pokedex/xerneas",
+        "https://pokemondb.net/pokedex/xerneas",
+        "https://pokemondb.net/pokedex/xerneas"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly states that Xerneas is from Generation 6, which is the key expected fact. The additional information about it being a Fairy-type legendary Pokémon exclusive to Pokémon X is also accurate and enhances the response without introducing any factual errors."
+      }
+    },
+    {
+      "question_id": "q-l1-gen-solgaleo",
+      "question": "what generation is solgaleo from",
+      "layer": 1,
+      "category": "generation-lookup",
+      "rga_fired": true,
+      "answer_text": "Solgaleo is from Generation 7. It is a Psychic/Steel type Pokémon introduced in this generation. Solgaleo is known for its radiant appearance and powerful signature move, Sunsteel Strike. It can transform into the Radiant Sun phase when it releases its energy. Solgaleo is often found in specific locations like the Sun Altar in the Sun/Moon games and can be traded or migrated from other games.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/solgaleo",
+        "https://pokemondb.net/pokedex/solgaleo"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly states that Solgaleo is from Generation 7, which is the expected key fact. The additional information provided (Psychic/Steel type, Sunsteel Strike signature move, appearance at Sun Altar in Sun/Moon games) is all accurate to canonical Pokemon knowledge."
+      }
+    },
+    {
+      "question_id": "q-l1-gen-zacian",
+      "question": "what generation is zacian from",
+      "layer": 1,
+      "category": "generation-lookup",
+      "rga_fired": true,
+      "answer_text": "Zacian is from Generation 8. It is a Legendary Pokémon introduced in Pokémon Sword and Shield.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/zacian",
+        "https://pokemondb.net/pokedex/zacian",
+        "https://pokemondb.net/pokedex/zacian",
+        "https://pokemondb.net/pokedex/zacian"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly states that Zacian is from Generation 8, which matches the expected key fact. The additional information that Zacian is a Legendary Pokémon from Pokémon Sword and Shield is also accurate and enhances the answer without introducing any factual errors."
+      }
+    },
+    {
+      "question_id": "q-l1-gen-miraidon",
+      "question": "what generation is miraidon from",
+      "layer": 1,
+      "category": "generation-lookup",
+      "rga_fired": true,
+      "answer_text": "Miraidon is from Generation 9. It is an Electric/Dragon type Paradox Pokémon introduced in this generation.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/miraidon",
+        "https://pokemondb.net/pokedex/miraidon",
+        "https://pokemondb.net/pokedex/miraidon",
+        "https://pokemondb.net/pokedex/miraidon"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Miraidon as being from Generation 9, which is the expected key fact. The additional information about it being an Electric/Dragon type Paradox Pokémon is also accurate."
+      }
+    },
+    {
+      "question_id": "q-l1-gen-incineroar",
+      "question": "what generation is incineroar from",
+      "layer": 1,
+      "category": "generation-lookup",
+      "rga_fired": true,
+      "answer_text": "Incineroar is from Generation 7. It is a Fire/Dark type Pokémon introduced in this generation.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/incineroar",
+        "https://pokemondb.net/pokedex/incineroar"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Incineroar as a Generation 7 Pokémon and provides accurate additional information about its Fire/Dark typing. All facts presented are canonically correct."
+      }
+    },
+    {
+      "question_id": "q-l1-evo-charmander",
+      "question": "what does charmander evolve into",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "rga_fired": true,
+      "answer_text": "Charmander evolves into Charmeleon at level 16, and then into Charizard at level 36. Charizard is a Fire/Flying type Pokémon.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/charmander",
+        "https://pokemondb.net/pokedex/charmeleon",
+        "https://pokemondb.net/pokedex/charmander"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.6666666666666666,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Charmander's evolution line (Charmeleon at level 16, then Charizard at level 36) and includes both expected key facts. The additional information about Charizard being Fire/Flying type is also accurate."
+      }
+    },
+    {
+      "question_id": "q-l1-evo-bulbasaur",
+      "question": "what does bulbasaur evolve into",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "rga_fired": true,
+      "answer_text": "Bulbasaur evolves into Ivysaur at level 16, and then into Venusaur at level 32. Ivysaur and Venusaur are both Grass/Poison type Pokémon.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/bulbasaur",
+        "https://pokemondb.net/pokedex/bulbasaur",
+        "https://pokemondb.net/pokedex/venusaur"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.6666666666666666,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies that Bulbasaur evolves into Ivysaur and then Venusaur, which are the two expected key facts. The additional information about evolution levels (16 and 32) and typing (Grass/Poison) is also accurate according to Pokemon canon."
+      }
+    },
+    {
+      "question_id": "q-l1-evo-squirtle",
+      "question": "what does squirtle evolve into",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "rga_fired": true,
+      "answer_text": "Squirtle evolves into Wartortle at level 16, and then into Blastoise at level 36. Wartortle and Blastoise are also Water-type Pokémon, with Blastoise being the final evolution.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/squirtle",
+        "https://pokemondb.net/pokedex/squirtle"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies both Wartortle and Blastoise as Squirtle's evolutions, which are the expected key facts. The evolution levels (16 and 36) and Water-type information are also accurate canonical facts."
+      }
+    },
+    {
+      "question_id": "q-l1-evo-pikachu",
+      "question": "what does pikachu evolve into",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "rga_fired": true,
+      "answer_text": "Pikachu evolves into Raichu. Raichu has a standard form and an Alolan form, which differs in appearance and moveset. The evolution occurs at level 16. Raichu is an Electric type Pokémon with increased stats compared to Pikachu.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/pikachu",
+        "https://pokemondb.net/pokedex/raichu",
+        "https://pokemondb.net/pokedex/pikachu"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.6666666666666666,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Pikachu evolves into Raichu at level 16 - this is incorrect. Pikachu evolves into Raichu when exposed to a Thunder Stone, not by leveling up to level 16."
+        ],
+        "reasoning": "The answer correctly identifies Raichu as Pikachu's evolution and mentions the Alolan form, but contains a significant factual error: Pikachu evolves via Thunder Stone exposure, not at level 16. This is a fundamental mistake about the evolution method."
+      }
+    },
+    {
+      "question_id": "q-l1-evo-dratini",
+      "question": "what does dratini evolve into",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "rga_fired": true,
+      "answer_text": "Dratini evolves into Dragonair at level 30, and Dragonair evolves into Dragonite at level 55. Dragonite is a Dragon/Flying type Pokémon.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/dratini",
+        "https://pokemondb.net/pokedex/dratini"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Dratini's evolution line (Dragonair and Dragonite), provides accurate evolution levels (30 and 55), and correctly states Dragonite's type. All expected facts are present and there are no factual errors."
+      }
+    },
+    {
+      "question_id": "q-l1-evo-ralts",
+      "question": "what does ralts evolve into",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "rga_fired": true,
+      "answer_text": "Ralts evolves into Kirlia at level 20, and Kirlia can further evolve into either Gardevoir or Gallade. To evolve into Gardevoir, use a Dawn Stone on Kirlia. To evolve into Gallade, trade Kirlia while it holds a Metal Coat.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/ralts",
+        "https://pokemondb.net/pokedex/ralts"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Gardevoir does not require a Dawn Stone to evolve from Kirlia - Kirlia evolves into Gardevoir at level 30 naturally",
+          "Gallade does not evolve from Kirlia via trading with Metal Coat - Gallade evolves from a male Kirlia when exposed to a Dawn Stone"
+        ],
+        "reasoning": "While the answer correctly identifies Kirlia as Ralts' first evolution and mentions both Gardevoir and Gallade as final evolutions, it contains significant factual errors about the evolution methods. The evolution stone requirements and methods are completely reversed and incorrect."
+      }
+    },
+    {
+      "question_id": "q-l1-evo-abra",
+      "question": "what does abra evolve into",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "rga_fired": true,
+      "answer_text": "Abra evolves into Kadabra through leveling up, and then into Alakazam through trading. Abra is a Psychic-type Pokémon introduced in Generation 1. It evolves into Kadabra at level 16 and into Alakazam when traded. Abra can learn various moves through leveling up and from move tutors. It is known for its ability to teleport to safety when it senses danger.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/abra",
+        "https://pokemondb.net/pokedex/abra",
+        "https://pokemondb.net/pokedex/abra",
+        "https://pokemondb.net/pokedex/kadabra"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.75,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies both Kadabra and Alakazam as Abra's evolutions, which are the expected key facts. It also provides accurate additional details: Abra evolves into Kadabra at level 16, and Kadabra evolves into Alakazam through trading. All stated facts align with canonical Pokemon information."
+      }
+    },
+    {
+      "question_id": "q-l1-evo-machop",
+      "question": "what does machop evolve into",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "rga_fired": true,
+      "answer_text": "Machop evolves into Machoke when it reaches level 28, and then into Machamp when traded.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/machop",
+        "https://pokemondb.net/pokedex/machamp"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.5,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly states that Machop evolves into Machoke (at level 28) and then into Machamp (through trading). Both expected key facts are present, the evolution levels and methods are accurate, and there are no factual errors."
+      }
+    },
+    {
+      "question_id": "q-l1-evo-magikarp",
+      "question": "what does magikarp evolve into",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "rga_fired": true,
+      "answer_text": "Magikarp evolves into Gyarados, a Water/Flying type Pokémon, at level 20. Gyarados is known for its powerful and aggressive nature, contrasting sharply with Magikarp's weak and unreliable characteristics.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/magikarp",
+        "https://pokemondb.net/pokedex/magikarp",
+        "https://pokemondb.net/pokedex/magikarp"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly states that Magikarp evolves into Gyarados at level 20, and accurately describes Gyarados as a Water/Flying type with an aggressive nature contrasting with Magikarp's weakness. All factual claims are accurate according to Pokemon canon."
+      }
+    },
+    {
+      "question_id": "q-l1-evo-gible",
+      "question": "what does gible evolve into",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "rga_fired": true,
+      "answer_text": "Gible evolves into Gabite at level 24, and then into Garchomp at level 48. Gible is a Dragon/Ground type Pokémon introduced in Generation 4.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/gible",
+        "https://pokemondb.net/pokedex/gible"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Gible's evolution line (Gabite and Garchomp) with accurate level requirements (24 and 48), type (Dragon/Ground), and generation (4). All expected key facts are present and no factual errors were made."
+      }
+    },
+    {
+      "question_id": "q-l1-ability-rotom",
+      "question": "what ability does rotom have",
+      "layer": 1,
+      "category": "ability-lookup",
+      "rga_fired": true,
+      "answer_text": "Rotom has the ability Levitate. This ability allows Rotom to float above the ground, granting immunity to Ground-type moves.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/rotom"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Rotom's ability as Levitate and accurately describes its effect (immunity to Ground-type moves). All key facts are present and there are no factual errors."
+      }
+    },
+    {
+      "question_id": "q-l1-ability-gengar",
+      "question": "what ability does gengar have",
+      "layer": 1,
+      "category": "ability-lookup",
+      "rga_fired": true,
+      "answer_text": "Gengar has the ability Cursed Body, which lowers the opponent's Sp. Def by one stage when it makes contact. In Generations 3-6, Gengar also has the Levitate ability, which makes it immune to Ground-type moves.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/gengar",
+        "https://pokemondb.net/pokedex/gengar"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Cursed Body does not lower the opponent's Sp. Def by one stage when contact is made. Cursed Body has a 30% chance to disable a move when Gengar is hit by it.",
+          "The claim about when Gengar had Levitate is correct, but the description of Cursed Body's effect is factually wrong."
+        ],
+        "reasoning": "The answer correctly identifies Cursed Body as Gengar's ability and correctly mentions Levitate for earlier generations. However, it completely misrepresents how Cursed Body works—it disables moves when hit, not lowers Sp. Def, making this a significant factual error."
+      }
+    },
+    {
+      "question_id": "q-l1-ability-alakazam",
+      "question": "what abilities does alakazam have",
+      "layer": 1,
+      "category": "ability-lookup",
+      "rga_fired": true,
+      "answer_text": "Alakazam has three abilities: Synchronize, Inner Focus, and Magic Guard (hidden ability). Synchronize increases the chance of causing status conditions, Inner Focus prevents flinching, and Magic Guard reduces damage from physical moves.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/alakazam"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Synchronize does not increase the chance of causing status conditions - it actually passes on status conditions (burn, paralysis, poison) to the opponent that inflicted them",
+          "Inner Focus does not just prevent flinching - the description is incomplete but technically correct",
+          "Magic Guard does not reduce damage from physical moves - it prevents indirect damage (like from weather, entry hazards, status conditions, recoil, etc.) but does not affect direct attack damage"
+        ],
+        "reasoning": "While the answer correctly identifies Alakazam's three abilities (Synchronize, Inner Focus, and Magic Guard), it contains multiple factual errors in describing what these abilities do. Most notably, Synchronize's effect is completely wrong, and Magic Guard's effect is also incorrectly described."
+      }
+    },
+    {
+      "question_id": "q-l1-ability-gyarados",
+      "question": "what abilities does gyarados have",
+      "layer": 1,
+      "category": "ability-lookup",
+      "rga_fired": true,
+      "answer_text": "Gyarados has two abilities: Intimidate and Moxie (hidden ability). Intimidate lowers the opponent's attack when Gyarados enters a battle, while Moxie increases Gyarados's Special Attack by one stage when its HP drops below half.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/gyarados",
+        "https://pokemondb.net/pokedex/gyarados"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Moxie increases Attack (not Special Attack) by one stage when Gyarados knocks out an opponent (not when its HP drops below half). The answer incorrectly describes Moxie's effect."
+        ],
+        "reasoning": "The answer correctly identifies Intimidate and Moxie as Gyarados's abilities and accurately describes Intimidate. However, it completely misrepresents Moxie's effect - Moxie boosts Attack (not Special Attack) by one stage when the user knocks out an opponent, not when HP drops below half."
+      }
+    },
+    {
+      "question_id": "q-l1-ability-dragonite",
+      "question": "what abilities does dragonite have",
+      "layer": 1,
+      "category": "ability-lookup",
+      "rga_fired": true,
+      "answer_text": "Dragonite has two abilities: Inner Focus and Multiscale (hidden ability). Inner Focus increases the Pokémon's accuracy, while Multiscale boosts its defense when hit by a super effective move.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/dragonite"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Inner Focus does not increase accuracy - it prevents the Pokemon from flinching",
+          "Multiscale does not boost defense when hit by a super effective move - it reduces damage taken when the Pokemon is at full HP"
+        ],
+        "reasoning": "While the answer correctly identifies Dragonite's two abilities (Inner Focus and Multiscale as hidden ability), it completely misrepresents what both abilities do. Inner Focus prevents flinching, not increases accuracy. Multiscale reduces damage when at full HP, not when hit by super effective moves."
+      }
+    },
+    {
+      "question_id": "q-l1-ability-gardevoir",
+      "question": "what abilities does gardevoir have",
+      "layer": 1,
+      "category": "ability-lookup",
+      "rga_fired": true,
+      "answer_text": "Gardevoir has two abilities: Synchronize, which increases the chance of causing status conditions, and Telepathy (hidden ability), which raises the priority of status moves.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/gardevoir"
+      ],
+      "hard_recall": 0.5,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Synchronize does NOT increase the chance of causing status conditions - it passes the user's burn, poison, or paralysis to the opponent who caused it",
+          "Gardevoir's second regular ability is Trace (which copies an opponent's ability), not just a hidden ability",
+          "Telepathy is Gardevoir's hidden ability but it does NOT raise the priority of status moves - it prevents damage from allies' attacks in double/triple battles",
+          "The answer omits Trace, which is one of Gardevoir's two standard abilities alongside Synchronize"
+        ],
+        "reasoning": "The answer incorrectly describes what Synchronize does, completely omits Trace (a key expected ability), and falsely describes Telepathy's effect. It also incorrectly presents only two abilities when Gardevoir has three total (Synchronize, Trace, and Telepathy as hidden)."
+      }
+    },
+    {
+      "question_id": "q-l1-ability-salamence",
+      "question": "what abilities does salamence have",
+      "layer": 1,
+      "category": "ability-lookup",
+      "rga_fired": true,
+      "answer_text": "Salamence has two abilities: Intimidate and Moxie (hidden ability). Intimidate lowers the opponent's Attack stat, while Moxie increases the Pokémon's Special Attack stat when it is at low health.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/salamence"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Moxie raises Attack by one stage after knocking out an opponent, not Special Attack when at low health - the answer completely misrepresents how Moxie works"
+        ],
+        "reasoning": "The answer correctly identifies Salamence's two abilities (Intimidate and Moxie), but contains a major factual error about Moxie's effect. Moxie raises Attack (not Special Attack) by one stage after the Pokémon knocks out an opponent (not when at low health)."
+      }
+    },
+    {
+      "question_id": "q-l1-ability-lucario",
+      "question": "what abilities does lucario have",
+      "layer": 1,
+      "category": "ability-lookup",
+      "rga_fired": true,
+      "answer_text": "Lucario has three abilities: Steadfast, Inner Focus, and Justified (hidden ability). Steadfast increases the power of moves that make contact, Inner Focus prevents flinching, and Justified doubles the Pokémon's Attack stat if it is hit by a Dark-type move.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/lucario",
+        "https://pokemondb.net/pokedex/lucario"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Steadfast increases Speed by one stage when the Pokémon flinches, it does NOT increase the power of moves that make contact",
+          "Justified raises Attack by one stage when hit by a Dark-type move, it does NOT double the Attack stat"
+        ],
+        "reasoning": "The answer correctly identifies Lucario's three abilities (Steadfast, Inner Focus, and Justified as hidden), but contains significant errors in describing what they do. Steadfast increases Speed when flinching (not power of contact moves), and Justified raises Attack by one stage (not doubles it)."
+      }
+    },
+    {
+      "question_id": "q-l1-ability-talonflame",
+      "question": "what abilities does talonflame have",
+      "layer": 1,
+      "category": "ability-lookup",
+      "rga_fired": true,
+      "answer_text": "Talonflame has two abilities: Flame Body and Gale Wings (hidden ability). Flame Body burns the Pokémon that makes contact with Talonflame, while Gale Wings increases its speed when it has less than half of its maximum HP.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/talonflame",
+        "https://pokemondb.net/pokedex/talonflame"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Gale Wings does NOT increase speed when HP is below half. In Generation 7+, Gale Wings gives priority to Flying-type moves only when Talonflame has full HP or more. In earlier generations, it gave priority to Flying-type moves regardless of HP."
+        ],
+        "reasoning": "The answer correctly identifies Talonflame's two abilities (Flame Body and Gale Wings) and accurately describes Flame Body. However, it contains a significant factual error about Gale Wings' effect, incorrectly stating it increases speed at low HP when it actually relates to move priority for Flying-type moves based on HP thresholds."
+      }
+    },
+    {
+      "question_id": "q-l1-ability-metagross",
+      "question": "what ability does metagross have",
+      "layer": 1,
+      "category": "ability-lookup",
+      "rga_fired": true,
+      "answer_text": "Metagross has two abilities: Clear Body and Light Metal (hidden ability). Clear Body prevents opponents from lowering its stats, while Light Metal boosts its defense by 30% when hit by a Steel-type move.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/metagross"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Light Metal's effect is described incorrectly - Light Metal halves the Pokemon's weight, it does not boost defense by 30% when hit by a Steel-type move"
+        ],
+        "reasoning": "The answer correctly identifies Metagross's abilities (Clear Body and Light Metal as hidden ability) and correctly describes Clear Body's effect. However, it contains a significant factual error about Light Metal's effect - Light Metal halves the Pokemon's weight rather than boosting defense when hit by Steel-type moves."
+      }
+    },
+    {
+      "question_id": "q-l1-stat-mewtwo-hp",
+      "question": "what is mewtwo's base hp",
+      "layer": 1,
+      "category": "stat-lookup",
+      "rga_fired": true,
+      "answer_text": "Mewtwo's base HP is 106. This value represents the starting HP for Mewtwo at level 1.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/mewtwo",
+        "https://pokemondb.net/pokedex/mewtwo",
+        "https://pokemondb.net/pokedex/mewtwo"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly states that Mewtwo's base HP is 106, which matches the expected key fact. The additional clarification about base stats is accurate and helpful."
+      }
+    },
+    {
+      "question_id": "q-l1-stat-blissey-hp",
+      "question": "what is blissey's base hp",
+      "layer": 1,
+      "category": "stat-lookup",
+      "rga_fired": true,
+      "answer_text": "Blissey's base HP is 100. This Normal-type Pokémon, introduced in Generation 2, has a base HP of 100, which increases to 255 at level 100. Blissey is known for its high friendship requirement for evolution from Chansey and its ability to nurse sick Pokémon back to health.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/blissey",
+        "https://pokemondb.net/pokedex/blissey"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Blissey's base HP is stated as 100, when it is actually 255 - the highest base HP of any Pokémon",
+          "The answer confuses base HP (a fixed species stat) with actual HP at level 100 (which is calculated from the base stat)"
+        ],
+        "reasoning": "The answer incorrectly states Blissey's base HP as 100 when it is actually 255, which is the highest base HP of any Pokémon. The answer appears to confuse base stats with actual HP values at a given level, which are different concepts in Pokémon mechanics."
+      }
+    },
+    {
+      "question_id": "q-l1-stat-shuckle-def",
+      "question": "what is shuckle's base defense",
+      "layer": 1,
+      "category": "stat-lookup",
+      "rga_fired": true,
+      "answer_text": "Shuckle's base defense is 230. This value represents the base defense stat for Shuckle at level 100, assuming a beneficial nature, 252 EVs, and 31 IVs. Shuckle is a Bug/Rock type Pokémon known for its high defense and special defense stats, making it a formidable opponent in battles.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/shuckle"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "The answer claims 230 represents the defense stat at level 100 with beneficial nature, 252 EVs, and 31 IVs, but 230 is actually Shuckle's base Defense stat - a fixed value independent of level, nature, EVs, or IVs. The calculated stat at level 100 with those parameters would be much higher (around 614)."
+        ],
+        "reasoning": "While the answer correctly states Shuckle's base Defense is 230, it incorrectly defines what a base stat is. Base stats are fixed values for each Pokemon species and do not depend on level, nature, EVs, or IVs - those factors are used to calculate the actual stat from the base stat."
+      }
+    },
+    {
+      "question_id": "q-l1-stat-regigigas-atk",
+      "question": "what is regigigas's base attack",
+      "layer": 1,
+      "category": "stat-lookup",
+      "rga_fired": true,
+      "answer_text": "Regigigas's base attack stat is 160. This stat represents the power of its physical moves. Regigigas is a Normal-type Pokémon introduced in Generation 4, known for its colossal size and legendary status. It does not evolve and has a unique ability called Slow Start, which reduces its speed in battle. Regigigas can be found in various locations across different Pokémon games, often requiring specific methods to obtain.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/regigigas"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": true,
+        "false_claims": [
+          "Slow Start reduces Regigigas's Attack and Speed, not just Speed as claimed"
+        ],
+        "reasoning": "The answer correctly states Regigigas's base Attack stat is 160, which is the key fact required. However, it contains a factual error about Slow Start: the ability halves both Attack AND Speed for five turns, not just Speed as stated."
+      }
+    },
+    {
+      "question_id": "q-l1-stat-deoxys-speed",
+      "question": "what is deoxys speed form's base speed",
+      "layer": 1,
+      "category": "stat-lookup",
+      "rga_fired": true,
+      "answer_text": "Deoxys's Speed Form has a base speed of 180. This is the highest base speed among its forms, making it the fastest. The base speed values for all forms are: Normal Forme (150), Attack Forme (274), Defense Forme (274), and Speed Forme (180).",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/deoxys",
+        "https://pokemondb.net/pokedex/deoxys"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Attack Forme base speed is 150, not 274",
+          "Defense Forme base speed is 90, not 274",
+          "Normal Forme base speed is 90, not 150"
+        ],
+        "reasoning": "While the answer correctly states that Deoxys Speed Form has a base speed of 180, it contains multiple factual errors about the base speed stats of other Deoxys forms. The values given for Attack, Defense, and Normal formes are incorrect."
+      }
+    },
+    {
+      "question_id": "q-l2-compare-starters-bulba-char",
+      "question": "compare bulbasaur and charmander",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "rga_fired": true,
+      "answer_text": "Bulbasaur and Charmander are both starter Pokémon from Generation 1, each with distinct characteristics. Bulbasaur is a Grass/Poison type, resembling a frog or toad with a green bulb on its back that evolves into a flower. Charmander, a Fire type, is lizard-like with a flame on its tail that signifies its health. In terms of stats, Bulbasaur has a slightly higher HP and Defense, while Charmander has higher Attack and Speed. Both have a medium slow growth rate and are available as starter choices in various Pokémon games.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/charmander",
+        "https://pokemondb.net/pokedex/bulbasaur",
+        "https://pokemondb.net/pokedex/charmander",
+        "https://pokemondb.net/pokedex/charmander"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies all expected key facts: Bulbasaur as Grass/Poison type and Charmander as Fire type. It also provides accurate additional information about their appearances, stat comparisons, and status as Generation 1 starters. No factual errors are present."
+      }
+    },
+    {
+      "question_id": "q-l2-compare-pikachu-raichu",
+      "question": "compare pikachu and raichu",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "rga_fired": true,
+      "answer_text": "Raichu, the evolved form of Pikachu, is an Electric-type Pokémon. Raichu has higher base stats in Attack, Special Attack, and Speed compared to Pikachu. Raichu's base stats are 90 Attack, 90 Special Attack, and 110 Speed, while Pikachu's are 60 Attack, 50 Special Attack, and 90 Speed. Raichu also has a higher base experience yield and Friendship value. Raichu's Alolan form, introduced in Generation 7, has a base experience yield of 218 and a Friendship value of 70, similar to Raichu's base stats in Generations 2-7. Raichu's Alolan form has a base Friendship value of 70.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/raichu",
+        "https://pokemondb.net/pokedex/raichu",
+        "https://pokemondb.net/pokedex/raichu"
+      ],
+      "hard_recall": 0.5,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": true,
+        "false_claims": [
+          "Raichu's base Attack is 90 - the correct value is 90, which is accurate",
+          "Raichu's base Special Attack is 90 - the correct value is 90, which is accurate",
+          "Raichu's base Speed is 110 - the correct value is 110, which is accurate",
+          "Pikachu's base Attack is 60 - the correct value is 55",
+          "Pikachu's base Special Attack is 50 - the correct value is 50, which is accurate",
+          "Pikachu's base Speed is 90 - the correct value is 90, which is accurate",
+          "The claim about Alolan Raichu's base Friendship value of 70 appears to be incorrect - the standard friendship value for most Pokémon is 50 or 70, but this specific claim about Alolan form having 70 needs verification"
+        ],
+        "reasoning": "The answer correctly identifies that Raichu is the evolved form of Pikachu and that both are Electric-type, covering the expected key facts. However, there are factual errors in the base stats - Pikachu's base Attack is 55, not 60. Additionally, some claims about Alolan Raichu's friendship values are questionable and the answer contains some confusing/redundant statements."
+      }
+    },
+    {
+      "question_id": "q-l2-compare-mewtwo-mew",
+      "question": "compare mewtwo and mew",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "rga_fired": true,
+      "answer_text": "Mewtwo and Mew are both Psychic-type Pokémon, but they differ significantly in origin and characteristics. Mewtwo is a Genetic Pokémon created through extensive genetic manipulation and DNA engineering, resulting in a larger size and aggressive nature. It has two Mega Evolutions, Mega Mewtwo X and Y, and is known for its high battle abilities. In contrast, Mew is a New Species Pokémon with a smaller size and a more peaceful disposition. It was introduced in Generation 1 and has a base Special stat of 100. While Mewtwo is engineered for battle, Mew is considered a legendary Pokémon with a higher catch rate and a base experience yield of 300.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/mewtwo",
+        "https://pokemondb.net/pokedex/mewtwo",
+        "https://pokemondb.net/pokedex/mew"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies both Mewtwo and Mew as Psychic-type Pokémon from Generation 1, covering the expected key facts. It provides accurate additional information about their origins (Mewtwo being genetically engineered from Mew), their different natures, Mewtwo's Mega Evolutions, and other canonical details without making false claims."
+      }
+    },
+    {
+      "question_id": "q-l2-compare-dialga-palkia",
+      "question": "compare dialga and palkia",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "rga_fired": true,
+      "answer_text": "Dialga and Palkia are both Legendary Pokémon from Generation 4, each representing different elemental concepts. Dialga is a Steel/Dragon type, known as the Temporal Pokémon, while Palkia is a Water/Dragon type, known as the Spatial Pokémon. They are often compared due to their similar roles as Legendary Pokémon. In terms of base stats, Dialga has a higher Speed stat, while Palkia has higher Special Attack and Special Defense stats. Their abilities also differ: Dialga has Pressure and Telepathy, while Palkia has Pressure and Telepathy. The choice between them often depends on the player's strategy and preference in battles.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/dialga",
+        "https://pokemondb.net/pokedex/dialga",
+        "https://pokemondb.net/pokedex/palkia"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "The answer states that Dialga has a higher Speed stat than Palkia, but canonically Palkia has base 100 Speed while Dialga has base 90 Speed - Palkia is faster.",
+          "The answer states both Dialga and Palkia have the same abilities (Pressure and Telepathy), which is incorrect. While both have Pressure as their primary ability, Dialga's hidden ability is Telepathy while Palkia's hidden ability is also Telepathy in some games, but this claim about 'Palkia has higher Special Attack and Special Defense' is also wrong - Dialga actually has higher Special Attack (150 vs 150 tie actually), and Palkia has higher Speed not Special Defense."
+        ],
+        "reasoning": "The answer correctly identifies the expected key facts (Generation 4, Dragon, Steel, Water types) but contains multiple factual errors about their stats. Most notably, it incorrectly claims Dialga has higher Speed when Palkia is actually faster (100 vs 90 base Speed), and makes confusing/incorrect claims about their stat distributions."
+      }
+    },
+    {
+      "question_id": "q-l2-compare-reshiram-zekrom",
+      "question": "compare reshiram and zekrom",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "rga_fired": true,
+      "answer_text": "Reshiram and Zekrom are both Dragon-type Pokémon introduced in Generation 5. Reshiram is a Dragon/Fire type, while Zekrom is a Dragon/Electric type. Reshiram is known as the Vast White Pokémon, while Zekrom is the Deep Black Pokémon. Reshiram is 3.2 meters tall and weighs 330 kg, while Zekrom is 2.9 meters tall and weighs 345 kg. Reshiram has a catch rate of 3, while Zekrom's catch rate is also 3. Both Pokémon have a slow growth rate and belong to the Undiscovered Egg Group. Reshiram's ability is Turboblaze, while Zekrom's ability is Teravolt.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/zekrom",
+        "https://pokemondb.net/pokedex/zekrom",
+        "https://pokemondb.net/pokedex/reshiram",
+        "https://pokemondb.net/pokedex/zekrom",
+        "https://pokemondb.net/pokedex/reshiram"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": true,
+        "false_claims": [
+          "Reshiram's ability is listed as Turboblaze, but Reshiram's actual ability is Turboblaze. Zekrom's ability is listed as Teravolt, which is correct. However, the abilities are swapped - Reshiram has Turboblaze and Zekrom has Teravolt, which appears to be stated correctly here, so this is not an error.",
+          "Reshiram's height is listed as 3.2 meters, but Reshiram is actually 3.2 meters tall (correct). Zekrom is listed as 2.9 meters tall, but Zekrom is actually 2.9 meters tall (correct).",
+          "Actually upon closer review, Reshiram's ability is Turboblaze (correct) and Zekrom's ability is Teravolt (correct). The catch rate of 3 for both is correct. However, the growth rate is listed as 'slow' but legendary Pokémon like these typically have a 'Slow' growth rate which is correct."
+        ],
+        "reasoning": "The answer correctly identifies all three expected key facts: Dragon type (both), Fire type (Reshiram), and Electric type (Zekrom). However, there appears to be an error with the abilities - Reshiram's ability should be Turboblaze and Zekrom's should be Teravolt, which is what the answer states, so on second review this is actually correct. Let me reconsider the measurements and other details against canonical sources."
+      }
+    },
+    {
+      "question_id": "q-l2-compare-xerneas-yveltal",
+      "question": "compare xerneas and yveltal",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "rga_fired": true,
+      "answer_text": "Xerneas and Yveltal are both legendary Pokémon introduced in Generation 6. Xerneas is a Fairy type, known as the Life Pokémon, while Yveltal is a Dark/Flying type, known as the Destruction Pokémon. Xerneas has a Fairy Aura ability, while Yveltal has a Dark Aura ability. Xerneas is exclusive to Pokémon X, and Yveltal is exclusive to Pokémon Y. Both Pokémon have similar base stats, with Xerneas having slightly higher HP and Defense, and Yveltal having slightly higher Attack and Speed. Xerneas is genderless and 3.0 meters tall, while Yveltal is also genderless and 5.8 meters tall.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/xerneas",
+        "https://pokemondb.net/pokedex/xerneas",
+        "https://pokemondb.net/pokedex/yveltal"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies all three expected key facts: Xerneas is Fairy type, and Yveltal is Dark/Flying type. Additional information provided (abilities, game exclusivity, stats, height) is accurate and enhances the comparison without contradicting Pokemon canon."
+      }
+    },
+    {
+      "question_id": "q-l2-compare-lucario-machamp",
+      "question": "compare lucario and machamp",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "rga_fired": true,
+      "answer_text": "Machamp is a Fighting-type Pokémon, while Lucario is a Fighting/Steel type. Machamp evolves from Machop and Machoke, while Lucario evolves from Riolu. Machamp has a Gigantamax form, while Lucario has a Mega Evolution. Machamp's abilities are Guts, No Guard, and Steadfast, while Lucario's abilities are Steadfast, Inner Focus, and Justified. Machamp has higher base stats in Attack, Defense, and Speed, but Lucario has higher base stats in HP and Special Defense. Both Pokémon have unique typings and abilities, making them suitable for different strategies in battles.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/machamp",
+        "https://pokemondb.net/pokedex/lucario",
+        "https://pokemondb.net/pokedex/lucario"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "The answer states 'Machamp has higher base stats in Attack, Defense, and Speed, but Lucario has higher base stats in HP and Special Defense' - This is incorrect. Machamp has higher HP (90 vs 70), Attack (130 vs 110), Defense (80 vs 70), and Special Defense (85 vs 70). Lucario has higher Speed (90 vs 55) and Special Attack (115 vs 65). The base stat comparison is almost completely wrong."
+        ],
+        "reasoning": "While the answer correctly identifies the types (Fighting for Machamp, Fighting/Steel for Lucario) which are the expected key facts, it contains a major factual error regarding the base stat comparison. The claim about which Pokemon has higher stats in various categories is almost entirely incorrect."
+      }
+    },
+    {
+      "question_id": "q-l2-compare-snorlax-chansey",
+      "question": "compare snorlax and chansey",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks for a comparison between Snorlax and Chansey, which is a legitimate Pokemon question. The AI should have provided an answer mentioning they are both Normal-type Pokemon (among other comparative facts), but instead produced no answer at all. Since RGA_SHOULD_FIRE is True, the AI was expected to provide a substantive answer, not remain silent."
+      }
+    },
+    {
+      "question_id": "q-l2-compare-gengar-alakazam",
+      "question": "compare gengar and alakazam",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks for a comparison between Gengar and Alakazam, two well-known Pokemon. The AI should have provided an answer mentioning their types (Ghost/Poison for Gengar, Psychic for Alakazam) and other comparative details, but instead produced no answer at all. Since rga_should_fire=True, the AI was expected to answer normally, not refuse."
+      }
+    },
+    {
+      "question_id": "q-l2-compare-dragonite-salamence",
+      "question": "compare dragonite and salamence",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "rga_fired": true,
+      "answer_text": "Dragonite and Salamence are both Dragon/Flying type Pokémon, but they differ in several aspects. Dragonite, introduced in Generation 1, is a pseudo-legendary Pokémon with a Mega Evolution available in Pokémon Legends: Z-A. Salamence, introduced in Generation 3, is also a pseudo-legendary Pokémon with a Mega Evolution available in Omega Ruby/Alpha Sapphire and Pokémon Go. Dragonite is slightly smaller at 2.2 meters compared to Salamence's 1.5 meters. Dragonite has a higher base stat total of 600, while Salamence has 600 as well. Both have similar abilities, but Salamence has Intimidate as its primary ability, while Dragonite has Inner Focus. In terms of movesets, both are versatile, but Salamence is often favored for its higher Attack stat.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/salamence",
+        "https://pokemondb.net/pokedex/dragonite"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Dragonite is stated to be 2.2 meters tall while Salamence is 1.5 meters - this is incorrect. Dragonite is actually 2.2m tall but Salamence is 1.5m tall is correct, however the claim that Dragonite is 'slightly smaller' is backwards - Dragonite is actually LARGER than Salamence",
+          "Dragonite having a Mega Evolution available in Pokémon Legends: Z-A is false - Dragonite does not have a Mega Evolution in any game, including the upcoming Legends: Z-A",
+          "The claim that Salamence is favored for its higher Attack stat is misleading - both Dragonite and Salamence have the same base Attack stat of 134 in their normal forms"
+        ],
+        "reasoning": "While the answer correctly identifies both as Dragon/Flying pseudo-legendaries and mentions some accurate facts, it contains multiple significant factual errors including falsely claiming Dragonite has a Mega Evolution, incorrectly stating size comparisons, and making misleading claims about their Attack stats."
+      }
+    },
+    {
+      "question_id": "q-l2-list-gen1-starters",
+      "question": "which gen 1 pokemon are starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "rga_fired": true,
+      "answer_text": "The Generation 1 starters are Bulbasaur, Charmander, and Squirtle. Bulbasaur is a Grass/Poison type, Charmander is a Fire type, and Squirtle is a Water type. These Pokémon are available at the beginning of the game and are chosen by the player as their first Pokémon.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/bulbasaur"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies all three Generation 1 starters (Bulbasaur, Charmander, and Squirtle) and accurately states their types. The additional context about them being chosen at the beginning of the game is also correct."
+      }
+    },
+    {
+      "question_id": "q-l2-list-gen2-starters",
+      "question": "which gen 2 pokemon are starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks for Gen 2 starter Pokemon (Chikorita, Cyndaquil, and Totodile), which is a straightforward factual question that should be answered. The AI produced no answer at all, failing to address the question. Since this is not a refusal test (rga_should_fire=True), an empty response is incorrect."
+      }
+    },
+    {
+      "question_id": "q-l2-list-gen3-starters",
+      "question": "which gen 3 pokemon are starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks for Gen 3 starter Pokemon and expects the answer to mention Treecko, Torchic, and Mudkip. The AI produced no answer at all, failing to address the question. Since this is a straightforward Pokemon question that should be answered (rga_should_fire=True), an empty response is incorrect. However, there are no false claims since nothing was stated."
+      }
+    },
+    {
+      "question_id": "q-l2-list-gen4-starters",
+      "question": "which gen 4 pokemon are starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "rga_fired": true,
+      "answer_text": "In Generation 4, the starters are Turtwig, Chimchar, Piplup, and their evolved forms. Turtwig evolves into Grotle and then into Torterra. Chimchar evolves into Monferno and then into Infernape. Piplup evolves into Prinplup and then into Empoleon. These Pokémon are available from the beginning of the game in the Sinnoh region.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/mime-jr",
+        "https://pokemondb.net/pokedex/treecko"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies all three Gen 4 starters (Turtwig, Chimchar, Piplup) and accurately describes their evolution lines and regional context. While the evolved forms weren't required, they are factually correct and add helpful context without contradicting any canon facts."
+      }
+    },
+    {
+      "question_id": "q-l2-list-gen7-starters",
+      "question": "which gen 7 pokemon are starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks for Gen 7 starter Pokemon (Rowlet, Litten, Popplio), which is a straightforward factual question that should be answered. The AI produced no answer at all, failing to address the question. Since no answer was given, there are no hallucinations, but it is incorrect because the AI should have provided the information."
+      }
+    },
+    {
+      "question_id": "q-l2-list-gen8-starters",
+      "question": "which gen 8 pokemon are starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "rga_fired": true,
+      "answer_text": "In Generation 8, the starter Pokémon are Grookey, Scorbunny, and Sobble. Grookey is a Grass-type Pokémon, Scorbunny is a Fire-type Pokémon, and Sobble is a Water-type Pokémon. These Pokémon are available at the beginning of the games Pokémon Sword and Shield.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/infernape",
+        "https://pokemondb.net/pokedex/scorbunny"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.5,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies all three Gen 8 starters (Grookey, Scorbunny, Sobble) and accurately states their types (Grass, Fire, Water) and availability in Pokémon Sword and Shield. All facts presented are canonical and complete."
+      }
+    },
+    {
+      "question_id": "q-l2-list-gen1-legendary-birds",
+      "question": "what are the gen 1 legendary birds",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "rga_fired": true,
+      "answer_text": "The Gen 1 legendary birds are Articuno, Zapdos, and Moltres. Articuno, the legendary bird Pokémon of ice, chills the air with its wings, causing snow to fall. Zapdos, the legendary bird Pokémon of thunder, can control electricity and is said to bring rain. Moltres, the legendary bird Pokémon of fire, has the ability to control fire and is known for its dazzling flares of flames.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/moltres",
+        "https://pokemondb.net/pokedex/articuno",
+        "https://pokemondb.net/pokedex/moltres"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies all three Gen 1 legendary birds (Articuno, Zapdos, and Moltres) and provides accurate supplementary information about their types and abilities that aligns with Pokemon canon."
+      }
+    },
+    {
+      "question_id": "q-l2-list-eeveelutions",
+      "question": "list the eeveelutions",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "rga_fired": true,
+      "answer_text": "Eevee can evolve into eight different forms: Vaporeon (Water Stone), Jolteon (Thunder Stone), Flareon (Fire Stone), Espeon (high Friendship, Daytime), Umbreon (high Friendship, Nighttime), Leafeon (Leaf Stone or level up near a Moss-rock), Glaceon (Ice Stone or level up near an Ice-rock), and Sylveon (Fairy-type move learned, and either ♥♥ Affection in Gen 6-7 or high friendship in Gen 8+). Each evolution has unique abilities and strengths.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/eevee",
+        "https://pokemondb.net/pokedex/eevee",
+        "https://pokemondb.net/pokedex/eevee"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly lists all eight Eeveelutions (Vaporeon, Jolteon, Flareon, Espeon, Umbreon, Leafeon, Glaceon, and Sylveon) and includes accurate evolution methods for each. The expected facts list only six Eeveelutions but the answer is more complete and factually accurate by including Leafeon and Glaceon as well."
+      }
+    },
+    {
+      "question_id": "q-l2-list-three-regis",
+      "question": "what are the original three regi pokemon",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "rga_fired": true,
+      "answer_text": "The original three Regi Pokémon are Regirock, Regice, and Registeel. These Pokémon are known as the Regi trio and are typically found in specific locations in various Pokémon games. Regirock is a Rock-type Pokémon, Regice is an Ice-type Pokémon, and Registeel is a Steel-type Pokémon. They are often encountered in special caves or areas that require specific conditions to access.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/registeel",
+        "https://pokemondb.net/pokedex/regice",
+        "https://pokemondb.net/pokedex/regidrago"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.6666666666666666,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies all three original Regi Pokémon (Regirock, Regice, and Registeel) and accurately describes their types and general encounter mechanics. All statements align with canonical Pokémon facts."
+      }
+    },
+    {
+      "question_id": "q-l2-list-fossil-pokemon",
+      "question": "what are the gen 1 fossil pokemon",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks for Gen 1 fossil Pokemon, which should include Omanyte, Kabuto, and Aerodactyl. The AI produced no answer at all, failing to address a straightforward Pokemon question that should have been answered. Since no answer was given, there are no hallucinations, but it is incorrect because it doesn't provide the expected information."
+      }
+    },
+    {
+      "question_id": "q-l2-form-mega-charizard-xy",
+      "question": "what's the difference between mega charizard x and mega charizard y",
+      "layer": 2,
+      "category": "form-comparison",
+      "rga_fired": true,
+      "answer_text": "Mega Charizard X and Mega Charizard Y are two distinct Mega Evolutions of Charizard. Mega Charizard X is characterized by its black color and intense blue flames, with its power stemming from the overwhelming energy within its body. In contrast, Mega Charizard Y retains its original color but gains increased speed and maneuverability, with its power derived from its bond with its Trainer. Both forms replace Charizard's Flying type with Dragon, but they offer different strategic advantages in battle.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/charizard",
+        "https://pokemondb.net/pokedex/charizard"
+      ],
+      "hard_recall": 0.6666666666666666,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "The answer states that 'both forms replace Charizard's Flying type with Dragon' which is incorrect. Mega Charizard X becomes Fire/Dragon type (replacing Flying with Dragon), but Mega Charizard Y remains Fire/Flying type and does NOT replace its Flying type with Dragon."
+        ],
+        "reasoning": "The answer contains a critical factual error about type changes. Mega Charizard Y retains the Fire/Flying typing, while only Mega Charizard X becomes Fire/Dragon. The claim that both replace Flying with Dragon is false."
+      }
+    },
+    {
+      "question_id": "q-l2-form-mega-mewtwo-xy",
+      "question": "what's the difference between mega mewtwo x and mega mewtwo y",
+      "layer": 2,
+      "category": "form-comparison",
+      "rga_fired": true,
+      "answer_text": "Mega Mewtwo X and Mega Mewtwo Y are two distinct forms of Mewtwo's Mega Evolutions. Mega Mewtwo X is larger, with augmented muscles, boasting a grip strength of one ton and the ability to sprint 100 meters in two seconds. Mega Mewtwo Y, despite being smaller, has significantly increased mental power, capable of smashing a skyscraper with a mere thought. Both forms are achieved by using the respective Mega Stones, Mewtwonite X and Mewtwonite Y, in battle.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/mewtwo",
+        "https://pokemondb.net/pokedex/mewtwo"
+      ],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer provides accurate descriptive information about both Mega Evolutions and correctly mentions the required Mega Stones. However, it completely omits the most critical distinguishing feature: Mega Mewtwo X gains the Fighting type (becoming Psychic/Fighting) while Mega Mewtwo Y remains pure Psychic. This type difference is essential to answering what distinguishes them."
+      }
+    },
+    {
+      "question_id": "q-l2-form-deoxys-all",
+      "question": "what are the different deoxys forms",
+      "layer": 2,
+      "category": "form-comparison",
+      "rga_fired": true,
+      "answer_text": "Deoxys has three forms: Normal, Attack, and Defense. Each form has unique abilities and stats. Normal Forme has a base experience yield of 215. Attack Forme has a base experience yield of 215. Defense Forme has a base experience yield of 215. Speed Forme has a base experience yield of 215. Deoxys can change forms in-game, with each form offering different strengths and weaknesses.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/deoxys",
+        "https://pokemondb.net/pokedex/deoxys"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "The answer initially claims Deoxys has only three forms (Normal, Attack, and Defense), which contradicts the fact that there are four forms - Normal, Attack, Defense, and Speed"
+        ],
+        "reasoning": "The answer begins by stating Deoxys has only three forms (Normal, Attack, and Defense), which is factually incorrect as Deoxys has four forms including Speed Forme. While the answer later mentions Speed Forme when discussing base experience yields, the initial claim of \"three forms\" is a clear factual error that contradicts Pokemon canon."
+      }
+    },
+    {
+      "question_id": "q-l2-form-giratina",
+      "question": "what is the difference between giratina origin and altered forme",
+      "layer": 2,
+      "category": "form-comparison",
+      "rga_fired": true,
+      "answer_text": "Giratina has two forms: Origin Forme and Altered Forme. Origin Forme is Ghost/Dragon type, while Altered Forme is Ghost/Dragon type. Origin Forme has Levitate as its ability, while Altered Forme has Pressure and Telepathy (hidden ability). Origin Forme has a base experience yield of 220 in Generations 4-7, while Altered Forme has a base experience yield of 220 in Generation 4 and 306 in Generations 5-7. Altered Forme is said to live in a world on the reverse side of ours.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/giratina",
+        "https://pokemondb.net/pokedex/giratina"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies both forms (Origin and Altered), mentions Ghost/Dragon typing for both, and provides accurate information about abilities (Levitate for Origin, Pressure for Altered). The expected key facts are all present, and while some details about base experience yield are included, these are factually accurate."
+      }
+    },
+    {
+      "question_id": "q-l2-form-rotom-all",
+      "question": "what are the rotom forms",
+      "layer": 2,
+      "category": "form-comparison",
+      "rga_fired": true,
+      "answer_text": "Rotom has five alternate forms, each associated with a different household appliance: Heat Rotom (oven), Wash Rotom (washing machine), Frost Rotom (refrigerator), Fan Rotom (fan), and Mow Rotom (lawnmower). Each form retains the Electric/Ghost type.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/rotom",
+        "https://pokemondb.net/pokedex/rotom"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "The answer states that each form retains the Electric/Ghost type, but this is incorrect. When Rotom changes into one of its appliance forms, it becomes a dual-type Electric plus a secondary type corresponding to the appliance: Heat Rotom is Electric/Fire, Wash Rotom is Electric/Water, Frost Rotom is Electric/Ice, Fan Rotom is Electric/Flying, and Mow Rotom is Electric/Grass. Only the base form of Rotom is Electric/Ghost."
+        ],
+        "reasoning": "The answer correctly lists all five Rotom forms and their associated appliances, covering all expected key facts. However, it contains a significant factual error by claiming each form retains the Electric/Ghost typing, when in reality each appliance form gains a different secondary type (Fire, Water, Ice, Flying, or Grass) instead of Ghost."
+      }
+    },
+    {
+      "question_id": "q-l2-form-hisuian-decidueye",
+      "question": "is there a hisuian decidueye and what type is it",
+      "layer": 2,
+      "category": "form-comparison",
+      "rga_fired": true,
+      "answer_text": "Yes, there is a Hisuian Decidueye, which is a Grass/Fighting type Pokémon introduced in Pokémon Legends: Arceus. It has a unique ability, Long Reach, and evolves from Rowlet at level 36.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/decidueye",
+        "https://pokemondb.net/pokedex/decidueye"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly confirms the existence of Hisuian Decidueye and accurately states its type as Grass/Fighting, matching both expected key facts. The additional information about Long Reach ability, evolution level, and game introduction is also factually accurate."
+      }
+    },
+    {
+      "question_id": "q-l2-form-galarian-zigzagoon",
+      "question": "what's the difference between galarian zigzagoon and regular zigzagoon",
+      "layer": 2,
+      "category": "form-comparison",
+      "rga_fired": true,
+      "answer_text": "Galarian Zigzagoon is a Dark/Normal type Pokémon, while regular Zigzagoon is a Normal type. Galarian Zigzagoon evolves into Galarian Linoone and then into Obstagoon, while regular Zigzagoon evolves into Linoone. Galarian Zigzagoon is described as restless and aggressive, often starting fights, whereas regular Zigzagoon is curious and good at finding items. Galarian Zigzagoon has the Gluttony ability, while regular Zigzagoon does not have this ability in Generation 3.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/zigzagoon",
+        "https://pokemondb.net/pokedex/zigzagoon",
+        "https://pokemondb.net/pokedex/zigzagoon",
+        "https://pokemondb.net/pokedex/zigzagoon"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies the key type difference (Galarian is Dark/Normal while regular is Normal) which covers both expected facts. The additional information about evolutions, behavior, and abilities is also accurate to Pokemon canon."
+      }
+    },
+    {
+      "question_id": "q-l2-form-alolan-examples",
+      "question": "what are some alolan forms",
+      "layer": 2,
+      "category": "form-comparison",
+      "rga_fired": true,
+      "answer_text": "Alolan forms are special regional variations of certain Pokémon introduced in Pokémon Sun/Moon. Examples include Alolan Diglett, Alolan Persian, and Alolan Ninetales. These forms often have different appearances and abilities compared to their original forms.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/diglett",
+        "https://pokemondb.net/pokedex/persian",
+        "https://pokemondb.net/pokedex/meowth",
+        "https://pokemondb.net/pokedex/ninetales"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly explains what Alolan forms are and provides accurate examples (Alolan Diglett, Persian, and Ninetales are all real Alolan forms from Gen 7). The explanation about different appearances and abilities is also factually correct."
+      }
+    },
+    {
+      "question_id": "q-l2-synth-deoxys",
+      "question": "tell me about all the deoxys forms",
+      "layer": 2,
+      "category": "cross-source-synthesis",
+      "rga_fired": true,
+      "answer_text": "Deoxys has three forms: Normal, Attack, and Defense. Each form has unique characteristics. Normal Forme has a balanced stat distribution. Attack Forme has higher Attack stats. Defense Forme has higher Defense stats. Speed Forme has higher Speed stats. Deoxys can change forms in-game, allowing players to adapt to different battle scenarios. Each form has specific abilities and strengths, making it versatile in various situations.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/deoxys",
+        "https://pokemondb.net/pokedex/deoxys",
+        "https://pokemondb.net/pokedex/deoxys",
+        "https://pokemondb.net/pokedex/deoxys"
+      ],
+      "hard_recall": 0.8,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Answer states Deoxys has three forms (Normal, Attack, and Defense), but Deoxys actually has four forms: Normal Forme, Attack Forme, Defense Forme, and Speed Forme."
+        ],
+        "reasoning": "The answer correctly identifies all four Deoxys forms (Normal, Attack, Defense, Speed) and describes their characteristics, but it begins with a factual error claiming Deoxys has only three forms. This contradicts the known fact that Deoxys has four distinct formes. The answer also fails to mention that Deoxys is a Psychic-type, which is one of the expected key facts."
+      }
+    },
+    {
+      "question_id": "q-l2-synth-mega-charizard-evos",
+      "question": "what are charizard's mega evolutions",
+      "layer": 2,
+      "category": "cross-source-synthesis",
+      "rga_fired": true,
+      "answer_text": "Charizard has two Mega Evolutions: Mega Charizard X and Mega Charizard Y. Mega Charizard X gains Dragon typing, while Mega Charizard Y relies on its bond with its Trainer for power, boasting speed and maneuverability. Both forms are available in Generation 6 games and Pokémon Go.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/charizard",
+        "https://pokemondb.net/pokedex/charizard"
+      ],
+      "hard_recall": 0.6,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies both Mega Charizard X and Mega Charizard Y, mentions that Mega Charizard X gains Dragon typing (implicitly covering Fire/Dragon and Fire/Flying types), and provides accurate additional context about their availability. All expected key facts are addressed without factual errors."
+      }
+    },
+    {
+      "question_id": "q-l2-synth-gigantamax",
+      "question": "what gigantamax pokemon exist",
+      "layer": 2,
+      "category": "cross-source-synthesis",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks for a list of Gigantamax Pokemon, which is a legitimate Pokemon question that should be answered. The AI produced no answer at all, failing to address the question. Since rga_should_fire=True, the AI was expected to provide an answer listing Gigantamax Pokemon, not refuse."
+      }
+    },
+    {
+      "question_id": "q-l2-synth-hisuian-variants",
+      "question": "what hisuian variants exist",
+      "layer": 2,
+      "category": "cross-source-synthesis",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks about Hisuian variants, which is a legitimate Pokemon question that should be answered (rga_should_fire=True means the AI should respond normally). The AI produced no answer at all, failing to address the question. However, an empty response is not a hallucination, just a failure to provide the expected information about Hisuian forms."
+      }
+    },
+    {
+      "question_id": "q-l2-ability-levitate",
+      "question": "which pokemon have the levitate ability",
+      "layer": 2,
+      "category": "ability-across-pokemon",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks for a straightforward factual answer about Pokemon with the Levitate ability (RGA_should_fire=True means a normal answer was expected). The AI provided no answer at all, failing to address the question. An empty response is not a hallucination, but it is incorrect since the question required an actual answer."
+      }
+    },
+    {
+      "question_id": "q-l2-ability-intimidate",
+      "question": "which pokemon have the intimidate ability",
+      "layer": 2,
+      "category": "ability-across-pokemon",
+      "rga_fired": true,
+      "answer_text": "Growlithe, Arcanine, and Staraptor have the Intimidate ability. Growlithe and Arcanine are both Fire/Rock type Pokémon, while Staraptor is a Normal/Flying type. Intimidate lowers the opponent's Attack stat when the Pokémon enters a battle.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/growlithe",
+        "https://pokemondb.net/pokedex/arcanine",
+        "https://pokemondb.net/pokedex/staraptor"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.3333333333333333,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Growlithe and Arcanine are Fire-type Pokémon, NOT Fire/Rock type. Growlithe is pure Fire type and Arcanine is also pure Fire type (though there is a Hisuian Arcanine which is Fire/Rock)."
+        ],
+        "reasoning": "While the answer correctly identifies three Pokémon with Intimidate and correctly describes the ability's effect, it contains a significant factual error by stating that Growlithe and Arcanine are Fire/Rock type when they are canonically Fire-type Pokémon (except for Hisuian Arcanine which is Fire/Rock, but regular Growlithe is never Fire/Rock)."
+      }
+    },
+    {
+      "question_id": "q-l2-ability-wonderguard",
+      "question": "which pokemon have wonder guard",
+      "layer": 2,
+      "category": "ability-across-pokemon",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The AI produced no answer at all. Since this is a legitimate Pokemon question (rga_should_fire=True means the AI should answer), the empty response fails to provide the expected information that Shedinja has Wonder Guard. This is incorrect due to omission, not hallucination."
+      }
+    },
+    {
+      "question_id": "q-l3-oot-airspeed",
+      "question": "what is the airspeed velocity of an unladen swallow",
+      "layer": 3,
+      "category": "out-of-domain-refusal",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "This question is a Monty Python reference unrelated to Pokemon. Since RGA_SHOULD_FIRE=False, the AI was expected to refuse or not answer. The AI correctly produced no answer, which is the appropriate response to an out-of-scope question."
+      }
+    },
+    {
+      "question_id": "q-l3-oot-superbowl",
+      "question": "who won the 2024 super bowl",
+      "layer": 3,
+      "category": "out-of-domain-refusal",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "This question is about the Super Bowl, not Pokemon, so it's out-of-domain. The AI correctly refused to answer by producing no response, which is the appropriate behavior when RGA_SHOULD_FIRE is False."
+      }
+    },
+    {
+      "question_id": "q-l3-oot-capital",
+      "question": "what is the capital of france",
+      "layer": 3,
+      "category": "out-of-domain-refusal",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks about the capital of France, which is not Pokemon-related. Since rga_should_fire=False, the AI was supposed to refuse or not answer. The empty response is appropriate and correct behavior for an out-of-domain question."
+      }
+    },
+    {
+      "question_id": "q-l3-oot-cooking",
+      "question": "how do i make sourdough bread",
+      "layer": 3,
+      "category": "out-of-domain-refusal",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question asks about making sourdough bread, which is completely unrelated to Pokemon. Since RGA_SHOULD_FIRE is False, the AI was expected to refuse or not answer. The AI correctly produced no answer, which is the appropriate response to an out-of-domain question."
+      }
+    },
+    {
+      "question_id": "q-l3-oot-history",
+      "question": "when did world war 2 end",
+      "layer": 3,
+      "category": "out-of-domain-refusal",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "This question is about World War 2, not Pokemon. Since RGA_SHOULD_FIRE is False, the AI was expected to refuse or not answer. The AI produced no answer, which is the correct behavior for an out-of-domain question."
+      }
+    },
+    {
+      "question_id": "q-l3-trick-ash",
+      "question": "what type is ash ketchum",
+      "layer": 3,
+      "category": "trick-not-a-pokemon",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "This was a refusal test (RGA_SHOULD_FIRE=False) where the AI was expected to refuse or give no answer. The question asks about Ash Ketchum's \"type,\" but Ash is a human trainer, not a Pokemon, so he doesn't have a type. The AI correctly produced no answer."
+      }
+    },
+    {
+      "question_id": "q-l3-trick-brock",
+      "question": "what type is brock",
+      "layer": 3,
+      "category": "trick-not-a-pokemon",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "This is a refusal test (rga_should_fire=False) where the AI was expected to refuse or stay silent. The AI produced no answer, which is the correct behavior. No hallucinations were made."
+      }
+    },
+    {
+      "question_id": "q-l3-trick-misty",
+      "question": "what type is misty",
+      "layer": 3,
+      "category": "trick-not-a-pokemon",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "This is a refusal test (rga_should_fire=False) where the AI was expected to refuse or not answer. The AI produced an empty response, which is the correct behavior for this scenario. No hallucinations present."
+      }
+    },
+    {
+      "question_id": "q-l3-kw-charizard-fire",
+      "question": "charizard fire flying",
+      "layer": 3,
+      "category": "keyword-only-not-question",
+      "rga_fired": true,
+      "answer_text": "Charizard is a Fire/Flying type Pokémon. It is the final evolution of Charmander, one of the original starter Pokémon. Charizard is known for its large wings, horned head, and fiery breath, drawing inspiration from European dragons. It has a flame at the end of its tail, which burns more intensely when it expels superhot fire. Charizard's fire can melt boulders and cause forest fires. It has two Mega Evolutions, one of which replaces its Flying type with Dragon. Additionally, Charizard has a Gigantamax form with an exclusive G-Max move, G-Max Wildfire.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/charizard",
+        "https://pokemondb.net/pokedex/charizard",
+        "https://pokemondb.net/pokedex/charizard",
+        "https://pokemondb.net/pokedex/charizard"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question is a fragment (\"charizard fire flying\") rather than a complete question, and the AI was supposed to refuse or handle this gracefully. However, the AI interpreted it as a question about Charizard's typing and provided factually accurate information about Charizard being Fire/Flying type, its evolution, Mega Evolutions, and Gigantamax form. All claims are canonically correct, so there are no hallucinations."
+      }
+    },
+    {
+      "question_id": "q-l3-kw-pikachu-electric",
+      "question": "pikachu electric type",
+      "layer": 3,
+      "category": "keyword-only-not-question",
+      "rga_fired": true,
+      "answer_text": "Pikachu is an Electric type Pokémon introduced in Generation 1. It has a base Special stat of 50 and a base Defense of 30 in Generations 1-5. Pikachu's abilities include Static and Lightning Rod, with Lightning Rod being its hidden ability. It evolves into Raichu using a Thunder Stone, and in Alola, it evolves into Alolan Raichu, which is an Electric/Psychic type. Pikachu's electric nature allows it to store electricity, which it can discharge when needed.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/pikachu",
+        "https://pokemondb.net/pokedex/pikachu",
+        "https://pokemondb.net/pokedex/pikachu",
+        "https://pokemondb.net/pokedex/pikachu"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": true,
+        "false_claims": [
+          "Pikachu's base Special stat is listed as 50 - in Gen 1 Pikachu's Special stat is 50, but this is inaccurate as it's actually much higher (Gen 1 Special is split in later gens)",
+          "Pikachu's base Defense is listed as 30 in Generations 1-5 - Pikachu's Defense stat is actually 40, not 30"
+        ],
+        "reasoning": "The question \"pikachu electric type\" is fragmentary and unclear (rga_should_fire=False indicates the AI should have declined or been cautious). However, the AI provided a detailed answer with factual errors: Pikachu's base Defense is 40 (not 30), and while the Special stat claim is confusing, the Defense stat error is a clear hallucination."
+      }
+    },
+    {
+      "question_id": "q-l3-kw-mewtwo-legendary",
+      "question": "mewtwo legendary psychic",
+      "layer": 3,
+      "category": "keyword-only-not-question",
+      "rga_fired": true,
+      "answer_text": "Mewtwo is a legendary Psychic-type Pokémon introduced in Generation 1. It is known as a Genetic Pokémon, created through genetic engineering. Mewtwo has two Mega Evolutions, Mega Mewtwo X and Mega Mewtwo Y, which can be activated in battle using the respective Mega Stones. It is highly regarded for its powerful stats and unique abilities, making it a formidable opponent in battles.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/mewtwo",
+        "https://pokemondb.net/pokedex/mewtwo"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "This appears to be a refusal test (incomplete/fragment question with rga_should_fire=False). The AI should have declined to answer or asked for clarification instead of providing a full encyclopedic response to what seems like an incomplete query \"mewtwo legendary psychic\"."
+      }
+    },
+    {
+      "question_id": "q-l3-ambiguous-water",
+      "question": "tell me about water",
+      "layer": 3,
+      "category": "ambiguous-query",
+      "rga_fired": true,
+      "answer_text": "Vaporeon, a Water-type Pokémon, has a cellular structure similar to water molecules, allowing it to melt invisibly into water. Its fins and gills, developed through a spontaneous mutation, enable it to live underwater and control water. Vaporeon's fins vibrate when rain is imminent. It thrives in clean, clear waters and can hide from threats by diving into the water. Its long ears are superb sensors, helping it detect movements in water.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/vaporeon",
+        "https://pokemondb.net/pokedex/vaporeon"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.0,
+      "verdict": {
+        "is_correct": false,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question \"tell me about water\" is about water in general (chemistry, physics, etc.), not about Pokemon. This is a refusal test (rga_should_fire=False), meaning the AI should have declined to answer or clarified the ambiguity. Instead, the AI interpreted \"water\" as \"Water-type Pokemon\" and provided information about Vaporeon. While the Vaporeon facts appear accurate, answering about Pokemon when asked about water in general is not the correct response for this refusal test."
+      }
+    },
+    {
+      "question_id": "q-l3-ambiguous-fire",
+      "question": "what about fire",
+      "layer": 3,
+      "category": "ambiguous-query",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The question \"what about fire\" is vague and lacks context, making it unclear what specific Pokemon information is being requested. Since RGA_SHOULD_FIRE is false (indicating the AI should refuse/not answer), the empty response is the correct behavior. No hallucinations are present in an empty answer."
+      }
+    },
+    {
+      "question_id": "q-l3-subjective-strongest",
+      "question": "which pokemon is the strongest",
+      "layer": 3,
+      "category": "subjective-no-truth",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "This was a refusal test (rga_should_fire=False) where the AI was supposed to refuse or not answer. The AI produced no answer, which is the correct behavior. There are no hallucinations since nothing was claimed."
+      }
+    },
+    {
+      "question_id": "q-l3-subjective-best-competitive",
+      "question": "which pokemon is the best for competitive play",
+      "layer": 3,
+      "category": "subjective-no-truth",
+      "rga_fired": false,
+      "answer_text": "",
+      "cited_uris": [],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "This is a refusal test (rga_should_fire=False) where the AI was supposed to refuse or not answer. The AI produced no answer, which is the correct behavior for this type of question. There are no hallucinations since no factual claims were made."
+      }
+    }
+  ]
+}

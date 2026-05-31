@@ -1,0 +1,16 @@
+{
+  "name": "atomic-search",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Pokemon search UI built on Coveo Atomic — consumes the dual-source Coveo index (Source A: pokemondb-sitemap, Source B: pokemondb-push).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "comment": "@coveo/atomic is loaded from Coveo's CDN at runtime (see index.html), so it's not an npm dep here. The CDN serves the JS + i18n assets + icons together, which is the supported deployment pattern for hosted Atomic apps.",
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

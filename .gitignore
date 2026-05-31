@@ -40,8 +40,13 @@ dist-info/
 # uv
 .uv-cache/
 
-# IDE / OS
-.vscode/
+# IDE / OS — commit shared VS Code config (launch, settings, extensions),
+# ignore everything else under .vscode/.
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/tasks.json
 .idea/
 *.swp
 *.swo
@@ -54,3 +59,6 @@ Thumbs.db
 # Misc
 *.tmp
 *.bak
+
+# Generated audit reports (recreated by scripts/audit_index.py on demand)
+audit_report.json

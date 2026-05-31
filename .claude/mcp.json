@@ -1,0 +1,4 @@
+{
+  "_comment": "Project-scoped MCP server config for the Coveo Pokemon Challenge. Empty by design — this repo doesn't depend on any MCP server (and explicitly excludes user-global ones like the Carta MCP set when invoked via `claude --strict-mcp-config --mcp-config .claude/mcp.json`). The Coveo MCP server integration is planned for Phase 8.5 (beyond-bonus); when we get there, it'll be declared here.",
+  "mcpServers": {}
+}

@@ -1,0 +1,134 @@
+# Daily RGA quality evaluation.
+#
+# Runs the 100-question golden-dataset evaluator against Coveo's RGA endpoint
+# every day at 06:00 UTC, commits the resulting eval-runs/YYYY-MM-DD-<mode>.json
+# back to the branch this workflow runs on, and that push triggers Vercel to
+# rebuild the rga-dashboard with the new run baked into the time-series.
+#
+# Where secrets live:
+#   GitHub → Settings → Secrets and variables → Actions → Repository secrets
+#   See docs/deploy.md for the 5 secret names + how to mint them.
+#
+# Manual trigger:
+#   GitHub → Actions tab → "RGA daily eval" → Run workflow.
+#   Use the mode dropdown to pick smoke (5 questions, ~30s, ~$0.03) for a
+#   quick sanity-check, layer-N for category-scoped runs, or full for the
+#   canonical 100-question scorecard.
+
+name: RGA daily eval
+
+on:
+  # 06:00 UTC daily so results are fresh by Eastern business hours.
+  # GitHub schedules are best-effort — runs may slip by up to ~15 min under load.
+  schedule:
+    - cron: "0 6 * * *"
+
+  # Manual trigger button. Inputs let us pick mode + question limit from the UI.
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Eval mode"
+        required: true
+        type: choice
+        default: full
+        options:
+          - full     # all 100 questions, ~10 min, ~$0.60 Sonnet
+          - smoke    # use 'limit' field below (e.g., 5) for a fast sanity run
+          - layer1   # 50 single-fact lookups only
+          - layer2   # 35 multi-doc synthesis only
+          - layer3   # 15 refusal / edge cases only
+      limit:
+        description: "Question limit (only used when mode = smoke; ignored otherwise)"
+        required: false
+        default: "5"
+
+# Prevent overlapping runs — only one eval at a time per branch.
+# This matters for the daily cron + manual triggers on the same day.
+concurrency:
+  group: rga-eval-${{ github.ref }}
+  cancel-in-progress: false
+
+# The job pushes back to the same branch, so it needs write access to repo contents.
+permissions:
+  contents: write
+
+jobs:
+  evaluate:
+    name: Run evaluator + commit results
+    runs-on: ubuntu-latest
+    # ~10 min for a full run; 25 gives us headroom for retries.
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          # We need write access via GITHUB_TOKEN for the push step below.
+          # persist-credentials defaults to true, which is what we want.
+          fetch-depth: 1
+
+      - name: Install uv
+        # Astral's official action — pins uv + caches the install across runs.
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.5.20"
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Install rga-eval dependencies
+        working-directory: rga-eval
+        run: uv sync --frozen
+
+      - name: Determine run flags
+        id: flags
+        # Translate the workflow_dispatch mode input into CLI flags for main.py.
+        # On scheduled runs (no inputs.mode), default to a full run.
+        run: |
+          MODE="${{ github.event.inputs.mode || 'full' }}"
+          LIMIT="${{ github.event.inputs.limit || '5' }}"
+          case "$MODE" in
+            smoke)   echo "args=--limit $LIMIT" >> "$GITHUB_OUTPUT" ;;
+            layer1)  echo "args=--layer 1"     >> "$GITHUB_OUTPUT" ;;
+            layer2)  echo "args=--layer 2"     >> "$GITHUB_OUTPUT" ;;
+            layer3)  echo "args=--layer 3"     >> "$GITHUB_OUTPUT" ;;
+            full|*)  echo "args="              >> "$GITHUB_OUTPUT" ;;
+          esac
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+
+      - name: Run RGA evaluator
+        working-directory: rga-eval
+        env:
+          COVEO_ORG_ID: ${{ secrets.COVEO_ORG_ID }}
+          COVEO_RGA_JUDGE_API_KEY: ${{ secrets.COVEO_RGA_JUDGE_API_KEY }}
+          COVEO_SEARCH_API_KEY: ${{ secrets.COVEO_SEARCH_API_KEY }}
+          COVEO_RGA_CONFIG_ID: ${{ secrets.COVEO_RGA_CONFIG_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: uv run python src/main.py ${{ steps.flags.outputs.args }}
+
+      - name: Show what was written
+        run: |
+          ls -lh eval-runs/ | tail -10
+          echo "---"
+          git status --short
+
+      - name: Commit + push the new eval run
+        # Only push when the run actually produced a new file.
+        # github-actions[bot] is GitHub's canonical CI committer identity —
+        # commits attributed to it show as automated runs in the history.
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -z "$(git status --porcelain eval-runs/)" ]; then
+            echo "No new eval-run JSON — nothing to commit."
+            exit 0
+          fi
+          DATE="$(date -u +%F)"
+          MODE="${{ steps.flags.outputs.mode }}"
+          git add eval-runs/
+          git commit -m "RGA eval ${DATE} (${MODE})
+
+          Automated daily run from .github/workflows/rga-eval-daily.yml
+          ${{ github.event_name == 'workflow_dispatch' && format('Trigger: manual ({0})', github.actor) || 'Trigger: schedule (06:00 UTC)' }}"
+          git push origin HEAD:${{ github.ref_name }}

@@ -1,0 +1,62 @@
+# Ruff — fast Python linter + formatter, written in Rust.
+#
+# Ruff is a drop-in replacement for the combination of:
+#   - flake8        (style + logical lint rules)
+#   - pyflakes      (unused imports, undefined names)
+#   - isort         (import sorting)
+#   - pyupgrade     (modernize syntax)
+#   - black         (formatter — `ruff format` is Black-compatible)
+#
+# Why one tool: it runs ~100x faster than the originals, has a single config
+# file, and means pre-commit isn't 4 separate hooks fighting over each other's
+# output. Pinned in `.pre-commit-config.yaml` so every commit is checked the
+# same way regardless of who's running it locally.
+
+line-length = 80
+target-version = "py312"
+
+# Limit ruff to our Python source folders. We don't want it walking into
+# .venv, node_modules, dist, etc.
+include = [
+    "tests/**/*.py",
+    "scripts/**/*.py",
+    "push-pokemon/**/*.py",  # Phase 4 — will exist soon
+]
+extend-exclude = [
+    ".venv",
+    "**/.venv",
+    "node_modules",
+    "dist",
+    "build",
+]
+
+[lint]
+# Rule families enabled. Each two-letter prefix maps to a tool ruff absorbed:
+#   E,W = pycodestyle (PEP 8 style)
+#   F   = pyflakes (logical issues — unused imports, undefined names)
+#   I   = isort (import order)
+#   B   = flake8-bugbear (likely bugs — mutable default args, etc.)
+#   UP  = pyupgrade (modernize syntax for our target Python version)
+#   SIM = flake8-simplify (simpler code — collapse if-else, etc.)
+#   N   = pep8-naming (CapWords classes, snake_case functions)
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "N"]
+
+# Allowable exceptions. Each one has a reason.
+ignore = [
+    # E501 (line too long) is enforced by `ruff format`. Keeping it off in
+    # `lint` lets us have occasional long URLs / strings without auto-failing
+    # commits — the formatter handles whatever it can.
+    "E501",
+]
+
+[lint.isort]
+# Treat anything in tests/ as part of our own code, not third-party.
+known-first-party = ["tests"]
+
+[format]
+# Black-compatible defaults. Quote style matches what's already in the repo
+# (double quotes everywhere).
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+docstring-code-format = true  # also format code inside docstrings

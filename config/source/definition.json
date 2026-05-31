@@ -1,0 +1,39 @@
+{
+  "name": "pokemondb-sitemap",
+  "sourceType": "SITEMAP",
+  "urls": [
+    "https://pokemondb.net/static/sitemaps/pokemondb.xml"
+  ],
+  "sourceVisibility": "SHARED",
+  "pushEnabled": false,
+  "streamEnabled": false,
+  "enableJavaScript": false,
+  "javaScriptLoadingDelayInMilliseconds": 0,
+  "includeShadowDom": false,
+  "indexJsonLdMetadata": false,
+  "requestsIntervalInMs": 1000,
+  "userAgent": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) (compatible; Coveobot/2.0;+http://www.coveo.com/bot.html)",
+  "scrapingMatchingStrategy": "MultiMatch",
+  "permissions": {
+    "permissionLevels": [
+      {
+        "name": "Source Specified Permissions",
+        "permissionSets": [
+          {
+            "name": "Shared",
+            "permissions": [
+              {
+                "allowed": true,
+                "identity": "*@*",
+                "identityType": "GROUP",
+                "securityProvider": "Email Security Provider"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "ocrFileTypes": [],
+  "onPremisesEnabled": false
+}

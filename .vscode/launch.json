@@ -1,0 +1,81 @@
+{
+  // Debug configurations for the Coveo Pokemon Challenge repo.
+  //
+  // Every config below sets "envFile" so the gitignored .env is loaded
+  // automatically when debugging — mirroring what our scripts and tests
+  // already do at runtime.
+  //
+  // Open the "Run and Debug" panel (Cmd+Shift+D) and pick a config from
+  // the dropdown.
+
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // Run/debug whatever Python file is open in the editor.
+      "name": "Python: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      // Run/debug pytest against the currently open test file.
+      "name": "pytest: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["${file}", "-v", "-s"],
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
+      "cwd": "${workspaceFolder}/tests",
+      "justMyCode": false
+    },
+    {
+      // Run/debug the entire pytest suite.
+      "name": "pytest: All Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["-v"],
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
+      "cwd": "${workspaceFolder}/tests",
+      "justMyCode": false
+    },
+    {
+      // Run/debug a specific test by name. VS Code prompts for the test ID
+      // (e.g. tests/test_url_set_parity.py::test_filter_funnel_pokemon_only).
+      "name": "pytest: Pick a Test",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["${input:pytestNodeId}", "-v", "-s"],
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
+      "cwd": "${workspaceFolder}/tests",
+      "justMyCode": false
+    },
+    {
+      // Debug the audit script (the read-only leak detector).
+      "name": "audit_index.py",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/audit/audit_index.py",
+      "args": ["--verbose"],
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "pytestNodeId",
+      "type": "promptString",
+      "description": "Pytest node id (file::function), e.g. test_url_set_parity.py::test_filter_funnel_pokemon_only"
+    }
+  ]
+}
