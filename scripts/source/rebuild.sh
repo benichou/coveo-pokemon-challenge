@@ -12,12 +12,12 @@
 #   COVEO_ADMIN_API_KEY     (needs Content > Sources > Edit)
 #
 # Usage:
-#   scripts/rebuild_source.sh
+#   scripts/source/rebuild.sh
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 ENV_FILE="$REPO_ROOT/.env"
 
 if [[ ! -f "$ENV_FILE" ]]; then
@@ -56,7 +56,7 @@ echo "  ✓ Rebuild queued."
 echo ""
 
 echo "Polling source status until idle..."
-max_attempts=60   # ~5 minutes at 5s intervals
+max_attempts=300   # ~25 minutes at 5s intervals (full crawl of ~1,025 pages at 1 req/sec ≈ 17 min)
 attempt=0
 seen_non_idle=false   # avoid catching IDLE before the rebuild has even started
 

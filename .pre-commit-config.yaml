@@ -1,0 +1,59 @@
+# Pre-commit hooks for the Coveo Pokemon Challenge repo.
+#
+# What this does: every `git commit` runs ruff (lint + format) on the
+# Python files staged in that commit. If ruff finds issues, the commit is
+# aborted; if ruff auto-fixes anything, the commit is also aborted (so you
+# can review the changes, `git add` them, and re-commit). This keeps the
+# repo style-consistent without anyone having to remember to run linters.
+#
+# One-time setup (per machine):
+#   1. Install the pre-commit binary:
+#         brew install pre-commit              # macOS, preferred
+#         # or: uv tool install pre-commit
+#         # or: pipx install pre-commit
+#   2. Install the git hook in this repo:
+#         pre-commit install
+#
+# Manual runs:
+#   pre-commit run                  # only the files staged for commit
+#   pre-commit run --all-files      # every Python file in the repo
+#   pre-commit autoupdate           # bump hook versions
+#
+# Bypassing (avoid except in genuine emergencies):
+#   git commit --no-verify
+#
+# Config knobs (line length, rules, etc.) live in `ruff.toml` at the repo
+# root — same file VS Code's "format on save" reads. One source of truth.
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Pin to a specific ruff version so every machine + CI gets identical
+    # results. Bump via `pre-commit autoupdate`.
+    rev: v0.8.6
+    hooks:
+      # Linter — checks for style + logic issues. `--fix` auto-corrects
+      # what it safely can; the rest fails the commit with a diagnostic.
+      - id: ruff
+        args: [--fix]
+
+      # Formatter — Black-compatible code formatter built into ruff.
+      # Always rewrites files in-place to a canonical form.
+      - id: ruff-format
+
+  # Catch a few cross-cutting issues ruff doesn't cover (trailing whitespace,
+  # missing newline at end of file, large/binary file accidents, merge
+  # conflict markers left in code).
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: check-yaml
+      - id: check-json
+        # .vscode/ files are JSONC (JSON with comments) — VS Code's convention.
+        # Strict JSON parsers reject the // comments we use to document why
+        # each setting is set the way it is, so exclude them from this hook.
+        exclude: '^\.vscode/'

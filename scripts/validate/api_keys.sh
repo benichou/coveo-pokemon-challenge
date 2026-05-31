@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Validate that the two project API keys are functional and have the right
+# Validate that the three project API keys are functional and have the right
 # privileges:
 #
 #   COVEO_PUSH_API_KEY    — Push API key (Push template). Should have:
@@ -17,18 +17,27 @@
 #                                 validation error (NOT 401/403), proving auth
 #                                 + Edit privilege are in place.
 #
+#   COVEO_SEARCH_API_KEY  — Anonymous Search key (template), bound to the
+#                           pokemon-search search hub. Should have:
+#                             - Execute queries: Allowed
+#                             - Analytics data: Push
+#                             - NO Sources: Edit
+#                           Test: POST /search/v2 succeeds (200).
+#                                 POST a mapping fails with 403.
+#
 # Required environment variables (sourced from ../.env):
 #   COVEO_ORG_ID
 #   COVEO_SITEMAP_SOURCE_ID
 #   COVEO_PUSH_API_KEY
 #   COVEO_ADMIN_API_KEY
+#   COVEO_SEARCH_API_KEY
 #
-# Exit code: 0 if both keys work as expected, 1 otherwise.
+# Exit code: 0 if all three keys work as expected, 1 otherwise.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 ENV_FILE="$REPO_ROOT/.env"
 
 if [[ ! -f "$ENV_FILE" ]]; then
@@ -45,6 +54,7 @@ set +a
 : "${COVEO_SITEMAP_SOURCE_ID:?missing in .env}"
 : "${COVEO_PUSH_API_KEY:?missing in .env}"
 : "${COVEO_ADMIN_API_KEY:?missing in .env}"
+: "${COVEO_SEARCH_API_KEY:?missing in .env}"
 
 API_BASE="https://platform.cloud.coveo.com/rest/organizations/${COVEO_ORG_ID}"
 SOURCES_URL="${API_BASE}/sources"
@@ -107,8 +117,32 @@ rm -f /tmp/_probe.json
 check "Admin key has Sources: Edit (POST gets body error, not auth error)" "400,412" "$code" "expected 400/412; got auth failure if 401/403"
 
 echo ""
+echo "Validating COVEO_SEARCH_API_KEY (anonymous search template, bound to pokemon-search hub)..."
+
+SEARCH_URL="${API_BASE}/../../search/v2?organizationId=${COVEO_ORG_ID}"
+# Use the cleaner search endpoint (not under /organizations)
+SEARCH_URL="https://platform.cloud.coveo.com/rest/search/v2?organizationId=${COVEO_ORG_ID}"
+
+# Test 5: Search key can execute a query (Execute queries: Allowed)
+code=$(curl -sS -o /dev/null -w "%{http_code}" -X POST \
+  -H "Authorization: Bearer ${COVEO_SEARCH_API_KEY}" \
+  -H "Content-Type: application/json" \
+  "$SEARCH_URL" \
+  -d '{"q":"","searchHub":"pokemon-search","numberOfResults":1}')
+check "Search key can execute queries (POST /search/v2)" "200" "$code" "expected 200 (search key needs Execute queries privilege)"
+
+# Test 6: Search key should NOT have Sources: Edit
+code=$(curl -sS -o /tmp/_probe.json -w "%{http_code}" -X POST \
+  -H "Authorization: Bearer ${COVEO_SEARCH_API_KEY}" \
+  -H "Content-Type: application/json" \
+  "$RULES_URL" \
+  -d '{"field":"_validation_probe","content":["%[_x]"]}')
+rm -f /tmp/_probe.json
+check "Search key correctly DENIED Sources: Edit (POST mapping)" "403" "$code" "expected 403 (search key shouldn't have Edit)"
+
+echo ""
 if [[ $failures -eq 0 ]]; then
-  echo "Both API keys validated. ✓"
+  echo "All three API keys validated. ✓"
   exit 0
 else
   echo "$failures check(s) failed. ✗" >&2

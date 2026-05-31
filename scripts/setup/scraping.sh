@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Apply the web scraping configuration stored at config/scraping_config.json
+# Apply the web scraping configuration stored at config/source/scraping.json
 # to the pokemondb-sitemap source via the Coveo REST API.
 #
 # The scraping config is what tells Coveo how to extract metadata from each
@@ -28,9 +28,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 ENV_FILE="$REPO_ROOT/.env"
-CONFIG_FILE="$REPO_ROOT/config/scraping_config.json"
+CONFIG_FILE="$REPO_ROOT/config/source/scraping.json"
 
 if [[ ! -f "$ENV_FILE" ]]; then
   echo "ERROR: .env not found at $ENV_FILE" >&2

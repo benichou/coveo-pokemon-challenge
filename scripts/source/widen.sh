@@ -15,17 +15,17 @@
 #   COVEO_ADMIN_API_KEY    (needs Content > Sources > Edit)
 #
 # Usage:
-#   scripts/widen_source.sh narrow       # only bulbasaur
-#   scripts/widen_source.sh spot-check   # 8 diverse Pokemon (edge-case sweep)
-#   scripts/widen_source.sh all          # all ~1,025 Pokemon + exclusions
+#   scripts/source/widen.sh narrow       # only bulbasaur
+#   scripts/source/widen.sh spot-check   # 8 diverse Pokemon (edge-case sweep)
+#   scripts/source/widen.sh all          # all ~1,025 Pokemon + exclusions
 #
 # After running this you still need to trigger a rebuild:
-#   scripts/rebuild_source.sh
+#   scripts/source/rebuild.sh
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 ENV_FILE="$REPO_ROOT/.env"
 
 if [[ ! -f "$ENV_FILE" ]]; then
@@ -52,7 +52,7 @@ Modes:
   all          All ~1,025 Pokemon + 9 exclusion rules (production)
 
 After running, trigger a rebuild:
-  scripts/rebuild_source.sh
+  scripts/source/rebuild.sh
 EOF
 }
 
@@ -62,34 +62,40 @@ if [[ $# -ne 1 ]]; then
 fi
 
 MODE=$1
+FILTER_CONFIG="$REPO_ROOT/config/source/url_filter.json"
 
-# Build the inclusion regex based on the mode. Each is an anchored regex
-# (^...$) for tightness, so /pokedex/all and /pokedex/national etc. don't
-# slip through.
-case "$MODE" in
-  narrow)
-    INCLUDE_REGEX='^https://pokemondb\.net/pokedex/bulbasaur$'
-    ADD_EXCLUSIONS=false
-    DESCRIPTION='1 Pokemon (Bulbasaur)'
-    ;;
-  spot-check)
-    # Diverse picks covering: multiple generations, hyphenated names,
-    # single- and dual-type, mid- and end-stage evolutions, legendary.
-    INCLUDE_REGEX='^https://pokemondb\.net/pokedex/(bulbasaur|pikachu|charizard|mewtwo|ho-oh|mr-mime|decidueye|miraidon)$'
-    ADD_EXCLUSIONS=false
-    DESCRIPTION='8 diverse Pokemon (edge-case sweep)'
-    ;;
-  all)
-    INCLUDE_REGEX='^https://pokemondb\.net/pokedex/[a-z0-9-]+$'
-    ADD_EXCLUSIONS=true
-    DESCRIPTION='all ~1,025 Pokemon (production)'
-    ;;
-  *)
-    echo "ERROR: unknown mode '$MODE'" >&2
-    usage >&2
-    exit 1
-    ;;
-esac
+if [[ ! -f "$FILTER_CONFIG" ]]; then
+  echo "ERROR: URL filter config not found at $FILTER_CONFIG" >&2
+  exit 1
+fi
+
+# Read the include regex, exclusions list, and description for this mode
+# from config/source/url_filter.json (single source of truth shared with tests/).
+mode_data=$(MODE="$MODE" FILTER_CONFIG="$FILTER_CONFIG" python3 - <<'PY'
+import json, os, sys
+with open(os.environ['FILTER_CONFIG']) as f:
+    cfg = json.load(f)
+mode = os.environ['MODE']
+if mode not in cfg.get('modes', {}):
+    print(f"ERROR: unknown mode '{mode}'", file=sys.stderr)
+    print(f"Available modes: {', '.join(sorted(cfg.get('modes', {}).keys()))}", file=sys.stderr)
+    sys.exit(2)
+m = cfg['modes'][mode]
+# Emit shell-safe lines: REGEX, ADD_EXCLUSIONS (bash bool), DESCRIPTION
+print(m['include_regex'])
+print('true' if m.get('exclusions_contains') else 'false')
+print(m.get('description', mode))
+PY
+)
+mode_status=$?
+if [[ $mode_status -ne 0 ]]; then
+  usage >&2
+  exit 1
+fi
+
+INCLUDE_REGEX=$(echo "$mode_data" | sed -n '1p')
+ADD_EXCLUSIONS=$(echo "$mode_data" | sed -n '2p')
+DESCRIPTION=$(echo "$mode_data" | sed -n '3p')
 
 API_BASE="https://platform.cloud.coveo.com/rest/organizations/${COVEO_ORG_ID}/sources/${COVEO_SITEMAP_SOURCE_ID}"
 AUTH_HEADER="Authorization: Bearer ${COVEO_ADMIN_API_KEY}"
@@ -105,16 +111,19 @@ curl -sS -H "$AUTH_HEADER" "$API_BASE" -o /tmp/_source.json
 echo "  ✓ Got current source."
 
 # Step 2: Build the new urlFilters list with python, preserving the rest of
-# the source object as-is. Regex and flag passed via env to avoid bash/python
-# string-escape collisions.
-INCLUDE_REGEX="$INCLUDE_REGEX" ADD_EXCLUSIONS="$ADD_EXCLUSIONS" python3 - > /tmp/_source_patched.json <<'PY'
+# the source object as-is. Filter values come from config/source/url_filter.json
+# (the same file the test suite reads), passed via env vars.
+MODE="$MODE" FILTER_CONFIG="$FILTER_CONFIG" python3 - > /tmp/_source_patched.json <<'PY'
 import json, os
 
 with open('/tmp/_source.json') as f:
     src = json.load(f)
+with open(os.environ['FILTER_CONFIG']) as f:
+    cfg = json.load(f)
 
-include_regex = os.environ['INCLUDE_REGEX']
-add_exclusions = os.environ['ADD_EXCLUSIONS'] == 'true'
+mode_data = cfg['modes'][os.environ['MODE']]
+include_regex = mode_data['include_regex']
+exclusion_substrings = mode_data.get('exclusions_contains', [])
 
 # Inclusion filter (single, replaces any previous one)
 new_filters = [
@@ -125,24 +134,13 @@ new_filters = [
     }
 ]
 
-if add_exclusions:
-    exclusion_substrings = [
-        "/move/",
-        "/type/",
-        "/ability/",
-        "/item/",
-        "/location/",
-        "/pokedex/stats/",
-        "/pokedex/national",
-        "/pokedex/all",
-        "/pokedex/game/",
-    ]
-    for sub in exclusion_substrings:
-        new_filters.append({
-            "filter": f"*{sub}*",
-            "filterType": "WILDCARD",
-            "includeFilter": False,
-        })
+# Exclusions (wildcard-wrapped for Coveo's contains semantics)
+for sub in exclusion_substrings:
+    new_filters.append({
+        "filter": f"*{sub}*",
+        "filterType": "WILDCARD",
+        "includeFilter": False,
+    })
 
 src["urlFilters"] = new_filters
 
@@ -177,4 +175,4 @@ echo "  ✓ Source updated (HTTP $http_code)."
 rm -f /tmp/_source.json /tmp/_source_patched.json /tmp/_put_resp.json
 echo ""
 echo "URL filters set for mode: $MODE"
-echo "Next: trigger a rebuild → scripts/rebuild_source.sh"
+echo "Next: trigger a rebuild → scripts/source/rebuild.sh"

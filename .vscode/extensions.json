@@ -1,0 +1,12 @@
+{
+  // Workspace-recommended VS Code extensions. VS Code surfaces this list
+  // when someone opens the repo and doesn't have them installed.
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.debugpy",
+    "charliermarsh.ruff",
+    "mikestead.dotenv",
+    "timonwong.shellcheck"
+  ]
+}

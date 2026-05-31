@@ -1,0 +1,31 @@
+{
+  "_comment": "Single source of truth for the Coveo Sitemap source's URL filtering. Read by scripts/widen_source.sh (applies to the source) and by tests/ (used to recompute the expected indexed set independently from the sitemap, for parity testing).",
+  "modes": {
+    "narrow": {
+      "description": "1 Pokemon (Bulbasaur) — fast iteration during scraping config changes",
+      "include_regex": "^https://pokemondb\\.net/pokedex/bulbasaur$",
+      "exclusions_contains": []
+    },
+    "spot-check": {
+      "description": "8 diverse Pokemon — edge-case sweep (hyphenated names, single/dual type, multiple generations, legendary, hisuian variant)",
+      "include_regex": "^https://pokemondb\\.net/pokedex/(bulbasaur|pikachu|charizard|mewtwo|ho-oh|mr-mime|decidueye|miraidon)$",
+      "exclusions_contains": []
+    },
+    "all": {
+      "description": "All ~1,025 Pokemon — production scope. Inclusion regex is permissive; the exclusion list removes list/aggregate/non-Pokemon pages that would otherwise match.",
+      "include_regex": "^https://pokemondb\\.net/pokedex/[a-z0-9-]+$",
+      "exclusions_contains": [
+        "/move/",
+        "/type/",
+        "/ability/",
+        "/item/",
+        "/location/",
+        "/pokedex/stats/",
+        "/pokedex/national",
+        "/pokedex/all",
+        "/pokedex/shiny",
+        "/pokedex/game/"
+      ]
+    }
+  }
+}
