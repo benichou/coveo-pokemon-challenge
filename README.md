@@ -166,7 +166,25 @@ The repo includes a Claude Code skill that operates the RGA Skill Evaluator (Pha
 
 The skill is defined in `.claude/skills/rga-eval/SKILL.md` and uses the pretty-printer in `rga-eval/src/show.py`. It's also auto-triggered when you ask things like *"what's the latest RGA accuracy?"* or *"where is RGA hallucinating?"* — no need to type the slash command explicitly.
 
-What the eval does is documented in detail at the top of `~/.claude/plans/so-we-are-supposed-purrfect-bachman.md` (Phase 6D). Headline: it runs 100 hand-crafted Pokemon questions against Coveo's RGA endpoint, computes accuracy + precision + hard-recall using a Claude Sonnet 4.6 LLM-as-judge (with Pydantic-enforced structured output), and writes daily snapshots to `eval-runs/YYYY-MM-DD.json` for a Vercel-hosted time-series dashboard.
+What the eval does is documented in detail at the top of `~/.claude/plans/so-we-are-supposed-purrfect-bachman.md` (Phase 6D). Headline: it runs 100 hand-crafted Pokemon questions against Coveo's RGA endpoint, computes accuracy + precision + hard-recall using a Claude Sonnet 4.6 LLM-as-judge (with Pydantic-enforced structured output), and writes daily snapshots to `eval-runs/YYYY-MM-DD-<mode>.json`. Only `*-full.json` files feed the dashboard; smoke / layer-scan runs are diagnostic.
+
+## RGA quality dashboard
+
+The Vercel-hosted dashboard at `rga-dashboard/` reads every `eval-runs/*-full.json` at **build time** (Vite's `import.meta.glob`, no runtime fetch) and renders:
+
+- A KPI snapshot of the latest run with Δ vs the previous run
+- A time-series of accuracy / precision / hard-recall / citation-precision (overall + per layer)
+- A per-category breakdown sorted worst-first — surfaces where RGA is degrading
+- A per-question drill-down with judge reasoning + false claims + raw RGA answer
+
+```bash
+cd rga-dashboard
+npm install
+npm run dev      # local: http://localhost:5173
+npm run build    # → dist/ for Vercel
+```
+
+To deploy: import the repo in Vercel, set **Root Directory** to `rga-dashboard`, framework auto-detects as Vite. Every push to `main` redeploys with whatever `eval-runs/*-full.json` files are in the commit — so the dashboard always reflects the latest committed history.
 
 ## Repository layout
 
@@ -231,7 +249,19 @@ coveo-pokemon-challenge/
 │   └── tests/test_schemas.py    ← 6 dataset-shape tests
 │
 ├── eval-runs/                   ← one JSON per day; commit history = time-series database
-│   └── YYYY-MM-DD.json
+│   └── YYYY-MM-DD-<mode>.json
+│
+├── rga-dashboard/               ← Vercel-hosted dashboard (Phase 6D.6 — Vite + React + recharts)
+│   ├── src/
+│   │   ├── App.tsx              ← page shell (header / sections / footer)
+│   │   ├── loadRuns.ts          ← bundles eval-runs/*-full.json at build time (import.meta.glob)
+│   │   ├── schemas.ts           ← TS mirror of rga-eval/src/schemas.py
+│   │   └── components/
+│   │       ├── SummaryCard.tsx       ← latest run KPIs + Δ vs previous
+│   │       ├── TimeSeries.tsx        ← per-metric line charts (overall + per layer)
+│   │       ├── CategoryBreakdown.tsx ← worst-category-first accuracy table
+│   │       └── FailuresTable.tsx     ← per-question drill-down with judge reasoning
+│   └── vercel.json
 │
 └── tests/                       ← pytest + httpx integration tests (21 tests, ~3s)
     ├── README.md                  (intro + glossary)
@@ -249,8 +279,9 @@ Also in the repo (not shown above to keep the tree readable):
 - `atomic-search/` — local Atomic UI (Phase 5) — Vite-hosted Pokemon search experience
 
 Still coming:
-- `rga-dashboard/` — Vercel-hosted dashboard reading `eval-runs/*.json` (Phase 6D.6)
 - `detail-page/` — Headless + React Pokemon Detail Page (Phase 6C)
+- GitHub Actions cron (`.github/workflows/rga-eval.yml`) — daily 06:00 UTC eval run
+- Grafana Cloud query observability instrumentation (Phase 6E)
 
 ## Design decisions worth knowing
 

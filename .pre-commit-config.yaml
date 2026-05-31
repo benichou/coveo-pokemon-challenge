@@ -54,6 +54,7 @@ repos:
       - id: check-yaml
       - id: check-json
         # .vscode/ files are JSONC (JSON with comments) — VS Code's convention.
-        # Strict JSON parsers reject the // comments we use to document why
-        # each setting is set the way it is, so exclude them from this hook.
-        exclude: '^\.vscode/'
+        # tsconfig.*.json are also JSONC by spec (TypeScript scaffolds ship
+        # them with comments + trailing commas). Both are valid for their
+        # consumers; only the strict JSON parser in this hook objects.
+        exclude: '^(\.vscode/|rga-dashboard/tsconfig.*\.json$)'
