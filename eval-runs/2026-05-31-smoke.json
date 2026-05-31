@@ -1,0 +1,140 @@
+{
+  "timestamp": "2026-05-31T17:03:36.542992+00:00",
+  "coveo_org_id": "benichouu9fose4g",
+  "judge_model": "claude-sonnet-4-5-20250929",
+  "overall": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "hard_recall": 1.0,
+    "citation_precision": 0.8666666666666666,
+    "n_questions": 5
+  },
+  "by_layer": {
+    "1": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "hard_recall": 1.0,
+      "citation_precision": 0.8666666666666666,
+      "n_questions": 5
+    },
+    "2": {
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "n_questions": 0
+    },
+    "3": {
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "hard_recall": 0.0,
+      "citation_precision": 0.0,
+      "n_questions": 0
+    }
+  },
+  "per_question": [
+    {
+      "question_id": "q-l1-type-charizard",
+      "question": "what type is charizard",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Charizard is a Fire/Flying type Pokémon. It evolves from Charmeleon at level 36 and is known for its dragon-like appearance and fiery abilities.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/charizard",
+        "https://pokemondb.net/pokedex/charizard"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Charizard as Fire/Flying type, covering both expected key facts. The additional information about evolution and appearance is also accurate."
+      }
+    },
+    {
+      "question_id": "q-l1-type-pikachu",
+      "question": "what type is pikachu",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Pikachu is an Electric type Pokémon. It is introduced in Generation 1 and has a Gigantamax form in Pokémon Sword/Shield. Pikachu has a base stats total of 320 and evolves into Raichu.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/pikachu",
+        "https://pokemondb.net/pokedex/raichu",
+        "https://pokemondb.net/pokedex/raichu"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 0.3333333333333333,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Pikachu as an Electric type Pokémon, which is the key expected fact. All additional information provided (Generation 1 introduction, Gigantamax form, base stat total of 320, evolution into Raichu) is factually accurate according to Pokemon canon."
+      }
+    },
+    {
+      "question_id": "q-l1-type-bulbasaur",
+      "question": "what type is bulbasaur",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Bulbasaur is a Grass/Poison type Pokémon. It is a small, mainly turquoise amphibian with a green bulb on its back, resembling a plant bulb. Introduced in Generation 1, it is one of the three starter Pokémon in the original Game Boy games, alongside Charmander and Squirtle.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/bulbasaur",
+        "https://pokemondb.net/pokedex/bulbasaur"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Bulbasaur as a Grass/Poison type Pokémon, which includes both expected key facts (Grass and Poison). The additional information about its appearance and status as a Generation 1 starter is also accurate."
+      }
+    },
+    {
+      "question_id": "q-l1-type-gyarados",
+      "question": "what type is gyarados",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Gyarados is a Water/Flying type Pokémon. It is known for its serpentine, dragon-like appearance and its volatile temper.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/gyarados",
+        "https://pokemondb.net/pokedex/gyarados"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Gyarados as a Water/Flying type Pokémon, covering both expected key facts. The additional descriptive information about its appearance and temper is also accurate and does not contain any factual errors."
+      }
+    },
+    {
+      "question_id": "q-l1-type-alakazam",
+      "question": "what type is alakazam",
+      "layer": 1,
+      "category": "type-lookup",
+      "rga_fired": true,
+      "answer_text": "Alakazam is a Psychic type Pokémon. It evolves from Kadabra and has a Mega Evolution form, Mega Alakazam, which is also a Psychic type. Alakazam is known for its high intelligence, with an IQ of 5,000, and its ability to remember everything it learns.",
+      "cited_uris": [
+        "https://pokemondb.net/pokedex/alakazam",
+        "https://pokemondb.net/pokedex/alakazam",
+        "https://pokemondb.net/pokedex/alakazam",
+        "https://pokemondb.net/pokedex/alakazam"
+      ],
+      "hard_recall": 1.0,
+      "citation_precision": 1.0,
+      "verdict": {
+        "is_correct": true,
+        "has_hallucination": false,
+        "false_claims": [],
+        "reasoning": "The answer correctly identifies Alakazam as a Psychic type, which is the expected key fact. The additional information about its evolution from Kadabra, Mega Evolution, high IQ, and memory are all accurate according to Pokemon canon."
+      }
+    }
+  ]
+}

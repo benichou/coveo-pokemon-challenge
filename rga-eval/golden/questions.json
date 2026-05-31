@@ -1,0 +1,1062 @@
+{
+  "_comment": "100-question RGA golden dataset for the Coveo Pokemon Challenge. Layer 1 (50) = single fact. Layer 2 (35) = multi-doc synthesis. Layer 3 (15) = edge cases / refusal tests. Each entry validated against schemas.GoldenQuestion at load time.",
+  "questions": [
+    {
+      "id": "q-l1-type-charizard",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is charizard",
+      "expected_facts": ["Fire", "Flying"],
+      "expected_citations": ["https://pokemondb.net/pokedex/charizard"],
+      "rga_should_fire": true,
+      "notes": "Canonical dual-type lookup. If recall < 100% here something is fundamentally broken."
+    },
+    {
+      "id": "q-l1-type-pikachu",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is pikachu",
+      "expected_facts": ["Electric"],
+      "expected_citations": ["https://pokemondb.net/pokedex/pikachu"],
+      "rga_should_fire": true,
+      "notes": "Single-type Gen 1 mascot."
+    },
+    {
+      "id": "q-l1-type-bulbasaur",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is bulbasaur",
+      "expected_facts": ["Grass", "Poison"],
+      "expected_citations": ["https://pokemondb.net/pokedex/bulbasaur"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-gyarados",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is gyarados",
+      "expected_facts": ["Water", "Flying"],
+      "expected_citations": ["https://pokemondb.net/pokedex/gyarados"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-alakazam",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is alakazam",
+      "expected_facts": ["Psychic"],
+      "expected_citations": ["https://pokemondb.net/pokedex/alakazam"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-dragonite",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is dragonite",
+      "expected_facts": ["Dragon", "Flying"],
+      "expected_citations": ["https://pokemondb.net/pokedex/dragonite"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-mewtwo",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is mewtwo",
+      "expected_facts": ["Psychic"],
+      "expected_citations": ["https://pokemondb.net/pokedex/mewtwo"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-mew",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is mew",
+      "expected_facts": ["Psychic"],
+      "expected_citations": ["https://pokemondb.net/pokedex/mew"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-gengar",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is gengar",
+      "expected_facts": ["Ghost", "Poison"],
+      "expected_citations": ["https://pokemondb.net/pokedex/gengar"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-lucario",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is lucario",
+      "expected_facts": ["Fighting", "Steel"],
+      "expected_citations": ["https://pokemondb.net/pokedex/lucario"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-garchomp",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is garchomp",
+      "expected_facts": ["Dragon", "Ground"],
+      "expected_citations": ["https://pokemondb.net/pokedex/garchomp"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-greninja",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is greninja",
+      "expected_facts": ["Water", "Dark"],
+      "expected_citations": ["https://pokemondb.net/pokedex/greninja"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-decidueye",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is decidueye",
+      "expected_facts": ["Grass", "Ghost"],
+      "expected_citations": ["https://pokemondb.net/pokedex/decidueye"],
+      "rga_should_fire": true,
+      "notes": "Note: Hisuian Decidueye is Grass/Fighting, base Decidueye is Grass/Ghost. RGA should answer base type since query doesn't specify form."
+    },
+    {
+      "id": "q-l1-type-incineroar",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is incineroar",
+      "expected_facts": ["Fire", "Dark"],
+      "expected_citations": ["https://pokemondb.net/pokedex/incineroar"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-type-sylveon",
+      "layer": 1,
+      "category": "type-lookup",
+      "question": "what type is sylveon",
+      "expected_facts": ["Fairy"],
+      "expected_citations": ["https://pokemondb.net/pokedex/sylveon"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-gen-bulbasaur",
+      "layer": 1,
+      "category": "generation-lookup",
+      "question": "what generation is bulbasaur from",
+      "expected_facts": ["Generation 1"],
+      "expected_citations": ["https://pokemondb.net/pokedex/bulbasaur"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-gen-mewtwo",
+      "layer": 1,
+      "category": "generation-lookup",
+      "question": "what generation is mewtwo from",
+      "expected_facts": ["Generation 1"],
+      "expected_citations": ["https://pokemondb.net/pokedex/mewtwo"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-gen-rayquaza",
+      "layer": 1,
+      "category": "generation-lookup",
+      "question": "what generation is rayquaza from",
+      "expected_facts": ["Generation 3"],
+      "expected_citations": ["https://pokemondb.net/pokedex/rayquaza"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-gen-dialga",
+      "layer": 1,
+      "category": "generation-lookup",
+      "question": "what generation is dialga from",
+      "expected_facts": ["Generation 4"],
+      "expected_citations": ["https://pokemondb.net/pokedex/dialga"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-gen-reshiram",
+      "layer": 1,
+      "category": "generation-lookup",
+      "question": "what generation is reshiram from",
+      "expected_facts": ["Generation 5"],
+      "expected_citations": ["https://pokemondb.net/pokedex/reshiram"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-gen-xerneas",
+      "layer": 1,
+      "category": "generation-lookup",
+      "question": "what generation is xerneas from",
+      "expected_facts": ["Generation 6"],
+      "expected_citations": ["https://pokemondb.net/pokedex/xerneas"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-gen-solgaleo",
+      "layer": 1,
+      "category": "generation-lookup",
+      "question": "what generation is solgaleo from",
+      "expected_facts": ["Generation 7"],
+      "expected_citations": ["https://pokemondb.net/pokedex/solgaleo"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-gen-zacian",
+      "layer": 1,
+      "category": "generation-lookup",
+      "question": "what generation is zacian from",
+      "expected_facts": ["Generation 8"],
+      "expected_citations": ["https://pokemondb.net/pokedex/zacian"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-gen-miraidon",
+      "layer": 1,
+      "category": "generation-lookup",
+      "question": "what generation is miraidon from",
+      "expected_facts": ["Generation 9"],
+      "expected_citations": ["https://pokemondb.net/pokedex/miraidon"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-gen-incineroar",
+      "layer": 1,
+      "category": "generation-lookup",
+      "question": "what generation is incineroar from",
+      "expected_facts": ["Generation 7"],
+      "expected_citations": ["https://pokemondb.net/pokedex/incineroar"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-evo-charmander",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "question": "what does charmander evolve into",
+      "expected_facts": ["Charmeleon", "Charizard"],
+      "expected_citations": ["https://pokemondb.net/pokedex/charmander"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-evo-bulbasaur",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "question": "what does bulbasaur evolve into",
+      "expected_facts": ["Ivysaur", "Venusaur"],
+      "expected_citations": ["https://pokemondb.net/pokedex/bulbasaur"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-evo-squirtle",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "question": "what does squirtle evolve into",
+      "expected_facts": ["Wartortle", "Blastoise"],
+      "expected_citations": ["https://pokemondb.net/pokedex/squirtle"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-evo-pikachu",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "question": "what does pikachu evolve into",
+      "expected_facts": ["Raichu"],
+      "expected_citations": ["https://pokemondb.net/pokedex/pikachu"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-evo-dratini",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "question": "what does dratini evolve into",
+      "expected_facts": ["Dragonair", "Dragonite"],
+      "expected_citations": ["https://pokemondb.net/pokedex/dratini"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-evo-ralts",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "question": "what does ralts evolve into",
+      "expected_facts": ["Kirlia", "Gardevoir"],
+      "expected_citations": ["https://pokemondb.net/pokedex/ralts"],
+      "rga_should_fire": true,
+      "notes": "Note: Ralts also evolves into Gallade (via Dawn Stone on male). Gardevoir is the default; we accept either Gardevoir alone or both."
+    },
+    {
+      "id": "q-l1-evo-abra",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "question": "what does abra evolve into",
+      "expected_facts": ["Kadabra", "Alakazam"],
+      "expected_citations": ["https://pokemondb.net/pokedex/abra"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-evo-machop",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "question": "what does machop evolve into",
+      "expected_facts": ["Machoke", "Machamp"],
+      "expected_citations": ["https://pokemondb.net/pokedex/machop"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-evo-magikarp",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "question": "what does magikarp evolve into",
+      "expected_facts": ["Gyarados"],
+      "expected_citations": ["https://pokemondb.net/pokedex/magikarp"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-evo-gible",
+      "layer": 1,
+      "category": "evolution-lookup",
+      "question": "what does gible evolve into",
+      "expected_facts": ["Gabite", "Garchomp"],
+      "expected_citations": ["https://pokemondb.net/pokedex/gible"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-ability-rotom",
+      "layer": 1,
+      "category": "ability-lookup",
+      "question": "what ability does rotom have",
+      "expected_facts": ["Levitate"],
+      "expected_citations": ["https://pokemondb.net/pokedex/rotom"],
+      "rga_should_fire": true,
+      "notes": "Abilities are NOT structured fields on Source A docs — only in body text. This category measures how well RGA extracts ability info from body text."
+    },
+    {
+      "id": "q-l1-ability-gengar",
+      "layer": 1,
+      "category": "ability-lookup",
+      "question": "what ability does gengar have",
+      "expected_facts": ["Cursed Body"],
+      "expected_citations": ["https://pokemondb.net/pokedex/gengar"],
+      "rga_should_fire": true,
+      "notes": "Gengar's primary ability changed to Cursed Body in Gen 7."
+    },
+    {
+      "id": "q-l1-ability-alakazam",
+      "layer": 1,
+      "category": "ability-lookup",
+      "question": "what abilities does alakazam have",
+      "expected_facts": ["Synchronize", "Inner Focus"],
+      "expected_citations": ["https://pokemondb.net/pokedex/alakazam"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-ability-gyarados",
+      "layer": 1,
+      "category": "ability-lookup",
+      "question": "what abilities does gyarados have",
+      "expected_facts": ["Intimidate"],
+      "expected_citations": ["https://pokemondb.net/pokedex/gyarados"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-ability-dragonite",
+      "layer": 1,
+      "category": "ability-lookup",
+      "question": "what abilities does dragonite have",
+      "expected_facts": ["Inner Focus", "Multiscale"],
+      "expected_citations": ["https://pokemondb.net/pokedex/dragonite"],
+      "rga_should_fire": true,
+      "notes": "Multiscale is the hidden ability; Inner Focus is the regular one."
+    },
+    {
+      "id": "q-l1-ability-gardevoir",
+      "layer": 1,
+      "category": "ability-lookup",
+      "question": "what abilities does gardevoir have",
+      "expected_facts": ["Synchronize", "Trace"],
+      "expected_citations": ["https://pokemondb.net/pokedex/gardevoir"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-ability-salamence",
+      "layer": 1,
+      "category": "ability-lookup",
+      "question": "what abilities does salamence have",
+      "expected_facts": ["Intimidate", "Moxie"],
+      "expected_citations": ["https://pokemondb.net/pokedex/salamence"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-ability-lucario",
+      "layer": 1,
+      "category": "ability-lookup",
+      "question": "what abilities does lucario have",
+      "expected_facts": ["Steadfast", "Inner Focus"],
+      "expected_citations": ["https://pokemondb.net/pokedex/lucario"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-ability-talonflame",
+      "layer": 1,
+      "category": "ability-lookup",
+      "question": "what abilities does talonflame have",
+      "expected_facts": ["Flame Body", "Gale Wings"],
+      "expected_citations": ["https://pokemondb.net/pokedex/talonflame"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-ability-metagross",
+      "layer": 1,
+      "category": "ability-lookup",
+      "question": "what ability does metagross have",
+      "expected_facts": ["Clear Body"],
+      "expected_citations": ["https://pokemondb.net/pokedex/metagross"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-stat-mewtwo-hp",
+      "layer": 1,
+      "category": "stat-lookup",
+      "question": "what is mewtwo's base hp",
+      "expected_facts": ["106"],
+      "expected_citations": ["https://pokemondb.net/pokedex/mewtwo"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-stat-blissey-hp",
+      "layer": 1,
+      "category": "stat-lookup",
+      "question": "what is blissey's base hp",
+      "expected_facts": ["255"],
+      "expected_citations": ["https://pokemondb.net/pokedex/blissey"],
+      "rga_should_fire": true,
+      "notes": "Highest base HP in the game."
+    },
+    {
+      "id": "q-l1-stat-shuckle-def",
+      "layer": 1,
+      "category": "stat-lookup",
+      "question": "what is shuckle's base defense",
+      "expected_facts": ["230"],
+      "expected_citations": ["https://pokemondb.net/pokedex/shuckle"],
+      "rga_should_fire": true,
+      "notes": "Highest base Defense in the game."
+    },
+    {
+      "id": "q-l1-stat-regigigas-atk",
+      "layer": 1,
+      "category": "stat-lookup",
+      "question": "what is regigigas's base attack",
+      "expected_facts": ["160"],
+      "expected_citations": ["https://pokemondb.net/pokedex/regigigas"],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l1-stat-deoxys-speed",
+      "layer": 1,
+      "category": "stat-lookup",
+      "question": "what is deoxys speed form's base speed",
+      "expected_facts": ["180"],
+      "expected_citations": ["pokeapi://pokemon/deoxys-speed"],
+      "rga_should_fire": true,
+      "notes": "Cross-source: Deoxys Speed is a Source B form variant. Tests retrieval of Push-source stat data."
+    },
+    {
+      "id": "q-l2-compare-starters-bulba-char",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "question": "compare bulbasaur and charmander",
+      "expected_facts": ["Grass", "Poison", "Fire"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/bulbasaur",
+        "https://pokemondb.net/pokedex/charmander"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-compare-pikachu-raichu",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "question": "compare pikachu and raichu",
+      "expected_facts": ["Electric", "evolves"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/pikachu",
+        "https://pokemondb.net/pokedex/raichu"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-compare-mewtwo-mew",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "question": "compare mewtwo and mew",
+      "expected_facts": ["Psychic", "Generation 1"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/mewtwo",
+        "https://pokemondb.net/pokedex/mew"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-compare-dialga-palkia",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "question": "compare dialga and palkia",
+      "expected_facts": ["Dragon", "Steel", "Water", "Generation 4"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/dialga",
+        "https://pokemondb.net/pokedex/palkia"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-compare-reshiram-zekrom",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "question": "compare reshiram and zekrom",
+      "expected_facts": ["Dragon", "Fire", "Electric"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/reshiram",
+        "https://pokemondb.net/pokedex/zekrom"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-compare-xerneas-yveltal",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "question": "compare xerneas and yveltal",
+      "expected_facts": ["Fairy", "Dark", "Flying"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/xerneas",
+        "https://pokemondb.net/pokedex/yveltal"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-compare-lucario-machamp",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "question": "compare lucario and machamp",
+      "expected_facts": ["Fighting", "Steel"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/lucario",
+        "https://pokemondb.net/pokedex/machamp"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-compare-snorlax-chansey",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "question": "compare snorlax and chansey",
+      "expected_facts": ["Normal"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/snorlax",
+        "https://pokemondb.net/pokedex/chansey"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-compare-gengar-alakazam",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "question": "compare gengar and alakazam",
+      "expected_facts": ["Ghost", "Poison", "Psychic"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/gengar",
+        "https://pokemondb.net/pokedex/alakazam"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-compare-dragonite-salamence",
+      "layer": 2,
+      "category": "cross-pokemon-compare",
+      "question": "compare dragonite and salamence",
+      "expected_facts": ["Dragon", "Flying"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/dragonite",
+        "https://pokemondb.net/pokedex/salamence"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-list-gen1-starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "question": "which gen 1 pokemon are starters",
+      "expected_facts": ["Bulbasaur", "Charmander", "Squirtle"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/bulbasaur",
+        "https://pokemondb.net/pokedex/charmander",
+        "https://pokemondb.net/pokedex/squirtle"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-list-gen2-starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "question": "which gen 2 pokemon are starters",
+      "expected_facts": ["Chikorita", "Cyndaquil", "Totodile"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/chikorita",
+        "https://pokemondb.net/pokedex/cyndaquil",
+        "https://pokemondb.net/pokedex/totodile"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-list-gen3-starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "question": "which gen 3 pokemon are starters",
+      "expected_facts": ["Treecko", "Torchic", "Mudkip"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/treecko",
+        "https://pokemondb.net/pokedex/torchic",
+        "https://pokemondb.net/pokedex/mudkip"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-list-gen4-starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "question": "which gen 4 pokemon are starters",
+      "expected_facts": ["Turtwig", "Chimchar", "Piplup"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/turtwig",
+        "https://pokemondb.net/pokedex/chimchar",
+        "https://pokemondb.net/pokedex/piplup"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-list-gen7-starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "question": "which gen 7 pokemon are starters",
+      "expected_facts": ["Rowlet", "Litten", "Popplio"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/rowlet",
+        "https://pokemondb.net/pokedex/litten",
+        "https://pokemondb.net/pokedex/popplio"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-list-gen8-starters",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "question": "which gen 8 pokemon are starters",
+      "expected_facts": ["Grookey", "Scorbunny", "Sobble"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/grookey",
+        "https://pokemondb.net/pokedex/scorbunny",
+        "https://pokemondb.net/pokedex/sobble"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-list-gen1-legendary-birds",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "question": "what are the gen 1 legendary birds",
+      "expected_facts": ["Articuno", "Zapdos", "Moltres"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/articuno",
+        "https://pokemondb.net/pokedex/zapdos",
+        "https://pokemondb.net/pokedex/moltres"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-list-eeveelutions",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "question": "list the eeveelutions",
+      "expected_facts": ["Vaporeon", "Jolteon", "Flareon", "Espeon", "Umbreon", "Sylveon"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/eevee",
+        "https://pokemondb.net/pokedex/vaporeon",
+        "https://pokemondb.net/pokedex/jolteon"
+      ],
+      "rga_should_fire": true,
+      "notes": "There are 8 total (also Leafeon, Glaceon). We expect at least these 6 to be mentioned."
+    },
+    {
+      "id": "q-l2-list-three-regis",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "question": "what are the original three regi pokemon",
+      "expected_facts": ["Regirock", "Regice", "Registeel"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/regirock",
+        "https://pokemondb.net/pokedex/regice",
+        "https://pokemondb.net/pokedex/registeel"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-list-fossil-pokemon",
+      "layer": 2,
+      "category": "list-by-criterion",
+      "question": "what are the gen 1 fossil pokemon",
+      "expected_facts": ["Omanyte", "Kabuto", "Aerodactyl"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/omanyte",
+        "https://pokemondb.net/pokedex/kabuto",
+        "https://pokemondb.net/pokedex/aerodactyl"
+      ],
+      "rga_should_fire": true,
+      "notes": "Some lists include Omastar and Kabutops (evolutions). We accept at least the base forms."
+    },
+    {
+      "id": "q-l2-form-mega-charizard-xy",
+      "layer": 2,
+      "category": "form-comparison",
+      "question": "what's the difference between mega charizard x and mega charizard y",
+      "expected_facts": ["Dragon", "Flying", "Fire"],
+      "expected_citations": [
+        "pokeapi://pokemon/charizard-mega-x",
+        "pokeapi://pokemon/charizard-mega-y"
+      ],
+      "rga_should_fire": true,
+      "notes": "Dual-source flagship: Mega X is Fire/Dragon, Mega Y is Fire/Flying. Forces Source B retrieval."
+    },
+    {
+      "id": "q-l2-form-mega-mewtwo-xy",
+      "layer": 2,
+      "category": "form-comparison",
+      "question": "what's the difference between mega mewtwo x and mega mewtwo y",
+      "expected_facts": ["Psychic", "Fighting"],
+      "expected_citations": [
+        "pokeapi://pokemon/mewtwo-mega-x",
+        "pokeapi://pokemon/mewtwo-mega-y"
+      ],
+      "rga_should_fire": true,
+      "notes": "Mega X adds Fighting type, Mega Y stays pure Psychic."
+    },
+    {
+      "id": "q-l2-form-deoxys-all",
+      "layer": 2,
+      "category": "form-comparison",
+      "question": "what are the different deoxys forms",
+      "expected_facts": ["Normal", "Attack", "Defense", "Speed"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/deoxys",
+        "pokeapi://pokemon/deoxys-attack",
+        "pokeapi://pokemon/deoxys-defense",
+        "pokeapi://pokemon/deoxys-speed"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-form-giratina",
+      "layer": 2,
+      "category": "form-comparison",
+      "question": "what is the difference between giratina origin and altered forme",
+      "expected_facts": ["Origin", "Altered", "Ghost", "Dragon"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/giratina",
+        "pokeapi://pokemon/giratina-origin"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-form-rotom-all",
+      "layer": 2,
+      "category": "form-comparison",
+      "question": "what are the rotom forms",
+      "expected_facts": ["Heat", "Wash", "Frost", "Fan", "Mow"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/rotom",
+        "pokeapi://pokemon/rotom-heat",
+        "pokeapi://pokemon/rotom-wash"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-form-hisuian-decidueye",
+      "layer": 2,
+      "category": "form-comparison",
+      "question": "is there a hisuian decidueye and what type is it",
+      "expected_facts": ["Grass", "Fighting"],
+      "expected_citations": [
+        "pokeapi://pokemon/decidueye-hisui",
+        "https://pokemondb.net/pokedex/decidueye"
+      ],
+      "rga_should_fire": true,
+      "notes": "Hisuian Decidueye is Grass/Fighting (base Decidueye is Grass/Ghost)."
+    },
+    {
+      "id": "q-l2-form-galarian-zigzagoon",
+      "layer": 2,
+      "category": "form-comparison",
+      "question": "what's the difference between galarian zigzagoon and regular zigzagoon",
+      "expected_facts": ["Dark", "Normal"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/zigzagoon",
+        "pokeapi://pokemon/zigzagoon-galar"
+      ],
+      "rga_should_fire": true,
+      "notes": "Galarian Zigzagoon is Dark/Normal; standard is pure Normal."
+    },
+    {
+      "id": "q-l2-form-alolan-examples",
+      "layer": 2,
+      "category": "form-comparison",
+      "question": "what are some alolan forms",
+      "expected_facts": ["Alolan"],
+      "expected_citations": [
+        "pokeapi://pokemon/rattata-alola",
+        "pokeapi://pokemon/vulpix-alola",
+        "pokeapi://pokemon/sandshrew-alola"
+      ],
+      "rga_should_fire": true,
+      "notes": "Many possible answers; loosely check that 'Alolan' shows up + at least one species name."
+    },
+    {
+      "id": "q-l2-synth-deoxys",
+      "layer": 2,
+      "category": "cross-source-synthesis",
+      "question": "tell me about all the deoxys forms",
+      "expected_facts": ["Psychic", "Normal", "Attack", "Defense", "Speed"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/deoxys",
+        "pokeapi://pokemon/deoxys-attack",
+        "pokeapi://pokemon/deoxys-defense",
+        "pokeapi://pokemon/deoxys-speed"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-synth-mega-charizard-evos",
+      "layer": 2,
+      "category": "cross-source-synthesis",
+      "question": "what are charizard's mega evolutions",
+      "expected_facts": ["Mega Charizard X", "Mega Charizard Y", "Fire", "Dragon", "Flying"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/charizard",
+        "pokeapi://pokemon/charizard-mega-x",
+        "pokeapi://pokemon/charizard-mega-y"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-synth-gigantamax",
+      "layer": 2,
+      "category": "cross-source-synthesis",
+      "question": "what gigantamax pokemon exist",
+      "expected_facts": ["Gigantamax"],
+      "expected_citations": [
+        "pokeapi://pokemon/pikachu-gmax",
+        "pokeapi://pokemon/charizard-gmax"
+      ],
+      "rga_should_fire": true,
+      "notes": "Many possible Gigantamax answers; loose check that the term appears + at least one example."
+    },
+    {
+      "id": "q-l2-synth-hisuian-variants",
+      "layer": 2,
+      "category": "cross-source-synthesis",
+      "question": "what hisuian variants exist",
+      "expected_facts": ["Hisuian"],
+      "expected_citations": [
+        "pokeapi://pokemon/decidueye-hisui",
+        "pokeapi://pokemon/typhlosion-hisui"
+      ],
+      "rga_should_fire": true,
+      "notes": "Many possible Hisuian Pokemon; loose check that 'Hisuian' appears."
+    },
+    {
+      "id": "q-l2-ability-levitate",
+      "layer": 2,
+      "category": "ability-across-pokemon",
+      "question": "which pokemon have the levitate ability",
+      "expected_facts": ["Levitate"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/gengar",
+        "https://pokemondb.net/pokedex/bronzong",
+        "https://pokemondb.net/pokedex/rotom"
+      ],
+      "rga_should_fire": true,
+      "notes": "Many Pokemon have Levitate. RGA may struggle since Source A has abilities only in body text. This is the canonical 'weak content area' test."
+    },
+    {
+      "id": "q-l2-ability-intimidate",
+      "layer": 2,
+      "category": "ability-across-pokemon",
+      "question": "which pokemon have the intimidate ability",
+      "expected_facts": ["Intimidate"],
+      "expected_citations": [
+        "https://pokemondb.net/pokedex/gyarados",
+        "https://pokemondb.net/pokedex/salamence",
+        "https://pokemondb.net/pokedex/arcanine"
+      ],
+      "rga_should_fire": true
+    },
+    {
+      "id": "q-l2-ability-wonderguard",
+      "layer": 2,
+      "category": "ability-across-pokemon",
+      "question": "which pokemon have wonder guard",
+      "expected_facts": ["Shedinja"],
+      "expected_citations": ["https://pokemondb.net/pokedex/shedinja"],
+      "rga_should_fire": true,
+      "notes": "Shedinja is the only Pokemon with Wonder Guard. Tests whether RGA gives a precise single-Pokemon answer."
+    },
+    {
+      "id": "q-l3-oot-airspeed",
+      "layer": 3,
+      "category": "out-of-domain-refusal",
+      "question": "what is the airspeed velocity of an unladen swallow",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Monty Python reference, no Pokemon content. RGA should refuse or not fire."
+    },
+    {
+      "id": "q-l3-oot-superbowl",
+      "layer": 3,
+      "category": "out-of-domain-refusal",
+      "question": "who won the 2024 super bowl",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Out-of-domain sports question. RGA should refuse."
+    },
+    {
+      "id": "q-l3-oot-capital",
+      "layer": 3,
+      "category": "out-of-domain-refusal",
+      "question": "what is the capital of france",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Geography question. RGA should refuse or stay silent."
+    },
+    {
+      "id": "q-l3-oot-cooking",
+      "layer": 3,
+      "category": "out-of-domain-refusal",
+      "question": "how do i make sourdough bread",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Cooking question, no Pokemon content. RGA should refuse."
+    },
+    {
+      "id": "q-l3-oot-history",
+      "layer": 3,
+      "category": "out-of-domain-refusal",
+      "question": "when did world war 2 end",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "History question. RGA should refuse."
+    },
+    {
+      "id": "q-l3-trick-ash",
+      "layer": 3,
+      "category": "trick-not-a-pokemon",
+      "question": "what type is ash ketchum",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Ash Ketchum is the anime protagonist (a trainer), not a Pokemon. RGA should clarify or refuse."
+    },
+    {
+      "id": "q-l3-trick-brock",
+      "layer": 3,
+      "category": "trick-not-a-pokemon",
+      "question": "what type is brock",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Brock is a Gym Leader (Rock-type gym), not a Pokemon. RGA should clarify."
+    },
+    {
+      "id": "q-l3-trick-misty",
+      "layer": 3,
+      "category": "trick-not-a-pokemon",
+      "question": "what type is misty",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Misty is a Gym Leader (Water-type gym), not a Pokemon. RGA should clarify."
+    },
+    {
+      "id": "q-l3-kw-charizard-fire",
+      "layer": 3,
+      "category": "keyword-only-not-question",
+      "question": "charizard fire flying",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Keyword search, not a natural-language question. RGA classifier should NOT fire."
+    },
+    {
+      "id": "q-l3-kw-pikachu-electric",
+      "layer": 3,
+      "category": "keyword-only-not-question",
+      "question": "pikachu electric type",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Keyword search, not a question."
+    },
+    {
+      "id": "q-l3-kw-mewtwo-legendary",
+      "layer": 3,
+      "category": "keyword-only-not-question",
+      "question": "mewtwo legendary psychic",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Keyword search, not a question."
+    },
+    {
+      "id": "q-l3-ambiguous-water",
+      "layer": 3,
+      "category": "ambiguous-query",
+      "question": "tell me about water",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Ambiguous: could mean Water type, water Pokemon, water-related abilities. RGA should either refuse or seek clarification."
+    },
+    {
+      "id": "q-l3-ambiguous-fire",
+      "layer": 3,
+      "category": "ambiguous-query",
+      "question": "what about fire",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Ambiguous. RGA should refuse or ask for clarification."
+    },
+    {
+      "id": "q-l3-subjective-strongest",
+      "layer": 3,
+      "category": "subjective-no-truth",
+      "question": "which pokemon is the strongest",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Subjective. RGA may mention common candidates (Mewtwo, Arceus) but should NOT claim a single definitive answer."
+    },
+    {
+      "id": "q-l3-subjective-best-competitive",
+      "layer": 3,
+      "category": "subjective-no-truth",
+      "question": "which pokemon is the best for competitive play",
+      "expected_facts": [],
+      "expected_citations": [],
+      "rga_should_fire": false,
+      "notes": "Subjective and tier-dependent. RGA should give a nuanced answer or refuse a single ranking."
+    }
+  ]
+}

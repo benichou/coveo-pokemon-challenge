@@ -1,0 +1,4 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "_comment": "Project-scoped Claude Code settings for the Coveo Pokemon Challenge. Used with `claude --setting-sources project` to isolate this session from user-level config (e.g. Carta org skills + MCP servers). See README.md → 'Opening Claude Code with only this repo's tooling' for the full invocation."
+}

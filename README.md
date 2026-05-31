@@ -131,6 +131,43 @@ scripts/source/rebuild.sh         # ~17 minute crawl at 1 req/sec
 cd tests && uv run pytest         # 21 tests against the live org + sitemap
 ```
 
+## Opening Claude Code with only this repo's tooling
+
+This repo ships a Claude Code skill (`/rga-eval`) and a project-scoped `.claude/` directory. To open Claude Code with **only this repo's skills + MCP** — ignoring any global skills or MCP servers configured in `~/.claude/` (e.g. corporate / org-level tooling that shouldn't load on personal projects) — invoke Claude Code from the repo root with:
+
+```bash
+claude --setting-sources project --strict-mcp-config --mcp-config .claude/mcp.json
+```
+
+What each flag does:
+
+| Flag | Effect |
+|---|---|
+| `--setting-sources project` | Loads ONLY `./.claude/settings.json`; ignores user-level `~/.claude/settings.json` and any merged enterprise settings. |
+| `--strict-mcp-config` | Disables user-level + enterprise MCP server discovery. |
+| `--mcp-config .claude/mcp.json` | Loads MCP servers from the repo's `.claude/mcp.json` (which is empty by design — Phase 8.5 will add the Coveo MCP server here). |
+
+**What this isolates:** project-scoped settings + project-scoped MCP servers.
+
+**Caveat:** This does NOT block skills in `~/.claude/skills/` from auto-loading alongside the repo's `.claude/skills/`. If full skill isolation matters (e.g. you don't want Carta skills loading), add `--bare` to the command — at the cost of needing to manually register the `/rga-eval` skill in `.claude/settings.json` (vs. auto-discovery from `.claude/skills/rga-eval/`).
+
+## Claude Code skill: `/rga-eval`
+
+The repo includes a Claude Code skill that operates the RGA Skill Evaluator (Phase 6D) from the terminal. Invoke from inside a Claude Code session:
+
+```
+/rga-eval              # latest run summary + category breakdown (no API calls)
+/rga-eval full         # full 100-question evaluation (~10 min, ~$0.60 Sonnet)
+/rga-eval smoke        # 5-question smoke test (~30s)
+/rga-eval failures     # latest run: every failing question + judge reasoning
+/rga-eval hallu        # latest run: every hallucinated answer
+/rga-eval compare 2026-05-31 2026-06-01   # diff two runs
+```
+
+The skill is defined in `.claude/skills/rga-eval/SKILL.md` and uses the pretty-printer in `rga-eval/src/show.py`. It's also auto-triggered when you ask things like *"what's the latest RGA accuracy?"* or *"where is RGA hallucinating?"* — no need to type the slash command explicitly.
+
+What the eval does is documented in detail at the top of `~/.claude/plans/so-we-are-supposed-purrfect-bachman.md` (Phase 6D). Headline: it runs 100 hand-crafted Pokemon questions against Coveo's RGA endpoint, computes accuracy + precision + hard-recall using a Claude Sonnet 4.6 LLM-as-judge (with Pydantic-enforced structured output), and writes daily snapshots to `eval-runs/YYYY-MM-DD.json` for a Vercel-hosted time-series dashboard.
+
 ## Repository layout
 
 ```
@@ -141,6 +178,11 @@ coveo-pokemon-challenge/
 ├── .pre-commit-config.yaml      ← hooks run by git commit (ruff + file hygiene)
 ├── ruff.toml                    ← linter + formatter config (line 80, PEP 8, isort, …)
 ├── .vscode/                     ← shared workspace settings (settings, launch, extensions)
+├── .claude/                     ← project-scoped Claude Code config
+│   ├── settings.json            ← marker for `--setting-sources project`
+│   ├── mcp.json                 ← project-scoped MCP server set (currently empty)
+│   └── skills/
+│       └── rga-eval/SKILL.md    ← /rga-eval slash command
 │
 ├── docs/
 │   ├── api-keys.md              ← how to create the 3 API keys + their privileges
@@ -174,6 +216,23 @@ coveo-pokemon-challenge/
 │       ├── audit_index.py       ← PokéAPI + structural leak detector
 │       └── purge_index.sh       ← filter-update + rebuild for confirmed leaks
 │
+├── rga-eval/                    ← RGA Skill Evaluator (Phase 6D — daily quality monitoring)
+│   ├── README.md
+│   ├── pyproject.toml + uv.lock
+│   ├── golden/questions.json    ← 100 hand-crafted Q's (50 L1 / 35 L2 / 15 L3)
+│   ├── src/
+│   │   ├── schemas.py           ← Pydantic models (GoldenQuestion / JudgeVerdict / EvalRun)
+│   │   ├── coveo_rga.py         ← /answer/v1/configs/{id}/generate SSE client
+│   │   ├── llm_judge.py         ← Sonnet 4.6 with tool-use forcing → JudgeVerdict
+│   │   ├── metrics.py           ← accuracy / precision / hard-recall computation
+│   │   ├── publish.py           ← write eval-runs/YYYY-MM-DD.json
+│   │   ├── show.py              ← pretty-printer for terminal display
+│   │   └── main.py              ← orchestrator (--limit / --layer / --dry-run)
+│   └── tests/test_schemas.py    ← 6 dataset-shape tests
+│
+├── eval-runs/                   ← one JSON per day; commit history = time-series database
+│   └── YYYY-MM-DD.json
+│
 └── tests/                       ← pytest + httpx integration tests (21 tests, ~3s)
     ├── README.md                  (intro + glossary)
     ├── pyproject.toml + uv.lock
@@ -185,9 +244,12 @@ coveo-pokemon-challenge/
     └── test_search_queries.py
 ```
 
-Coming soon (each in its own subfolder):
-- `push-pokemon/` — Python ingestion pipeline (Phase 4)
-- `atomic-search/` — local Atomic UI (Phase 5)
+Also in the repo (not shown above to keep the tree readable):
+- `push-pokemon/` — Python ingestion pipeline (Phase 4) — pushes PokéAPI form variants to Source B
+- `atomic-search/` — local Atomic UI (Phase 5) — Vite-hosted Pokemon search experience
+
+Still coming:
+- `rga-dashboard/` — Vercel-hosted dashboard reading `eval-runs/*.json` (Phase 6D.6)
 - `detail-page/` — Headless + React Pokemon Detail Page (Phase 6C)
 
 ## Design decisions worth knowing
