@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-31T17:03:36.542992+00:00",
+  "timestamp": "2026-05-31T18:30:20.025615+00:00",
   "coveo_org_id": "benichouu9fose4g",
   "judge_model": "claude-sonnet-4-5-20250929",
   "overall": {
@@ -39,7 +39,7 @@
       "layer": 1,
       "category": "type-lookup",
       "rga_fired": true,
-      "answer_text": "Charizard is a Fire/Flying type Pokémon. It evolves from Charmeleon at level 36 and is known for its dragon-like appearance and fiery abilities.",
+      "answer_text": "Charizard is a Fire/Flying type Pokémon. It evolves from Charmeleon at level 36 and is known for its dragon-like appearance, fiery breath, and large wings. Charizard has two Mega Evolutions and a Gigantamax form, enhancing its capabilities in various games.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/charizard",
         "https://pokemondb.net/pokedex/charizard"
@@ -50,7 +50,7 @@
         "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "The answer correctly identifies Charizard as Fire/Flying type, covering both expected key facts. The additional information about evolution and appearance is also accurate."
+        "reasoning": "The answer correctly identifies Charizard as a Fire/Flying type Pokémon, covering both expected key facts. The additional information about evolution level (36), Mega Evolutions, and Gigantamax form is all factually accurate according to Pokemon canon."
       }
     },
     {
@@ -59,7 +59,7 @@
       "layer": 1,
       "category": "type-lookup",
       "rga_fired": true,
-      "answer_text": "Pikachu is an Electric type Pokémon. It is introduced in Generation 1 and has a Gigantamax form in Pokémon Sword/Shield. Pikachu has a base stats total of 320 and evolves into Raichu.",
+      "answer_text": "Pikachu is an Electric type Pokémon. It is introduced in Generation 1 and has a Gigantamax form available in Pokémon Sword/Shield. Pikachu has a base stats total of 320 and evolves into Raichu.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/pikachu",
         "https://pokemondb.net/pokedex/raichu",
@@ -71,7 +71,7 @@
         "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "The answer correctly identifies Pikachu as an Electric type Pokémon, which is the key expected fact. All additional information provided (Generation 1 introduction, Gigantamax form, base stat total of 320, evolution into Raichu) is factually accurate according to Pokemon canon."
+        "reasoning": "The answer correctly states that Pikachu is an Electric type, which is the key expected fact. All additional information provided (Generation 1, Gigantamax form, base stat total of 320, evolves into Raichu) is factually accurate according to Pokemon canon."
       }
     },
     {
@@ -80,7 +80,7 @@
       "layer": 1,
       "category": "type-lookup",
       "rga_fired": true,
-      "answer_text": "Bulbasaur is a Grass/Poison type Pokémon. It is a small, mainly turquoise amphibian with a green bulb on its back, resembling a plant bulb. Introduced in Generation 1, it is one of the three starter Pokémon in the original Game Boy games, alongside Charmander and Squirtle.",
+      "answer_text": "Bulbasaur is a Grass/Poison type Pokémon. It is a small, mainly turquoise amphibian with a green bulb on its back, resembling a plant bulb that grows into a flower as it evolves. Introduced in Generation 1, Bulbasaur is notable for being the first Pokémon in the National Pokédex and is one of the three starter Pokémon choices in the original Game Boy games.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/bulbasaur",
         "https://pokemondb.net/pokedex/bulbasaur"
@@ -91,7 +91,7 @@
         "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "The answer correctly identifies Bulbasaur as a Grass/Poison type Pokémon, which includes both expected key facts (Grass and Poison). The additional information about its appearance and status as a Generation 1 starter is also accurate."
+        "reasoning": "The answer correctly identifies Bulbasaur as a Grass/Poison type Pokémon, which covers both expected key facts. The additional descriptive information about its appearance and status as a Generation 1 starter is also factually accurate."
       }
     },
     {
@@ -100,7 +100,7 @@
       "layer": 1,
       "category": "type-lookup",
       "rga_fired": true,
-      "answer_text": "Gyarados is a Water/Flying type Pokémon. It is known for its serpentine, dragon-like appearance and its volatile temper.",
+      "answer_text": "Gyarados is a Water/Flying type Pokémon. It is known for its destructive nature and is often associated with tales of destruction.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/gyarados",
         "https://pokemondb.net/pokedex/gyarados"
@@ -111,7 +111,7 @@
         "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "The answer correctly identifies Gyarados as a Water/Flying type Pokémon, covering both expected key facts. The additional descriptive information about its appearance and temper is also accurate and does not contain any factual errors."
+        "reasoning": "The answer correctly identifies Gyarados as a Water/Flying type Pokémon, covering both expected key facts. The additional flavor text about its destructive nature is accurate and consistent with Pokédex entries and Pokemon lore."
       }
     },
     {
@@ -120,9 +120,8 @@
       "layer": 1,
       "category": "type-lookup",
       "rga_fired": true,
-      "answer_text": "Alakazam is a Psychic type Pokémon. It evolves from Kadabra and has a Mega Evolution form, Mega Alakazam, which is also a Psychic type. Alakazam is known for its high intelligence, with an IQ of 5,000, and its ability to remember everything it learns.",
+      "answer_text": "Alakazam is a Psychic type Pokémon. It evolves from Kadabra and is known for its high intelligence, with an IQ of 5,000. Alakazam has a Mega Evolution form, Mega Alakazam, which is available in Generation 6 games and Pokémon Go. It has a base Special Attack of 135 and a base Special Defense of 95 in Generation 6. Alakazam can learn various moves through leveling up, TMs, and the Remember Moves feature.",
       "cited_uris": [
-        "https://pokemondb.net/pokedex/alakazam",
         "https://pokemondb.net/pokedex/alakazam",
         "https://pokemondb.net/pokedex/alakazam",
         "https://pokemondb.net/pokedex/alakazam"
@@ -133,7 +132,7 @@
         "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "The answer correctly identifies Alakazam as a Psychic type, which is the expected key fact. The additional information about its evolution from Kadabra, Mega Evolution, high IQ, and memory are all accurate according to Pokemon canon."
+        "reasoning": "The answer correctly identifies Alakazam as a Psychic type Pokémon, which is the key fact required. All additional information provided (evolution from Kadabra, high IQ, Mega Evolution, base stats) is accurate and consistent with canonical Pokémon facts."
       }
     }
   ]
