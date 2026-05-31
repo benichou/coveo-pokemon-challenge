@@ -110,9 +110,21 @@ def transform(
 
     pokeapi_url = f"https://pokeapi.co/api/v2/pokemon/{name}"
     document_id = f"pokeapi://pokemon/{name}"
+    # Link Push docs to the base species's pokemondb.net page. pokemondb
+    # has one URL per species (Mega Charizard X / Y / Hisuian Decidueye /
+    # etc. are sections on the base page, not standalone pages), so the
+    # base-species URL is the user-meaningful click target for every form
+    # variant. Source A docs already have a real pokemondb URL via their
+    # sitemap-derived documentId, so this only affects Source B.
+    clickable_uri = (
+        f"https://pokemondb.net/pokedex/{species}"
+        if species
+        else pokeapi_url  # fallback for the rare entry with no species
+    )
 
     doc: dict[str, Any] = {
         "documentId": document_id,
+        "clickableUri": clickable_uri,
         "title": _format_name(name),
         "fileExtension": ".html",
         # Body: searchable plaintext describing the Pokemon. Keep it concise

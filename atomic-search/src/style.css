@@ -1,0 +1,121 @@
+/* Page-level styles only.
+ *
+ * Atomic v3 result-template internals live in shadow DOM and ignore
+ * styles defined here. For result-card styling, see the inline <style>
+ * block inside the <template> in index.html. CSS variables defined on
+ * :root DO pierce shadow DOM, so we use those for theming tokens.
+ */
+
+:root {
+  --bg: #fafaf6;
+  --surface: #fff;
+  --ink: #1c1d21;
+  --ink-soft: #5a5f6a;
+  --accent: #ee1515;          /* Pokemon red */
+  --accent-soft: #fde7e7;
+  --border: #e3e4e8;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
+    sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 2rem 2rem 1.5rem;
+  text-align: center;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.topbar .subtitle {
+  margin: 0.25rem 0 1.5rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+atomic-search-box {
+  display: block;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.facets {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.results-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+
+/* RGA visibility gate.
+ *
+ * When the user picks a non-Relevance sort, the body gets `rga-disabled`
+ * (toggled by main.js subscribing to the Headless engine state). RGA can't
+ * produce useful answers on alphabetically/chronologically sorted retrieval
+ * — see the long comment in main.js — so we hide the panel and replace it
+ * with an inline hint pointing the user back to Relevance sort.
+ */
+body.rga-disabled atomic-generated-answer {
+  display: none;
+}
+body:not(.rga-disabled) .rga-disabled-note {
+  display: none;
+}
+.rga-disabled-note {
+  background: #fffaf0;
+  border: 1px solid #e0d4a8;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  color: #6b5b1f;
+  font-size: 0.85rem;
+}
+.rga-disabled-note strong {
+  color: #4a3c10;
+}

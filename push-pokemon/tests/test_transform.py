@@ -171,6 +171,15 @@ def test_transform_generation_empty_when_species_missing():
     assert doc["generation"] == ""
 
 
+def test_transform_clickable_uri_points_to_base_species_page():
+    """Mega Charizard X (a form variant) should link to pokemondb's base
+    Charizard page, not to a non-existent /pokedex/charizard-mega-x URL.
+    pokemondb structures the site as one page per species; form info
+    lives in sections on that page."""
+    doc = transform(CHARIZARD_MEGA_X_FIXTURE, CHARIZARD_SPECIES_FIXTURE)
+    assert doc["clickableUri"] == "https://pokemondb.net/pokedex/charizard"
+
+
 def test_transform_body_data_includes_searchable_text():
     doc = transform(CHARIZARD_MEGA_X_FIXTURE, CHARIZARD_SPECIES_FIXTURE)
     assert "Charizard Mega X" in doc["data"]

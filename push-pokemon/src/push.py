@@ -104,20 +104,33 @@ class CoveoPushClient:
     # ----- delete documents -----
     def clear_source(self) -> None:
         """Delete every document currently in the source. Used by `main.py
-        --replace` to start a fresh push from a clean slate (so that
-        previously-pushed docs that should no longer exist — e.g., items
-        the filter logic now correctly excludes — don't linger as orphans).
+        --replace` to start a fresh push from a clean slate.
 
-        Implementation: the Push API's DELETE /documents/olderthan
-        endpoint deletes documents whose ordering_id is strictly less than
-        the supplied value. Passing a far-future ordering_id (we use a
-        large epoch-ms timestamp, year 9999) deletes everything, since
-        every existing doc has a smaller ordering_id."""
-        very_large_ordering_id = 253402300799000  # year-9999 epoch millis
+        Implementation: the Push API's DELETE /documents/olderthan endpoint
+        deletes documents whose ordering_id is strictly less than the
+        supplied value. Two critical params:
+
+          - orderingId  = current epoch millis. Documents pushed AFTER this
+                          call will have higher ordering_ids (set by Coveo
+                          to the push timestamp) and survive the delete.
+                          Earlier this method passed year-9999 millis,
+                          which silently caught all future pushes too.
+          - queueDelay  = 0. Without this, Coveo defaults to a 15-minute
+                          delay, which means new docs pushed in the
+                          meantime get caught by the delayed delete sweep.
+                          Lost the entire Source B index this way once.
+                          Don't make that mistake again — pass 0.
+
+        Together these two guarantee: "delete everything that exists now,
+        and process the delete immediately. Anything pushed later stays."
+        """
+        import time
+
+        cutoff_ms = int(time.time() * 1000)
         with httpx.Client(timeout=30.0) as c:
             r = c.delete(
                 f"{self._base}/documents/olderthan",
-                params={"orderingId": very_large_ordering_id},
+                params={"orderingId": cutoff_ms, "queueDelay": 0},
                 headers=self._auth,
             )
             if r.status_code not in (200, 202, 204):

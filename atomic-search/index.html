@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokemon Search · Coveo</title>
+
+    <!--
+      Load Atomic from Coveo's CDN. This serves not just the JS but also
+      the i18n locale files and icon assets that Atomic needs at runtime.
+      Self-hosting via @coveo/atomic/loader inside a Vite project works
+      for JS but doesn't pipe the runtime assets through Vite's dev server,
+      so we'd get untranslated UI ("between-parentheses" instead of "(123)").
+      The CDN handles this transparently.
+
+      Atomic's own stylesheet provides the baseline component look; our
+      style.css below layers Pokemon-themed overrides on top of that.
+    -->
+    <script type="module" src="https://static.cloud.coveo.com/atomic/v3/atomic.esm.js"></script>
+    <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v3/themes/coveo.css" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <atomic-search-interface
+      id="search"
+      search-hub="pokemon-search"
+      language="en"
+      analytics
+      fields-to-include='["pokemon_name","pokemon_type","image_url","dex_number","generation","abilities","is_form_variant","base_species","base_hp","base_attack","base_defense","base_sp_attack","base_sp_defense","base_speed","source"]'
+    >
+      <header class="topbar">
+        <h1>Pokedex Search</h1>
+        <p class="subtitle">
+          Powered by Coveo — dual-source index (pokemondb.net sitemap + PokéAPI form variants), RGA-grounded answers, semantic ranking.
+        </p>
+
+        <atomic-search-box
+          number-of-queries="6"
+          suggestion-timeout="500"
+        ></atomic-search-box>
+      </header>
+
+      <main class="layout">
+        <aside class="facets">
+          <atomic-facet
+            field="pokemon_type"
+            label="Type"
+            number-of-values="20"
+          ></atomic-facet>
+
+          <atomic-facet
+            field="generation"
+            label="Generation"
+          ></atomic-facet>
+
+          <!-- Source facet. User-friendly display labels are applied in
+               main.js via searchInterface.i18n.addResourceBundle() with the
+               `caption-source` namespace — the Atomic v3 way. Underlying
+               source names (pokemondb-sitemap, pokemondb-push) stay intact
+               in Coveo and in our scripts/tests; only the UI display changes. -->
+          <atomic-facet
+            field="source"
+            label="Source"
+          ></atomic-facet>
+
+          <atomic-facet
+            field="is_form_variant"
+            label="Form variant"
+          ></atomic-facet>
+
+          <atomic-facet
+            field="abilities"
+            label="Abilities"
+            number-of-values="15"
+            sort-criteria="occurrences"
+            with-search="true"
+          ></atomic-facet>
+        </aside>
+
+        <section class="results">
+          <atomic-generated-answer></atomic-generated-answer>
+
+          <!-- Inline note shown when sort is non-Relevance (RGA hidden).
+               Toggled via body.rga-disabled in src/style.css. -->
+          <div class="rga-disabled-note">
+            <strong>AI answers paused.</strong> Generated answers ground on the
+            top results, which only make sense when sorted by Relevance.
+            Switch the "Sort by" dropdown back to <strong>Relevance</strong> to
+            see AI answers again.
+          </div>
+
+          <div class="results-toolbar">
+            <atomic-query-summary></atomic-query-summary>
+            <atomic-sort-dropdown>
+              <atomic-sort-expression
+                label="Relevance"
+                expression="relevancy"
+              ></atomic-sort-expression>
+              <atomic-sort-expression
+                label="Name (A-Z)"
+                expression="pokemon_name ascending"
+              ></atomic-sort-expression>
+              <atomic-sort-expression
+                label="Date (newest first)"
+                expression="date descending"
+              ></atomic-sort-expression>
+              <atomic-sort-expression
+                label="Date (oldest first)"
+                expression="date ascending"
+              ></atomic-sort-expression>
+              <atomic-sort-expression
+                label="Generation (oldest first)"
+                expression="generation ascending"
+              ></atomic-sort-expression>
+              <atomic-sort-expression
+                label="Generation (newest first)"
+                expression="generation descending"
+              ></atomic-sort-expression>
+            </atomic-sort-dropdown>
+          </div>
+
+          <atomic-result-list display="list" density="comfortable" image-size="small">
+            <atomic-result-template>
+              <template>
+                <!--
+                  Atomic v3 result templates render inside shadow DOM. Page-level
+                  CSS doesn't reach in here, so styles need to be inline (scoped to
+                  this template's shadow root). Using Atomic's section components
+                  (badges/title/excerpt/bottom-metadata/visual) lets Atomic position
+                  things correctly for the chosen display mode and image-size.
+                -->
+                <style>
+                  .gen-badge {
+                    display: inline-block;
+                    padding: 0.15rem 0.6rem;
+                    border-radius: 999px;
+                    background: #4caf50;
+                    color: white;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                  }
+                  .meta-row {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                    align-items: baseline;
+                    color: #5a5f6a;
+                    font-size: 0.85rem;
+                  }
+                  .meta-row strong {
+                    color: #1c1d21;
+                  }
+                  /* Hide the visual section entirely when the image fails to
+                     load or the URL is empty — Atomic doesn't do this by
+                     default, so empty-image cards leave a ghost slot. */
+                  atomic-result-section-visual atomic-result-image::part(image):not([src]),
+                  atomic-result-section-visual atomic-result-image::part(image)[src=""] {
+                    display: none;
+                  }
+                </style>
+
+                <atomic-result-section-visual>
+                  <atomic-result-image field="image_url"></atomic-result-image>
+                </atomic-result-section-visual>
+
+                <atomic-result-section-badges>
+                  <span class="gen-badge">
+                    <atomic-result-text field="generation"></atomic-result-text>
+                  </span>
+                </atomic-result-section-badges>
+
+                <atomic-result-section-title>
+                  <atomic-result-link>
+                    <atomic-result-text field="pokemon_name"></atomic-result-text>
+                  </atomic-result-link>
+                </atomic-result-section-title>
+
+                <atomic-result-section-excerpt>
+                  <atomic-result-text field="excerpt"></atomic-result-text>
+                </atomic-result-section-excerpt>
+
+                <atomic-result-section-bottom-metadata>
+                  <div class="meta-row">
+                    <!-- atomic-result-text would show the raw Coveo source name
+                         ("pokemondb-sitemap" / "pokemondb-push"). We use
+                         atomic-field-condition to render the user-facing
+                         label depending on which source the doc came from.
+                         The facet caption is i18n; per-result is markup. -->
+                    <span>
+                      <strong>Source:</strong>
+                      <atomic-field-condition must-match-source="pokemondb-sitemap">
+                        PokemonDb
+                      </atomic-field-condition>
+                      <atomic-field-condition must-match-source="pokemondb-push">
+                        PokeAPI
+                      </atomic-field-condition>
+                    </span>
+                    <span><strong>Type:</strong> <atomic-result-multi-value-text field="pokemon_type" max-values-to-display="4"></atomic-result-multi-value-text></span>
+                    <span><strong>#</strong><atomic-result-number field="dex_number"></atomic-result-number></span>
+                  </div>
+                </atomic-result-section-bottom-metadata>
+              </template>
+            </atomic-result-template>
+          </atomic-result-list>
+
+          <atomic-pager></atomic-pager>
+          <atomic-results-per-page choices-displayed="10,25,50"></atomic-results-per-page>
+        </section>
+      </main>
+    </atomic-search-interface>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
