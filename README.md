@@ -2,6 +2,8 @@
 
 Forward Deployed Engineer technical challenge for Coveo. A custom search experience built on the **Coveo Cloud Platform**, indexing [pokemondb.net](https://pokemondb.net) and surfacing it through a custom UI.
 
+**Live:** 🔗 RGA quality dashboard — [pokemon-rga-dashboard.vercel.app](https://pokemon-rga-dashboard.vercel.app)
+
 ## Status
 
 🚧 Work in progress. As of 2026-05-30:
@@ -169,6 +171,8 @@ The skill is defined in `.claude/skills/rga-eval/SKILL.md` and uses the pretty-p
 What the eval does is documented in detail at the top of `~/.claude/plans/so-we-are-supposed-purrfect-bachman.md` (Phase 6D). Headline: it runs 100 hand-crafted Pokemon questions against Coveo's RGA endpoint, computes accuracy + precision + hard-recall using a Claude Sonnet 4.6 LLM-as-judge (with Pydantic-enforced structured output), and writes daily snapshots to `eval-runs/YYYY-MM-DD-<mode>.json`. Only `*-full.json` files feed the dashboard; smoke / layer-scan runs are diagnostic.
 
 ## RGA quality dashboard
+
+**🔗 Live dashboard: [pokemon-rga-dashboard.vercel.app](https://pokemon-rga-dashboard.vercel.app)**
 
 The Vercel-hosted dashboard at `rga-dashboard/` reads every `eval-runs/*-full.json` at **build time** (Vite's `import.meta.glob`, no runtime fetch) and renders:
 
