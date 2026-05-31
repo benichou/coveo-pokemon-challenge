@@ -184,7 +184,15 @@ npm run dev      # local: http://localhost:5173
 npm run build    # → dist/ for Vercel
 ```
 
-To deploy: import the repo in Vercel, set **Root Directory** to `rga-dashboard`, framework auto-detects as Vite. Every push to `main` redeploys with whatever `eval-runs/*-full.json` files are in the commit — so the dashboard always reflects the latest committed history.
+To deploy: import the repo in Vercel, set **Root Directory** to `rga-dashboard`, framework auto-detects as Vite. Every push to the watched branch redeploys with whatever `eval-runs/*-full.json` files are in the commit — so the dashboard always reflects the latest committed history.
+
+The full Vercel + GitHub-Actions-secrets runbook lives in **[`docs/deploy.md`](docs/deploy.md)**. It covers: the 5 secrets to add (and where they go — *not* in Vercel), the Vercel project config, the manual workflow-dispatch verification, and the cost ceiling (~$18/mo).
+
+### Daily eval automation
+
+A scheduled GitHub Actions workflow at `.github/workflows/rga-eval-daily.yml` runs the evaluator every day at **06:00 UTC**, commits the resulting `eval-runs/YYYY-MM-DD-full.json` back to the watched branch, and that push triggers a Vercel rebuild — so the dashboard is self-perpetuating without anyone touching it.
+
+The workflow also exposes a **manual trigger** from the Actions UI (mode dropdown: smoke / layer1 / layer2 / layer3 / full + an optional question limit) for ad-hoc runs, panel-demo dry-runs, and prompt-tuning validation.
 
 ## Repository layout
 
@@ -196,6 +204,9 @@ coveo-pokemon-challenge/
 ├── .pre-commit-config.yaml      ← hooks run by git commit (ruff + file hygiene)
 ├── ruff.toml                    ← linter + formatter config (line 80, PEP 8, isort, …)
 ├── .vscode/                     ← shared workspace settings (settings, launch, extensions)
+├── .github/
+│   └── workflows/
+│       └── rga-eval-daily.yml   ← daily 06:00 UTC RGA eval cron + manual trigger
 ├── .claude/                     ← project-scoped Claude Code config
 │   ├── settings.json            ← marker for `--setting-sources project`
 │   ├── mcp.json                 ← project-scoped MCP server set (currently empty)
@@ -204,7 +215,8 @@ coveo-pokemon-challenge/
 │
 ├── docs/
 │   ├── api-keys.md              ← how to create the 3 API keys + their privileges
-│   └── ml-models.md             ← RGA + Semantic Encoder: what, why, how
+│   ├── ml-models.md             ← RGA + Semantic Encoder: what, why, how
+│   └── deploy.md                ← GitHub Actions secrets + Vercel project setup
 │
 ├── config/                      ← versioned Coveo configuration
 │   ├── README.md                  (intro + glossary)
@@ -280,7 +292,6 @@ Also in the repo (not shown above to keep the tree readable):
 
 Still coming:
 - `detail-page/` — Headless + React Pokemon Detail Page (Phase 6C)
-- GitHub Actions cron (`.github/workflows/rga-eval.yml`) — daily 06:00 UTC eval run
 - Grafana Cloud query observability instrumentation (Phase 6E)
 
 ## Design decisions worth knowing
