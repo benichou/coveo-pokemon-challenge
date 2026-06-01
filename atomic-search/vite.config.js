@@ -1,13 +1,47 @@
 import { defineConfig, loadEnv } from "vite";
 import { resolve } from "path";
 
-// Load .env from the repo root (where COVEO_* vars already live) AND from
-// the local atomic-search/ folder. The repo-root .env wins; this way Atomic
-// shares the same secrets-file as scripts/, tests/, and push-pokemon/.
+// Resolve Coveo credentials with two-environment compatibility:
+//
+//   1. LOCAL DEV — read from the repo-root .env via Vite's loadEnv(). This
+//      way Atomic shares the same secrets file as scripts/, tests/, and
+//      push-pokemon/. We try the canonical COVEO_* names first, then
+//      VITE_* fallbacks.
+//
+//   2. PRODUCTION (Vercel) — there's no .env file on the build runner;
+//      Vercel injects env vars into process.env. We read those too.
+//      Vercel users typically set VITE_-prefixed names in the project
+//      settings UI; we also accept the non-prefixed names for symmetry
+//      with local dev.
+//
+// First defined non-empty value wins. If everything is undefined, the
+// build still succeeds — main.js shows a clear in-app banner explaining
+// what's missing instead of failing silently.
 const repoRoot = resolve(__dirname, "..");
+
+function firstDefined(...vals) {
+  for (const v of vals) {
+    if (v !== undefined && v !== "") return v;
+  }
+  return undefined;
+}
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, repoRoot, "");
+
+  const orgId = firstDefined(
+    env.COVEO_ORG_ID,
+    env.VITE_COVEO_ORG_ID,
+    process.env.COVEO_ORG_ID,
+    process.env.VITE_COVEO_ORG_ID
+  );
+  const searchToken = firstDefined(
+    env.COVEO_SEARCH_API_KEY,
+    env.VITE_COVEO_SEARCH_TOKEN,
+    process.env.COVEO_SEARCH_API_KEY,
+    process.env.VITE_COVEO_SEARCH_TOKEN
+  );
+
   return {
     server: {
       port: 3000,
@@ -22,12 +56,8 @@ export default defineConfig(({ mode }) => {
     // anonymous search key is public-safe (Anonymous Search template); the
     // admin/push keys must never reach the client.
     define: {
-      "import.meta.env.VITE_COVEO_ORG_ID": JSON.stringify(
-        env.COVEO_ORG_ID || env.VITE_COVEO_ORG_ID
-      ),
-      "import.meta.env.VITE_COVEO_SEARCH_TOKEN": JSON.stringify(
-        env.COVEO_SEARCH_API_KEY || env.VITE_COVEO_SEARCH_TOKEN
-      ),
+      "import.meta.env.VITE_COVEO_ORG_ID": JSON.stringify(orgId),
+      "import.meta.env.VITE_COVEO_SEARCH_TOKEN": JSON.stringify(searchToken),
     },
   };
 });

@@ -218,6 +218,44 @@ If all keys pass, you're ready to run `scripts/bootstrap.sh` (push + admin keys)
 | `pokemon-ml-models-editor` | Same procedure. Closed-loop apply script stops working until rotated. Blast radius limited to reading/writing ML models (no source / push / search access). |
 | `ANTHROPIC_API_KEY` | Revoke at https://console.anthropic.com → API keys → … menu → Delete. Mint a fresh key. Update **both** `.env` AND the GitHub Actions Secret (they must match). Eval cron + closed-loop analyzer stop until both are updated. Blast radius limited to Anthropic API spend on the personal account (no Coveo / no Carta exposure). |
 
+## Local `.env` ↔ Vercel env vars — the naming reference
+
+Confusion-prone: a few of these keys are read under one name locally (`.env`) and another name in the browser bundle (`import.meta.env.VITE_*`). The table below is the canonical mapping.
+
+### How to read this table
+
+- The **left column** is the variable name in your local `.env` — the canonical source of truth.
+- The **middle column** is what the Vite-built apps read from `import.meta.env.*` (only `VITE_`-prefixed vars get exposed to the browser bundle, per Vite security defaults).
+- The **right column** is what to set in **Vercel project settings → Environment Variables** for each deployed app. Vercel injects these into `process.env` at build time; `vite.config.js` in each app translates `process.env.*` → `import.meta.env.VITE_*`.
+
+| `.env` variable (local) | Read at runtime as | Set in Vercel as (recommended) | Used by |
+|---|---|---|---|
+| `COVEO_ORG_ID` | `import.meta.env.VITE_COVEO_ORG_ID` | `COVEO_ORG_ID` | `atomic-search/` |
+| `COVEO_SEARCH_API_KEY` | `import.meta.env.VITE_COVEO_SEARCH_TOKEN` | `COVEO_SEARCH_API_KEY` | `atomic-search/` |
+| (no env vars needed) | n/a | (leave empty) | `rga-dashboard/` (static, build-time data only) |
+
+### Why the local + Vercel names match (intentional)
+
+Both `atomic-search/vite.config.js` and any future Vite app in the repo accept **either** the canonical `COVEO_*` names **or** the `VITE_COVEO_*` names. The `firstDefined()` helper checks both, then falls back to `process.env` (which is what Vercel populates).
+
+**Why this matters:** the same `.env` file works locally for ALL apps in the repo. You don't have to maintain a separate `.env` in `atomic-search/` with `VITE_*` mirrors — the Vite config does the translation. And on Vercel, you can use the same canonical names you already know, no mental remapping.
+
+### Why the canonical names are recommended over `VITE_*` in Vercel
+
+- **Mental load**: pasting `COVEO_SEARCH_API_KEY` matches what you see in `.env`. Pasting `VITE_COVEO_SEARCH_TOKEN` requires you to remember "the *value* I want for VITE_COVEO_SEARCH_TOKEN actually lives under `COVEO_SEARCH_API_KEY` in .env" — extra reasoning every time you set up a new environment.
+- **Source-of-truth alignment**: docs/api-keys.md, `.env`, scripts, tests, Python projects, and Vercel all use the same name. One source of truth.
+- **The `VITE_COVEO_SEARCH_TOKEN=` line in `.env`** is intentionally empty — it's a placeholder that the Vite config never actually reads when `COVEO_SEARCH_API_KEY` is populated.
+
+### What does NOT go in Vercel
+
+The four other Coveo keys (`COVEO_PUSH_API_KEY`, `COVEO_ADMIN_API_KEY`, `COVEO_RGA_JUDGE_API_KEY`, `COVEO_ML_MODELS_API_KEY`) and the `ANTHROPIC_API_KEY` are **never** Vercel env vars. They're:
+
+- Used by Python scripts that run locally OR in GitHub Actions (not in a Vercel build)
+- Sensitive in ways the search key is not (can edit sources, push docs, query, edit ML models, spend Anthropic credit)
+- Stored in **GitHub Actions Secrets** for the daily cron workflows — see [`docs/deploy.md`](deploy.md) Part 1 for the GH Secrets list
+
+Mixing the two namespaces is a common security mistake. **The Vercel UI is the wrong place for the admin/push/judge/ml-models keys** — they'd be readable by anyone with project-settings access and would expand the blast radius of a Vercel account compromise.
+
 ## What's deliberately NOT in this document
 
 - The key values themselves. Those live in `.env` (gitignored) and the respective consoles. If a key value is in this file, the file is wrong.

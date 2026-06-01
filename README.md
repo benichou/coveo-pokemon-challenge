@@ -4,6 +4,7 @@ Forward Deployed Engineer technical challenge for Coveo. A Pokémon search exper
 
 | | URL |
 |---|---|
+| **Live Pokémon search UI** (Atomic) | [pokemon-search-one-chi.vercel.app](https://pokemon-search-one-chi.vercel.app) |
 | **Live RGA quality dashboard** | [pokemon-rga-dashboard.vercel.app](https://pokemon-rga-dashboard.vercel.app) |
 | **GitHub repo** | [github.com/benichou/coveo-pokemon-challenge](https://github.com/benichou/coveo-pokemon-challenge) |
 | **Diagnostic methodology** (panel-shareable) | [`docs/rga-eval-methodology.md`](docs/rga-eval-methodology.md) |
@@ -32,11 +33,11 @@ Beyond a working Pokémon search UI, this build is a panel-defining demonstratio
 ✅ Phase 6A — RGA model + Semantic Encoder + pipeline associations
 ✅ Phase 6D — RGA Skill Evaluator + dashboard + daily cron + live Vercel deploy
 ✅ Phase 6F — Closed-loop prompt-tuning: analyzer + skill + cron + guardrails
+✅ Phase 7  — Atomic search UI live on Vercel (pokemon-search-one-chi.vercel.app)
 
 ⏳ Phase 6E — Grafana Cloud query observability
 ⏳ Phase 6B — Query Suggest (type-ahead)
 ⏳ Phase 6C — Pokémon Detail Page (Headless + React)
-⏳ Phase 7  — Vercel hosting for the Atomic search UI (only the dashboard is live so far)
 ⏳ Phase 8  — Passage Retrieval API integration (bonus tier)
 ⏳ Phase 8.5 — Coveo MCP server integration (beyond-bonus, scope TBD)
 ⏳ Phase 9  — Presentation #1: Pokémon Challenge (Topic 1 + Topic 2)
