@@ -3,6 +3,7 @@
 Forward Deployed Engineer technical challenge for Coveo. A custom search experience built on the **Coveo Cloud Platform**, indexing [pokemondb.net](https://pokemondb.net) and surfacing it through a custom UI.
 
 **Live:** 🔗 RGA quality dashboard — [pokemon-rga-dashboard.vercel.app](https://pokemon-rga-dashboard.vercel.app)
+**For the panel:** the [RGA Skill Evaluator diagnostic methodology](docs/rga-eval-methodology.md) is the panel-shareable walk-through of how we used the dashboard to identify a prompt-tuning intervention.
 
 ## Status
 
@@ -220,7 +221,9 @@ coveo-pokemon-challenge/
 ├── docs/
 │   ├── api-keys.md              ← how to create the 3 API keys + their privileges
 │   ├── ml-models.md             ← RGA + Semantic Encoder: what, why, how
-│   └── deploy.md                ← GitHub Actions secrets + Vercel project setup
+│   ├── deploy.md                ← GitHub Actions secrets + Vercel project setup
+│   ├── rga-prompt.md            ← version-controlled RGA Custom Prompt text + rationale
+│   └── rga-eval-methodology.md  ← six-stage diagnostic loop (panel-shareable)
 │
 ├── config/                      ← versioned Coveo configuration
 │   ├── README.md                  (intro + glossary)
