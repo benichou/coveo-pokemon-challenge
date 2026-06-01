@@ -124,6 +124,9 @@ jobs:
           esac
 
       - name: Show what was written
+        # Pure diagnostic — never let a jq quirk or missing file fail the workflow.
+        # The orchestrator and the commit step are the load-bearing parts.
+        continue-on-error: true
         run: |
           echo "Orchestrator exit code: ${{ steps.run.outputs.rc }}"
           echo "---"
@@ -132,7 +135,8 @@ jobs:
           echo "---"
           if [ -d logs/closed-loop ]; then
             echo "Latest log:"
-            ls -t logs/closed-loop/ | head -1 | xargs -I{} cat logs/closed-loop/{} | jq '{started_at, exit_code, rollback_decision, guardrails, applied_to_coveo: .apply_returncode == 0}'
+            LATEST=$(ls -t logs/closed-loop/ | head -1)
+            cat "logs/closed-loop/${LATEST}" | jq '{started_at, exit_code, rollback_decision, guardrails, apply_returncode}'
           fi
 
       - name: Commit + push results
