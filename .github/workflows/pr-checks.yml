@@ -1,0 +1,134 @@
+# CI checks for pull requests + direct pushes to main.
+#
+# This workflow is the "everything must be green before it merges" gate.
+# It runs:
+#   - pre-commit hooks (ruff lint + format + file hygiene) — same suite as local
+#   - Python unit tests for rga-eval/ + rga-closed-loop/ (matrix)
+#   - TypeScript build for rga-dashboard/ (catches type errors + build failures)
+#   - Secret scan via TruffleHog (defense against accidental credential commits —
+#     particularly relevant given the IDE auto-share-selection pattern that has
+#     leaked credentials into chat 6 times during the build)
+#
+# What this does NOT run:
+#   - tests/ integration suite — those tests hit the live Coveo org and would
+#     require uploading the 5 API keys as GH Secrets to a public-PR-triggerable
+#     workflow, which is a security trade-off we explicitly don't want.
+#   - npm/Python install audits (npm audit, pip-audit) — not worth the false
+#     positive noise on a personal repo. Can add later if we want.
+#   - eval / closed-loop crons — those have their own scheduled workflows
+#     (rga-eval-daily.yml, closed-loop-daily.yml). PR checks are CI, not cron.
+#
+# Recommended branch-protection settings on main (configure in GitHub UI →
+# Settings → Branches → Add rule for `main`):
+#   - Require status checks to pass before merging
+#   - Required checks: pre-commit, python-tests (rga-eval), python-tests (rga-closed-loop),
+#     dashboard-build, secret-scan
+#   - Require branches to be up to date before merging
+#   - Restrict force pushes (but allow them for the repo owner if needed)
+# The github-actions[bot]'s daily commits bypass branch protection (admins only),
+# so the cron's audit-log commits will continue landing without going through CI.
+
+name: PR checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Stop redundant runs when a PR gets new commits; the latest commit's check is what matters.
+concurrency:
+  group: pr-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read   # read-only; no writes from this workflow
+
+jobs:
+  # ---------- Hooks ----------
+
+  pre-commit:
+    name: Pre-commit hooks (ruff lint + format + file hygiene)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install pre-commit
+        run: pip install pre-commit
+      - name: Run all hooks
+        # Run against all files (not just the diff) so the CI gate covers the
+        # full repo state — protects against partial-commit drift.
+        run: pre-commit run --all-files --show-diff-on-failure
+
+  # ---------- Python tests ----------
+
+  python-tests:
+    name: Python tests (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false  # if one project fails, still report the other
+      matrix:
+        project:
+          - rga-eval
+          - rga-closed-loop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.5.20"
+          enable-cache: true
+      - run: uv python install 3.13
+      - name: Install deps
+        working-directory: ${{ matrix.project }}
+        run: uv sync --frozen
+      - name: Run pytest
+        working-directory: ${{ matrix.project }}
+        run: uv run pytest -v
+
+  # ---------- Frontend ----------
+
+  dashboard-build:
+    name: rga-dashboard TypeScript + build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: rga-dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: rga-dashboard/package-lock.json
+      - name: Install deps
+        run: npm ci
+      - name: Build (runs tsc + vite build)
+        # `npm run build` is `tsc -b && vite build` — fails on any TS error,
+        # missing eval-runs/*-full.json, or build-time failures.
+        run: npm run build
+
+  # ---------- Secret scan ----------
+
+  secret-scan:
+    name: Secret scan (TruffleHog)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # TruffleHog needs the full history to scan all commits, not just HEAD.
+          fetch-depth: 0
+      - name: TruffleHog secret scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.pull_request.base.sha || github.event.before }}
+          head: ${{ github.event.pull_request.head.sha || github.sha }}
+          # Only fail on verified secrets (TruffleHog actually confirms the secret
+          # is live, not just regex-matches). Reduces false positives massively.
+          extra_args: --only-verified

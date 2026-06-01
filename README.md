@@ -283,7 +283,8 @@ coveo-pokemon-challenge/
 │
 ├── .github/workflows/
 │   ├── rga-eval-daily.yml       ← daily 06:00 UTC RGA eval + manual trigger
-│   └── closed-loop-daily.yml    ← daily 06:30 UTC closed-loop (post-eval) + manual trigger
+│   ├── closed-loop-daily.yml    ← daily 06:30 UTC closed-loop (post-eval) + manual trigger
+│   └── pr-checks.yml            ← on pull_request + push to main: pre-commit + tests + build + TruffleHog
 │
 ├── .claude/                     ← project-scoped Claude Code config
 │   ├── settings.json            ← marker for `--setting-sources project`

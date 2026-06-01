@@ -116,3 +116,37 @@ Total: under $20/month, durable indefinitely.
 **Workflow succeeds but no commit happens** — the eval ran but produced an existing date's file (re-run on the same day). The "Commit + push" step silently exits when `git status` shows no changes — this is by design.
 
 **Vercel deploy succeeds but the new run doesn't appear on the dashboard** — confirm the file is named `YYYY-MM-DD-full.json` (smoke / layerN files are intentionally excluded from the time-series).
+
+---
+
+## Part 4 — Branch protection (recommended, one-time, ~3 min)
+
+To actually enforce the CI checks in `.github/workflows/pr-checks.yml`, configure branch protection on `main`:
+
+1. GitHub → Settings → Branches → **Add branch protection rule**
+2. Branch name pattern: `main`
+3. Enable **Require status checks to pass before merging**
+4. Search and check these required status checks (they appear after the first PR-checks workflow runs once):
+   - `Pre-commit hooks (ruff lint + format + file hygiene)`
+   - `Python tests (rga-eval)`
+   - `Python tests (rga-closed-loop)`
+   - `rga-dashboard TypeScript + build`
+   - `Secret scan (TruffleHog)`
+5. Enable **Require branches to be up to date before merging**
+6. **Restrict force pushes** — but allow admins (so you can still force-push from your own laptop if a history rewrite is needed)
+7. **Allow GitHub Actions to bypass** — the daily eval + closed-loop crons need to commit directly to `main` without going through a PR
+8. **Save**
+
+The PR-checks workflow runs on every `pull_request` AND on direct `push` to main. The cron commits will still go green (the workflow runs after the push, and the checks pass) — they just won't be blocked by review requirements.
+
+### What the PR checks gate against
+
+| Check | Catches |
+|---|---|
+| **pre-commit** | ruff lint errors, formatting drift, trailing whitespace, missing EOF newlines, invalid YAML/JSON, large file commits, merge-conflict markers |
+| **python-tests (rga-eval)** | Eval / schema / metrics regressions |
+| **python-tests (rga-closed-loop)** | Apply script / guardrails regressions (38 unit tests) |
+| **dashboard-build** | TypeScript errors, broken eval-runs glob, build failures |
+| **secret-scan (TruffleHog --only-verified)** | Live API keys accidentally committed (defense against the IDE auto-share-selection pattern) |
+
+`tests/` integration suite is **NOT** in the gate — those tests hit the live Coveo org and would require uploading API keys to a public-PR-triggerable workflow, which we explicitly avoid.
