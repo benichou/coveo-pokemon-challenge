@@ -1,0 +1,43 @@
+{
+  "started_at": "2026-06-01T06:16:02.678424+00:00",
+  "args": {
+    "dry_run": true,
+    "skip_analyzer": false,
+    "no_rollback_check": false
+  },
+  "exit_code": 0,
+  "latest_run": "2026-05-31-full.json",
+  "prior_run": null,
+  "latest_overall_accuracy": 0.62,
+  "current_yaml_version": "1.1.0",
+  "proposal_confidence": 0.75,
+  "proposal_new_prompt_chars": 3375,
+  "proposal_rationale_first200": "The eval run revealed a critical pattern: the model is hallucinating ability mechanics and stat details despite the prompt's grounding instructions. Three failure categories dominate:\n\n**1. Ability me",
+  "guardrails": [
+    {
+      "name": "no_op",
+      "passed": true,
+      "reason": "proposed prompt differs from current"
+    },
+    {
+      "name": "confidence",
+      "passed": false,
+      "reason": "analyzer confidence 0.75 < threshold 0.80"
+    },
+    {
+      "name": "lift_threshold",
+      "passed": true,
+      "reason": "predicted overall_accuracy lift +16.0% \u2265 threshold +5.0%"
+    },
+    {
+      "name": "sanity",
+      "passed": true,
+      "reason": "length 3375 chars; all anchors present"
+    },
+    {
+      "name": "rate_limit",
+      "passed": false,
+      "reason": "last apply was 0d 0h ago (< 3d threshold; 3.0d until next eligible)"
+    }
+  ]
+}
