@@ -1,0 +1,48 @@
+{
+  "started_at": "2026-06-01T11:51:10.840978+00:00",
+  "args": {
+    "dry_run": false,
+    "skip_analyzer": false,
+    "no_rollback_check": false
+  },
+  "exit_code": 0,
+  "latest_run": "2026-06-01-full.json",
+  "prior_run": "2026-05-31-full.json",
+  "latest_overall_accuracy": 0.79,
+  "current_yaml_version": "1.1.0",
+  "rollback_decision": {
+    "should_rollback": false,
+    "reason": "overall accuracy drop -17.0% within tolerance (threshold > 5.0%). No rollback.",
+    "accuracy_drop_pts": -0.17000000000000004
+  },
+  "proposal_confidence": 0.78,
+  "proposal_new_prompt_chars": 2715,
+  "proposal_rationale_first200": "## Rationale for Custom Prompt Refinement (2026-06-01)\n\nThe latest eval run shows a **significant overall improvement** from 62% to 79% accuracy, demonstrating that the current prompt's grounding stra",
+  "guardrails": [
+    {
+      "name": "no_op",
+      "passed": true,
+      "reason": "proposed prompt differs from current"
+    },
+    {
+      "name": "confidence",
+      "passed": false,
+      "reason": "analyzer confidence 0.78 < threshold 0.80"
+    },
+    {
+      "name": "lift_threshold",
+      "passed": true,
+      "reason": "predicted overall_accuracy lift +8.0% \u2265 threshold +5.0%"
+    },
+    {
+      "name": "sanity",
+      "passed": true,
+      "reason": "length 2715 chars; all anchors present"
+    },
+    {
+      "name": "rate_limit",
+      "passed": false,
+      "reason": "last apply was 0d 6h ago (< 3d threshold; 2.7d until next eligible)"
+    }
+  ]
+}
