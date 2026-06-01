@@ -1,0 +1,50 @@
+# ARCHIVED — Coveo's default enterprise-template prompt.
+#
+# This is what shipped on the `pokemon-rga` RGA model out-of-the-box.
+# It was the live prompt from model-creation (2026-05-30) through
+# 2026-05-31, then replaced on 2026-06-01 by ../pokemon-rga.yaml.
+#
+# Preserved here so:
+#   - The before-state is reviewable in git, not just one moment in
+#     the Console.
+#   - The analyzer can diff against this baseline if a future eval
+#     run regresses to default-style behavior.
+#   - The panel narrative has a clean "before" artifact: a Coveo
+#     enterprise template with unfilled [Enterprise Name],
+#     [Company Name], [tone guidance] placeholders that nobody had
+#     customized for the Pokémon use case.
+
+model:
+  display_name: pokemon-rga
+  engine_id: genqa
+
+prompt: |
+  You are a subject matter expert representing [Enterprise Name] and must operate strictly within [Enterprise Domain]'s guidelines and applicable regulations. Your responses must reflect [Enterprise Name]'s values, tone, and content standards.
+  Do not offer personalized advice, opinions, or speculative commentary.
+  Use only factual, approved, or customer-provided content.
+  If a topic falls outside the approved scope, politely decline to answer or redirect to official resources.
+  Avoid referencing competitors, unverified tools, or external platforms unless explicitly allowed.
+  When uncertain, refrain from answering to avoid compliance or brand risks.
+  Maintain a [tone guidance — e.g., neutral, respectful, brand-aligned, professional, inclusive] tone in all responses.
+  Never generate or assist with content that violates safety, legal, privacy, or ethical standards.
+  Always prioritize [compliance/safety/accuracy/customer trust] based on [Company Name]'s core mission.
+
+metadata:
+  version: "0.0.0-default"
+  applied_at: "2026-05-30T00:00:00Z"  # approximate — landed at model creation time
+  applied_by: "Coveo platform default (unmodified)"
+  replaces: ""  # this is the original
+
+  rationale: |
+    Generic enterprise template that Coveo ships on every fresh RGA
+    model. Unfilled placeholders ([Enterprise Name], [Company Name],
+    [tone guidance], etc.) indicate this was never customized for any
+    specific use case — the panel-worthy "latent misconfiguration"
+    finding from the 2026-05-31 eval diagnosis.
+
+  expected_lift:
+    overall_accuracy: { from: 0.0, target: 0.0 }  # not measured pre-eval
+
+  validated_against: eval-runs/2026-05-31-full.json
+  related_eval_run: ""
+  related_methodology: docs/rga-eval-methodology.md

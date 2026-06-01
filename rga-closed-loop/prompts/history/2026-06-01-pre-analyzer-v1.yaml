@@ -1,0 +1,67 @@
+# Current live RGA Custom Prompt for the pokemon-rga model.
+#
+# Layout choice:
+#   - This file is the SOURCE OF TRUTH for the live prompt.
+#   - `src/apply.py` reads this file and PUTs `prompt` to Coveo's
+#     /machinelearning/models/{id} endpoint (field path:
+#     extraConfig.additionalAnswerInstructions).
+#   - `src/analyzer.py` reads this file's metadata alongside
+#     eval-runs/*-full.json to detect "this change failed to deliver"
+#     patterns when proposing the next prompt iteration.
+#
+# When this file changes:
+#   - Copy the OLD version into history/YYYY-MM-DD-<slug>.yaml first.
+#   - Update `metadata.applied_at`, `metadata.applied_by`, and
+#     `metadata.replaces` (point at the history file you just wrote).
+#   - The PR review + the apply script's --apply flag together gate
+#     the change reaching Coveo.
+
+model:
+  display_name: pokemon-rga
+  engine_id: genqa
+
+prompt: |
+  You answer Pokémon questions using ONLY the retrieved source documents from pokemondb.net and PokéAPI. Treat the retrieved content as the sole source of truth.
+
+  Hard rules:
+  1. Every factual claim must be directly supported by content in the retrieved sources. Do not introduce facts from outside knowledge.
+  2. If a source identifies an entity by name (e.g., an ability name in a vitals table) but does not describe its mechanic or details, state ONLY what is in the source. Do not infer, expand, or describe mechanics from general knowledge.
+  3. When the sources do not contain the answer to the asked question, say so explicitly with phrasing like: "The retrieved sources confirm [name] is one of [Pokémon]'s abilities but do not describe its in-battle mechanic." Do not invent.
+  4. Cite the source document for each factual claim using inline citations.
+  5. Prefer short, exact answers over long elaborations. If the question can be answered in one sentence, do so.
+
+  Style: terse, factual, no embellishment. When asked about Pokémon types, abilities, generations, stats, or evolutions — answer only what the sources support. When the sources don't cover a question, refuse cleanly rather than guessing.
+
+metadata:
+  version: "1.0.0"
+  applied_at: "2026-06-01T00:00:00Z"
+  applied_by: "Franck (manual via Console — automated from v1.0.1 onward via src/apply.py)"
+  replaces: history/2026-05-31-default.yaml
+
+  rationale: |
+    Address the +85-pt accuracy/recall gap on Layer-1 ability-lookup
+    surfaced by the 2026-05-31 eval (eval-runs/2026-05-31-full.json).
+    RGA was correctly naming abilities (95% hard-recall) but fabricating
+    their mechanics (10% accuracy). Root cause: indexed pokemondb pages
+    list ability NAMES in the vitals table but mechanic descriptions
+    live on un-indexed /ability/<name> pages — RGA had no source
+    content for mechanics and fell back to LLM general knowledge.
+
+    This prompt tells RGA to ground every factual claim in retrieved
+    content and to refuse cleanly when the source doesn't cover the
+    asked detail. The LLM judge counts honest refusals as correct,
+    so refusal accuracy ≈ a high lift category-by-category.
+
+  expected_lift:
+    overall_accuracy:        { from: 0.62, target: 0.78 }
+    layer_1_ability_lookup:  { from: 0.10, target: 0.70 }
+    layer_1_stat_lookup:     { from: 0.40, target: 0.80 }
+    layer_1_type_lookup:     { from: 0.93, target: 0.93 }  # already saturated, no change expected
+    layer_1_generation:      { from: 0.90, target: 0.90 }  # same
+
+  # Filled in by the analyzer after the first post-change eval.
+  # Format: relative path to the eval-runs JSON that measured this version.
+  validated_against: ""
+
+  related_eval_run: eval-runs/2026-05-31-full.json
+  related_methodology: docs/rga-eval-methodology.md

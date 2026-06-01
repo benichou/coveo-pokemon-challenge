@@ -171,6 +171,23 @@ The skill is defined in `.claude/skills/rga-eval/SKILL.md` and uses the pretty-p
 
 What the eval does is documented in detail at the top of `~/.claude/plans/so-we-are-supposed-purrfect-bachman.md` (Phase 6D). Headline: it runs 100 hand-crafted Pokemon questions against Coveo's RGA endpoint, computes accuracy + precision + hard-recall using a Claude Sonnet 4.6 LLM-as-judge (with Pydantic-enforced structured output), and writes daily snapshots to `eval-runs/YYYY-MM-DD-<mode>.json`. Only `*-full.json` files feed the dashboard; smoke / layer-scan runs are diagnostic.
 
+## Claude Code skill: `/rga-closed-loop`
+
+Companion to `/rga-eval`. Drives the **closed-loop prompt-tuning** system (Phase 6F): runs an LLM-assisted analyzer against the latest eval, proposes refinements to the RGA Custom Prompt, and applies approved changes to Coveo via REST API. Invoke from inside Claude Code:
+
+```
+/rga-closed-loop              # current state: YAML version + live-Coveo diff
+/rga-closed-loop analyze      # run analyzer → show proposal → ASK to apply → if approved, archive + update YAML + PUT to Coveo
+/rga-closed-loop apply        # apply current YAML to Coveo (no analyzer — use after manual YAML edits)
+/rga-closed-loop force        # apply with --force (write-path drills, rollback re-sync)
+/rga-closed-loop verify       # read-only check that live Coveo matches the YAML byte-for-byte
+/rga-closed-loop rollback <date>  # restore prompts/history/<date>-*.yaml, then ask to apply
+```
+
+`analyze` is the closed-loop one-shot: analyzer reads latest eval-run + identifies regressed categories + samples failing answers + calls Sonnet 4.6 with tool-use forcing → returns a structured `PromptProposal` (new prompt + rationale + expected lift + sample before/after answers + confidence). The skill shows you the proposal, asks for explicit approval, and only on yes archives the current YAML to `prompts/history/`, updates `prompts/pokemon-rga.yaml`, runs `apply.py --apply` to PUT to Coveo, and verifies via re-fetch.
+
+**The skill is the interactive driver. A future autonomous cron driver (Phase 6F.5) would replace the interactive gate with rule-based guardrails (confidence threshold, rate limit, auto-rollback on next-day regression). Both drivers share the same `rga-closed-loop/src/analyzer.py` + `apply.py` core.**
+
 ## RGA quality dashboard
 
 **🔗 Live dashboard: [pokemon-rga-dashboard.vercel.app](https://pokemon-rga-dashboard.vercel.app)**
@@ -216,7 +233,8 @@ coveo-pokemon-challenge/
 │   ├── settings.json            ← marker for `--setting-sources project`
 │   ├── mcp.json                 ← project-scoped MCP server set (currently empty)
 │   └── skills/
-│       └── rga-eval/SKILL.md    ← /rga-eval slash command
+│       ├── rga-eval/SKILL.md    ← /rga-eval slash command
+│       └── rga-closed-loop/SKILL.md  ← /rga-closed-loop slash command (Phase 6F)
 │
 ├── docs/
 │   ├── api-keys.md              ← how to create the 3 API keys + their privileges
@@ -281,6 +299,20 @@ coveo-pokemon-challenge/
 │   │       ├── CategoryBreakdown.tsx ← worst-category-first accuracy table
 │   │       └── FailuresTable.tsx     ← per-question drill-down with judge reasoning
 │   └── vercel.json
+│
+├── rga-closed-loop/             ← Phase 6F: closed-loop RGA prompt-tuning
+│   ├── README.md                ← panel-shareable overview of the loop
+│   ├── pyproject.toml + uv.lock
+│   ├── prompts/
+│   │   ├── pokemon-rga.yaml     ← CURRENT live prompt + structured metadata (YAML, single source of truth)
+│   │   └── history/             ← previous prompt versions, dated YAMLs
+│   │       └── 2026-05-31-default.yaml  ← the Coveo default we replaced
+│   ├── src/
+│   │   ├── schemas.py           ← Pydantic: PromptVersion + PromptProposal
+│   │   ├── apply.py             ← Layer 1: PUT prompt to Coveo (dry-run default, --apply to write)
+│   │   ├── analyzer.py          ← Layer 2: LLM-proposed prompt deltas (Phase 6F.3, coming)
+│   │   └── pr_opener.py         ← Layer 2: open PR with proposal (Phase 6F.4, coming)
+│   └── tests/test_apply.py      ← 9 unit tests, respx-mocked, no live Coveo calls
 │
 └── tests/                       ← pytest + httpx integration tests (21 tests, ~3s)
     ├── README.md                  (intro + glossary)

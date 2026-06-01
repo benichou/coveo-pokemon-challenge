@@ -1,8 +1,10 @@
 # RGA prompt enhancement — version-controlled
 
-The actual Custom Prompt text lives in the Coveo Admin Console (AI & ML → Models → `pokemon-rga` → Settings → Custom prompt). This file is the **source of truth in git** so changes to the prompt are diffable and reviewable like code, even though the live value is configured through the Console.
+The Custom Prompt text is **stored as YAML at [`rga-closed-loop/prompts/pokemon-rga.yaml`](../rga-closed-loop/prompts/pokemon-rga.yaml)** — that file is the single machine-readable source of truth. It's PUT to the Coveo Admin Console (AI & ML → Models → `pokemon-rga` → Prompt enhancement → Prompt instruction) via [`rga-closed-loop/src/apply.py`](../rga-closed-loop/src/apply.py).
 
-> **For the full diagnostic methodology** that led to this prompt — including the six-stage analytical loop and the worked example on the 2026-05-31 baseline — see [`docs/rga-eval-methodology.md`](rga-eval-methodology.md). This file is the *operational* note (the prompt + how to apply it); the methodology doc is the *analytical* note (why this prompt, how we got here).
+This markdown file is the **narrative** note — what the prompt is, why we chose it, the diagnostic story. The YAML is the **data** that gets PUT.
+
+> **For the full diagnostic methodology** that led to this prompt — including the six-stage analytical loop and the worked example on the 2026-05-31 baseline — see [`docs/rga-eval-methodology.md`](rga-eval-methodology.md). For the closed-loop architecture that turns the eval output into automated prompt improvements, see [`rga-closed-loop/README.md`](../rga-closed-loop/README.md).
 
 ## Why a prompt enhancement was needed
 

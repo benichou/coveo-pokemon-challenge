@@ -1,0 +1,139 @@
+model:
+  display_name: pokemon-rga
+  engine_id: genqa
+prompt: 'You answer Pokémon questions using ONLY the retrieved source documents from pokemondb.net and PokéAPI. Treat the
+  retrieved content as the sole source of truth.
+
+
+  Hard rules:
+
+  1. Every factual claim must be directly supported by content in the retrieved sources. Do not introduce facts from outside
+  knowledge.
+
+  2. If a source identifies an entity by name (e.g., an ability name in a vitals table) but does not describe its mechanic
+  or details, state ONLY what is in the source. Do not infer, expand, or describe mechanics from general knowledge.
+
+  3. When the sources do not contain the answer to the asked question, say so explicitly with phrasing like: "The retrieved
+  sources confirm [name] is one of [Pokémon]''s abilities but do not describe its in-battle mechanic." Do not invent.
+
+  4. Cite the source document for each factual claim using inline citations.
+
+  5. Prefer short, exact answers over long elaborations. If the question can be answered in one sentence, do so.
+
+  6. CRITICAL: When asked about ability mechanics, stat values, or any game mechanics, quote or paraphrase the source exactly.
+  If the source does not explain the mechanic, say so — never supply the explanation from your general knowledge.
+
+  7. Base stats are fixed species values (e.g., "Shuckle''s base Defense is 230"). Do not confuse base stats with calculated
+  stats at specific levels, natures, EVs, or IVs. Answer only what the source states.
+
+  8. For incomplete or keyword-only queries (e.g., "pikachu electric type" or "mewtwo legendary psychic"), ask for clarification
+  instead of providing a full encyclopedic response. Example: "Could you clarify what you''d like to know about [Pokémon]?"
+
+
+  Style: terse, factual, no embellishment. When asked about Pokémon types, abilities, generations, stats, or evolutions —
+  answer only what the sources support. When the sources don''t cover a question, refuse cleanly rather than guessing.'
+metadata:
+  version: 1.1.0
+  applied_at: '2026-06-01T05:49:15Z'
+  applied_by: Franck via /rga-closed-loop skill (analyzer-proposed, Sonnet 4.6, confidence=0.78)
+  replaces: history/2026-06-01-pre-analyzer-v1.yaml
+  rationale: '## Rationale for Prompt Refinement
+
+
+    This proposal addresses three critical failure modes revealed by the first full eval run (62.0% accuracy):
+
+
+    ### 1. **Ability Mechanic Hallucinations (ability-lookup: 10.0% accuracy)**
+
+
+    The worst-performing category shows a pervasive pattern: the model correctly identifies ability *names* from source tables
+    but then fabricates their in-game effects from general knowledge. Examples:
+
+
+    - **Gengar/Cursed Body**: Claimed it "lowers opponent''s Sp. Def by one stage when it makes contact" when Cursed Body
+    actually disables moves with 30% chance when hit.
+
+    - **Alakazam/Synchronize**: Claimed it "increases the chance of causing status conditions" when it actually reflects status
+    conditions back to the inflictor.
+
+    - **Alakazam/Magic Guard**: Claimed it "reduces damage from physical moves" when it actually prevents indirect damage
+    (weather, hazards, status).
+
+    - **Gyarados/Moxie**: Claimed it "increases Special Attack when HP drops below half" when it actually boosts Attack after
+    knocking out an opponent.
+
+
+    **Root cause**: Rule 2 in the current prompt warns against inferring mechanics, but the model is not following it strictly.
+    The new prompt adds **Rule 6** as a more forceful, specific instruction: *"When asked about ability mechanics... quote
+    or paraphrase the source exactly. If the source does not explain the mechanic, say so — never supply the explanation from
+    your general knowledge."* This elevates the existing rule-2 guidance to a CRITICAL directive and makes the distinction
+    between "name in source" vs. "mechanic in source" explicit.
+
+
+    ### 2. **Base Stat Confusion & Hallucination (stat-lookup: 40.0% accuracy)**
+
+
+    Three out of five stat-lookup questions failed:
+
+
+    - **Blissey HP**: Claimed "base HP is 100" when it''s actually 255 (the highest in the game).
+
+    - **Shuckle Defense**: Correctly stated "230" but then incorrectly *defined* what a base stat is, claiming it "represents
+    the base defense stat at level 100, assuming beneficial nature, 252 EVs, and 31 IVs" — confusing base stats (fixed species
+    values) with calculated stats.
+
+    - **Deoxys Speed**: Correctly stated Speed Form''s base speed (180) but hallucinated the base speeds of other forms (claimed
+    Attack/Defense both have 274; Normal has 150 — all wrong).
+
+
+    **Root cause**: The model is either misreading source data or filling gaps with general knowledge. The new prompt adds
+    **Rule 7** to clarify base stat semantics: *"Base stats are fixed species values... Do not confuse base stats with calculated
+    stats at specific levels, natures, EVs, or IVs. Answer only what the source states."* This directly targets the Shuckle
+    confusion and reinforces the "only what the source says" discipline for numeric claims.
+
+
+    ### 3. **Keyword-Only Query Over-Answering (keyword-only-not-question: 33.3% accuracy)**
+
+
+    Two sample failures show the model treating incomplete fragments ("pikachu electric type", "mewtwo legendary psychic")
+    as invitations to write encyclopedic summaries, violating the `rga_should_fire=False` intent and introducing hallucinations
+    in the process (e.g., Pikachu''s Defense stated as 30 when it''s 40).
+
+
+    **Root cause**: The current prompt emphasizes *how* to answer but not *when to refuse*. The new prompt adds **Rule 8**:
+    *"For incomplete or keyword-only queries... ask for clarification instead of providing a full encyclopedic response."*
+    This gives the model explicit permission and language to handle ambiguous input gracefully.
+
+
+    ---
+
+
+    ## Summary of Changes
+
+
+    - **Rule 6 (new)**: Elevates rule 2''s intent to a CRITICAL directive specifically for ability/mechanic descriptions.
+    Forces strict quoting/paraphrasing discipline.
+
+    - **Rule 7 (new)**: Clarifies base stat semantics to prevent confusion between base stats and calculated stats; reinforces
+    source-only discipline for numeric claims.
+
+    - **Rule 8 (new)**: Instructs model to ask for clarification on keyword-only or incomplete queries instead of over-answering.
+
+
+    All three rules are additive and preserve the existing grounding, citation, and refusal requirements that remain non-negotiable.'
+  expected_lift:
+    ability-lookup:
+      from: 0.1
+      target: 0.75
+    stat-lookup:
+      from: 0.4
+      target: 0.8
+    keyword-only-not-question:
+      from: 0.33
+      target: 0.67
+    overall_accuracy:
+      from: 0.62
+      target: 0.78
+  validated_against: ''
+  related_eval_run: eval-runs/2026-05-31-full.json
+  related_methodology: docs/rga-eval-methodology.md
