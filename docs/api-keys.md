@@ -1,20 +1,21 @@
-# Coveo API keys — how to (re)create them
+# API keys — how to (re)create them
 
-This project uses **five Coveo API keys**, one per role, following a least-privilege pattern. Each key is created manually in the Coveo Admin Console (Coveo deliberately doesn't let API key creation itself be scripted — the key's secret value is shown to a human exactly once, then never again).
+This project uses **five Coveo API keys** (one per role, least-privilege) plus **one Anthropic API key** (for the LLM-as-judge in Phase 6D and the closed-loop analyzer in Phase 6F). Each is created manually in its respective console — both Coveo and Anthropic show the secret value to a human exactly once at creation, then never again.
 
-This document is the **single source of truth** for what those keys are, what they should be allowed to do, and how to recreate them on a fresh org. If you're onboarding to this repo, follow it top-to-bottom and you'll end up with a working `.env` ready for `scripts/bootstrap.sh`.
+This document is the **single source of truth** for what those keys are, what they should be allowed to do, and how to recreate them on a fresh setup. If you're onboarding to this repo, follow it top-to-bottom and you'll end up with a working `.env` ready for `scripts/bootstrap.sh`.
 
 ## TL;DR
 
-| Key in `.env` | Console name | Coveo template | What it's for |
+| Key in `.env` | Provider / Console name | Template / Scope | What it's for |
 |---|---|---|---|
-| `COVEO_PUSH_API_KEY` | `pokemon-push-source` | **Push API** | Used by the Python ingestion pipeline (Phase 4) to push documents into Source B. Never used in the browser. |
-| `COVEO_ADMIN_API_KEY` | `pokemon-source-admin` | **Custom** (Sources + Fields Edit) | Used by the bash scripts in `scripts/` to manage source config, mappings, fields, and rebuilds. Never used in the browser. *Note: this key does NOT have Machine Learning Models: Edit — that's a separate scope that lives on the dedicated key below.* |
-| `COVEO_SEARCH_API_KEY` | `pokemon-search` | **Anonymous search** | Used by the automated tests in `tests/`, by the Atomic UI in the browser, AND by the RGA evaluator's `/generate` calls (Anonymous Search includes Search.Execute Query + Answer Manager:Use, which the RGA streaming endpoint requires). Safe to embed in browser-side code. |
-| `COVEO_RGA_JUDGE_API_KEY` | `pokemon-rga-judge` | **Custom** (Knowledge.Answer Manager: Edit) | Used by the RGA Skill Evaluator (Phase 6D) to **discover the answer-config id** at startup. NOT used for generation (that needs Search.Execute Query, which this key doesn't have — discovery is the only thing it does). |
-| `COVEO_ML_MODELS_API_KEY` | `pokemon-ml-models-editor` | **Custom** (Machine Learning Models: Edit) | Used by the **Phase 6F closed-loop apply script** (`rga-closed-loop/src/apply.py`) to PUT RGA Custom Prompt updates to `/machinelearning/models/{id}`. Minted 2026-06-01 after the 6F.1 spike empirically found that the admin key's Sources+Fields scope didn't include ML Models:Edit (got a 403 on PUT despite working for GET). Least-privilege key — only ML model read/write, nothing else. |
+| `COVEO_PUSH_API_KEY` | Coveo / `pokemon-push-source` | **Push API** | Used by the Python ingestion pipeline (Phase 4) to push documents into Source B. Never used in the browser. |
+| `COVEO_ADMIN_API_KEY` | Coveo / `pokemon-source-admin` | **Custom** (Sources + Fields Edit) | Used by the bash scripts in `scripts/` to manage source config, mappings, fields, and rebuilds. Never used in the browser. *Note: this key does NOT have Machine Learning Models: Edit — that's a separate scope that lives on the dedicated key below.* |
+| `COVEO_SEARCH_API_KEY` | Coveo / `pokemon-search` | **Anonymous search** | Used by the automated tests in `tests/`, by the Atomic UI in the browser, AND by the RGA evaluator's `/generate` calls (Anonymous Search includes Search.Execute Query + Answer Manager:Use, which the RGA streaming endpoint requires). Safe to embed in browser-side code. |
+| `COVEO_RGA_JUDGE_API_KEY` | Coveo / `pokemon-rga-judge` | **Custom** (Knowledge.Answer Manager: Edit) | Used by the RGA Skill Evaluator (Phase 6D) to **discover the answer-config id** at startup. NOT used for generation (that needs Search.Execute Query, which this key doesn't have — discovery is the only thing it does). |
+| `COVEO_ML_MODELS_API_KEY` | Coveo / `pokemon-ml-models-editor` | **Custom** (Machine Learning Models: Edit) | Used by the **Phase 6F closed-loop apply script** (`rga-closed-loop/src/apply.py`) to PUT RGA Custom Prompt updates to `/machinelearning/models/{id}`. Minted 2026-06-01 after the 6F.1 spike empirically found that the admin key's Sources+Fields scope didn't include ML Models:Edit (got a 403 on PUT despite working for GET). Least-privilege key — only ML model read/write, nothing else. |
+| `ANTHROPIC_API_KEY` | Anthropic / personal account | **Workspace-scoped** (limited spend, no admin) | Used by `rga-eval/src/llm_judge.py` (Sonnet 4.6 LLM-as-judge for the 100-Q eval) and `rga-closed-loop/src/analyzer.py` (closed-loop prompt-refinement analyzer). **Personal Anthropic account, NOT a corporate / enterprise key** — using corporate AI vendor keys on a personal GitHub repo is an audit/compliance concern (see `~/.claude/rules/security.md`). Free $5 signup credit covers most of the build phase. |
 
-All five keys are stored in the gitignored `.env` at the repo root. **Never commit them.**
+All six keys are stored in the gitignored `.env` at the repo root. **Never commit them.**
 
 ## Why five keys instead of one
 
@@ -145,7 +146,51 @@ Leave everything else off. This key only reads/writes ML models — it can't que
 
 > **History note (2026-06-01):** Originally Phase 6F's plan said "reuse the admin key, no new key needed." The 6F.1 spike empirically found that wrong — the admin key has `Sources + Fields Edit` but not `ML Models Edit`, so its PUT to `/machinelearning/models/{id}` returned 403. The fix was to mint this dedicated key with exactly the right scope (and nothing else). A useful diagnostic moment: we verified an architectural assumption before shipping.
 
-## After all five keys are in `.env`
+## Key 6 — Anthropic API key (personal, not Coveo)
+
+This is the only non-Coveo key in `.env`. Used by the LLM-as-judge (Phase 6D) and the closed-loop analyzer (Phase 6F).
+
+| Setting | Value |
+|---|---|
+| **Provider** | Anthropic (https://console.anthropic.com) |
+| **Account** | **Personal** — sign up with a personal email, not a corporate SSO |
+| **`.env` variable** | `ANTHROPIC_API_KEY` |
+| **GH Secret name** | `ANTHROPIC_API_KEY` (also needed in GitHub Actions for the daily cron) |
+
+### Why a personal account, not corporate
+
+Using a corporate AI vendor key (e.g., Carta's enterprise Anthropic key) on a **personal GitHub repo intended for a Coveo job application** is an audit + compliance concern. Three reasons:
+
+1. **Audit trail.** Corporate Anthropic usage gets logged against your employer's account. Personal-project tokens showing up in the audit log invite questions you don't want.
+2. **Cost attribution.** Personal project work shouldn't bill against the employer's enterprise contract.
+3. **`~/.claude/rules/security.md`** — Carta's security policy explicitly flags this pattern.
+
+The free $5 signup credit covers most of the build phase. Cost forecast: ~$0.55/day if the daily eval cron runs every day (Sonnet 4.6, ~$0.006 per question × 100 questions × 1 run/day) plus ~$0.04 per closed-loop analyzer run. Roughly ~$18/month worst-case at full daily cadence.
+
+### Step-by-step
+
+1. Open https://console.anthropic.com → sign up with a **personal email** (not your employer's)
+2. Settings → **API keys** → **Create key**
+3. Name: `pokemon-rga` (or whatever; it's only for your reference)
+4. **Workspace:** Default
+5. **Permissions:** "User" is fine (you're the only consumer)
+6. Click **Create key**
+7. ⚠️ **Copy the secret value from the modal.** Anthropic only shows it once, exactly like Coveo.
+8. Paste into `.env` as `ANTHROPIC_API_KEY=sk-ant-api03-...`
+9. Also add it to **GitHub Actions Secrets** (Settings → Secrets and variables → Actions → New repository secret → name `ANTHROPIC_API_KEY`). Both must match for the daily cron to work.
+
+### Rotation cadence
+
+Anthropic doesn't expire keys by default. Rotate proactively:
+- **Every 90 days** as a baseline
+- **Immediately** if the key value ever appears in chat or logs (the IDE auto-share-selection pattern on `.env` files has triggered this several times during the build — see the recurring security flag in project memory)
+- **Immediately** if the GitHub Actions Secret gets rotated for any reason (the two must always match)
+
+### Cost monitoring
+
+Anthropic's console shows daily / monthly usage. Set a billing alert at $25/month so unexpected runaway usage triggers an email. With the daily cron + closed-loop, normal cadence is ~$18/month worst case.
+
+## After all six keys are in `.env`
 
 Run the validator:
 
@@ -171,11 +216,13 @@ If all keys pass, you're ready to run `scripts/bootstrap.sh` (push + admin keys)
 | `pokemon-search` | Same procedure. **However, this key is publicly visible in any deployed Atomic app.** That's by design — Anonymous Search keys are meant to be public. The mitigations are the privilege scope (it can only query and send analytics) and Coveo's per-key rate limits, not secrecy. |
 | `pokemon-rga-judge` | Same procedure. RGA eval stops working until rotated. Blast radius limited to listing/editing answer configs. |
 | `pokemon-ml-models-editor` | Same procedure. Closed-loop apply script stops working until rotated. Blast radius limited to reading/writing ML models (no source / push / search access). |
+| `ANTHROPIC_API_KEY` | Revoke at https://console.anthropic.com → API keys → … menu → Delete. Mint a fresh key. Update **both** `.env` AND the GitHub Actions Secret (they must match). Eval cron + closed-loop analyzer stop until both are updated. Blast radius limited to Anthropic API spend on the personal account (no Coveo / no Carta exposure). |
 
 ## What's deliberately NOT in this document
 
-- The key values themselves. Those live in `.env` (gitignored) and Coveo's Admin Console. If a key value is in this file, the file is wrong.
+- The key values themselves. Those live in `.env` (gitignored) and the respective consoles. If a key value is in this file, the file is wrong.
 - Org-level features (Passage Retrieval, RGA). Those are licensed by Coveo and enabled by Coveo support after a request; not a per-developer action. See top-level README for the enablement email pattern.
+- Anthropic billing setup. Just enough is covered above to mint a working key; full billing / spend-cap / team-seat configuration is the user's call.
 
 ---
 
