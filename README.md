@@ -186,7 +186,24 @@ Companion to `/rga-eval`. Drives the **closed-loop prompt-tuning** system (Phase
 
 `analyze` is the closed-loop one-shot: analyzer reads latest eval-run + identifies regressed categories + samples failing answers + calls Sonnet 4.6 with tool-use forcing → returns a structured `PromptProposal` (new prompt + rationale + expected lift + sample before/after answers + confidence). The skill shows you the proposal, asks for explicit approval, and only on yes archives the current YAML to `prompts/history/`, updates `prompts/pokemon-rga.yaml`, runs `apply.py --apply` to PUT to Coveo, and verifies via re-fetch.
 
-**The skill is the interactive driver. A future autonomous cron driver (Phase 6F.5) would replace the interactive gate with rule-based guardrails (confidence threshold, rate limit, auto-rollback on next-day regression). Both drivers share the same `rga-closed-loop/src/analyzer.py` + `apply.py` core.**
+### Autonomous cron driver (Phase 6F.5)
+
+The skill is the **interactive** driver. There's also an **autonomous** driver: `.github/workflows/closed-loop-daily.yml` triggers after `rga-eval-daily.yml` completes, runs `rga-closed-loop/src/closed_loop_run.py`, and applies analyzer-proposed changes automatically — gated by **`rga-closed-loop/src/guardrails.py`** instead of human review.
+
+The guardrails:
+
+| Guard | Default threshold | What it prevents |
+|---|---|---|
+| **Confidence** | analyzer self-rated ≥ 0.80 | Vibes-based suggestions |
+| **No-op** | proposal differs from current | Wasting a Coveo API call |
+| **Lift threshold** | predicted overall_accuracy lift ≥ +5pts | Trivial churn |
+| **Sanity** | prompt ≥ 500 chars + contains "retrieved" + "source" | Catastrophic analyzer collapse to defaults |
+| **Rate limit** | last apply ≥ 3 days ago | Compounding bad changes |
+| **Auto-rollback** | next-day eval > 5pt drop within 36h of apply | Bad change silently degrading prod |
+
+If any guard fails, the cron logs the proposal to `logs/closed-loop/` and exits clean — no write. If the rollback guard fires, the cron auto-reverts to the prior YAML in `prompts/history/` and applies that.
+
+Both drivers (skill + cron) share the same `analyzer.py` + `apply.py` core. The skill is human-gated; the cron is guardrail-gated.
 
 ## RGA quality dashboard
 
@@ -228,7 +245,8 @@ coveo-pokemon-challenge/
 ├── .vscode/                     ← shared workspace settings (settings, launch, extensions)
 ├── .github/
 │   └── workflows/
-│       └── rga-eval-daily.yml   ← daily 06:00 UTC RGA eval cron + manual trigger
+│       ├── rga-eval-daily.yml      ← daily 06:00 UTC RGA eval cron + manual trigger
+│       └── closed-loop-daily.yml   ← Phase 6F.5: closed-loop cron (triggers after rga-eval-daily)
 ├── .claude/                     ← project-scoped Claude Code config
 │   ├── settings.json            ← marker for `--setting-sources project`
 │   ├── mcp.json                 ← project-scoped MCP server set (currently empty)

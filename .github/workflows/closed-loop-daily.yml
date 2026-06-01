@@ -1,0 +1,162 @@
+# Daily RGA closed-loop prompt-tuning cron.
+#
+# Triggered after the daily eval cron lands its commit. Reads the latest
+# eval run, decides whether to:
+#   - auto-rollback (if the previous apply caused a regression)
+#   - propose-and-apply (if the analyzer is confident + guards pass)
+#   - skip (the common case — most days, no change is warranted)
+#
+# All four outcomes are logged to logs/closed-loop/ with full audit trail.
+#
+# Where the safety lives:
+#   The PR review gate from my original 6F plan is REPLACED by the guardrails
+#   in rga-closed-loop/src/guardrails.py. The cron only auto-applies when
+#   every guard passes:
+#     - analyzer confidence ≥ 0.80
+#     - predicted overall_accuracy lift ≥ +5pts
+#     - prompt ≥ 500 chars + contains required anchors ("retrieved", "source")
+#     - last apply was ≥ 3 days ago (rate limit)
+#     - proposal is not a no-op
+#   Plus a separate rollback safety net: if the latest eval dropped > 5pts
+#   on overall_accuracy within 36h of an apply, automatically revert.
+#
+# Manual triggers:
+#   workflow_dispatch with `mode=dry-run` runs analyzer + guards but skips
+#   the apply step. Useful for ad-hoc validation without risking a write.
+
+name: RGA closed-loop daily
+
+on:
+  # Fires after the daily eval cron finishes successfully.
+  workflow_run:
+    workflows: ["RGA daily eval"]
+    types: [completed]
+    branches: [main]
+
+  # Manual trigger for ad-hoc runs / panel demos.
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Mode"
+        required: true
+        type: choice
+        default: "dry-run"
+        options:
+          - dry-run       # analyzer + guards, no apply
+          - full          # full cycle: rollback-check + analyze + guard + apply
+          - rollback-only # only the rollback safety check, skip analyzer
+
+concurrency:
+  group: rga-closed-loop-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write  # to commit YAML + history/ + logs/
+
+jobs:
+  closed-loop:
+    name: Run closed-loop cycle
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    # When triggered by workflow_run, only proceed if the upstream eval succeeded.
+    # When triggered manually, always proceed.
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # the rollback path needs the prior commit
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.5.20"
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Install rga-closed-loop deps
+        working-directory: rga-closed-loop
+        run: uv sync --frozen
+
+      - name: Determine orchestrator flags
+        id: flags
+        # Translate workflow_dispatch.mode into closed_loop_run.py CLI flags.
+        # Scheduled runs (workflow_run) default to full mode.
+        run: |
+          MODE="${{ github.event.inputs.mode || 'full' }}"
+          case "$MODE" in
+            dry-run)       echo "args=--dry-run"        >> "$GITHUB_OUTPUT" ;;
+            rollback-only) echo "args=--skip-analyzer"  >> "$GITHUB_OUTPUT" ;;
+            full|*)        echo "args="                 >> "$GITHUB_OUTPUT" ;;
+          esac
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+
+      - name: Run closed-loop orchestrator
+        id: run
+        working-directory: rga-closed-loop
+        env:
+          COVEO_ORG_ID: ${{ secrets.COVEO_ORG_ID }}
+          COVEO_ML_MODELS_API_KEY: ${{ secrets.COVEO_ML_MODELS_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        # The orchestrator returns specific exit codes the steps below read:
+        #   0  = no change (guard failed or no proposal) → commit only logs/
+        #   10 = applied a change → commit YAML + history/ + logs/
+        #   11 = rolled back      → commit YAML + history/ + logs/
+        #   1  = error           → fail the workflow
+        # GitHub Actions treats any non-zero exit as failure by default, so
+        # we capture the code and decide downstream.
+        run: |
+          set +e
+          uv run python src/closed_loop_run.py ${{ steps.flags.outputs.args }}
+          RC=$?
+          set -e
+          echo "rc=$RC" >> "$GITHUB_OUTPUT"
+          # Map orchestrator exit codes to workflow-step success/failure:
+          case "$RC" in
+            0|10|11) exit 0 ;;  # all three are valid outcomes
+            *) exit "$RC" ;;     # surface unexpected codes as failures
+          esac
+
+      - name: Show what was written
+        run: |
+          echo "Orchestrator exit code: ${{ steps.run.outputs.rc }}"
+          echo "---"
+          echo "Working tree status:"
+          git status --short
+          echo "---"
+          if [ -d logs/closed-loop ]; then
+            echo "Latest log:"
+            ls -t logs/closed-loop/ | head -1 | xargs -I{} cat logs/closed-loop/{} | jq '{started_at, exit_code, rollback_decision, guardrails, applied_to_coveo: .apply_returncode == 0}'
+          fi
+
+      - name: Commit + push results
+        # Only commit when the orchestrator actually changed files (exit codes 10 / 11).
+        # On exit code 0, only logs/ is dirty — we still commit so the audit trail lands.
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Working tree clean — nothing to commit."
+            exit 0
+          fi
+          RC="${{ steps.run.outputs.rc }}"
+          case "$RC" in
+            10) MSG_TYPE="apply"    ;;
+            11) MSG_TYPE="rollback" ;;
+            0)  MSG_TYPE="audit"    ;;
+            *)  MSG_TYPE="unknown"  ;;
+          esac
+          DATE="$(date -u +%F)"
+          git add rga-closed-loop/prompts/ logs/closed-loop/ || true
+          git commit -m "closed-loop ${DATE} (${MSG_TYPE})
+
+          Automated daily run from .github/workflows/closed-loop-daily.yml
+          Orchestrator exit code: ${RC}
+          ${{ github.event_name == 'workflow_dispatch' && format('Trigger: manual ({0}, mode={1})', github.actor, steps.flags.outputs.mode) || 'Trigger: workflow_run (post-eval)' }}"
+          git push origin HEAD:${{ github.ref_name }}
