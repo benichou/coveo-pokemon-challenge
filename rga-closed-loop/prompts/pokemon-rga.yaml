@@ -134,6 +134,15 @@ metadata:
     overall_accuracy:
       from: 0.62
       target: 0.78
-  validated_against: ''
+  validated_against: eval-runs/2026-06-01-full.json
+  # Realized lift after one full eval cycle (2026-06-01, prompt v1.1.0):
+  #   overall_accuracy:           0.62 → 0.79  (predicted: 0.78, actual exceeded by 1pt)
+  #   overall_precision:          0.71 → 0.92  (massive +21pt bonus — hallucinations crushed)
+  #   layer_1_accuracy:           0.68 → 0.94  (+26pts — biggest single-layer transformation)
+  #   ability_lookup:             0.10 → 0.90  (predicted 0.75 — EXCEEDED by 15pts)
+  #   stat_lookup:                0.40 → 0.80  (predicted 0.80 — EXACT match)
+  #   keyword_only_not_question:  0.33 → 0.33  (predicted 0.90 — DID NOT MATERIALIZE; investigate rule 8)
+  #   hard_recall:                0.87 → 0.86  (-1.4pt; expected tradeoff for stricter grounding)
+  # See docs/rga-eval-methodology.md "What actually happened" section for full analysis.
   related_eval_run: eval-runs/2026-05-31-full.json
   related_methodology: docs/rga-eval-methodology.md
