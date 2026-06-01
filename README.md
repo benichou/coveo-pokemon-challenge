@@ -1,108 +1,153 @@
 # Coveo Pokemon Challenge
 
-Forward Deployed Engineer technical challenge for Coveo. A custom search experience built on the **Coveo Cloud Platform**, indexing [pokemondb.net](https://pokemondb.net) and surfacing it through a custom UI.
+Forward Deployed Engineer technical challenge for Coveo. A Pokémon search experience built on the **Coveo Cloud Platform**, indexing [pokemondb.net](https://pokemondb.net) + [PokéAPI](https://pokeapi.co) — combined with a quantitative **AI-quality measurement system** and an **autonomous closed-loop prompt-tuning system**, end-to-end through code.
 
-**Live:** 🔗 RGA quality dashboard — [pokemon-rga-dashboard.vercel.app](https://pokemon-rga-dashboard.vercel.app)
-**For the panel:** the [RGA Skill Evaluator diagnostic methodology](docs/rga-eval-methodology.md) is the panel-shareable walk-through of how we used the dashboard to identify a prompt-tuning intervention.
+| | URL |
+|---|---|
+| **Live RGA quality dashboard** | [pokemon-rga-dashboard.vercel.app](https://pokemon-rga-dashboard.vercel.app) |
+| **GitHub repo** | [github.com/benichou/coveo-pokemon-challenge](https://github.com/benichou/coveo-pokemon-challenge) |
+| **Diagnostic methodology** (panel-shareable) | [`docs/rga-eval-methodology.md`](docs/rga-eval-methodology.md) |
+| **RGA Custom Prompt + history** | [`docs/rga-prompt.md`](docs/rga-prompt.md) + [`rga-closed-loop/prompts/`](rga-closed-loop/prompts/) |
+| **Working plan** (history + decisions) | [`~/.claude/plans/so-we-are-supposed-purrfect-bachman.md`](~/.claude/plans/so-we-are-supposed-purrfect-bachman.md) |
 
-## Status
+## What this repo demonstrates
 
-🚧 Work in progress. As of 2026-05-30:
+Beyond a working Pokémon search UI, this build is a panel-defining demonstration of **production-grade AI** practices:
 
-- ✅ Phase 0 — repo, GitHub, dev env, API keys, org acceptance
-- ✅ Phase 1 — Sitemap source created, **1,028 Pokemon indexed**, all fields populated
-- ✅ Phase 2 — 5 indexed fields, source mappings, clean values verified
-- ✅ Phase 3 — Console hosted search page validated (search, facets, generation badges)
-- ⏳ Phase 4 — Python Push source (Source B) — per-form documents via PokéAPI
-- ⏳ Phase 5 — Local Atomic UI (the FDE deliverable)
-- ⏳ Phase 6 — Advanced features: RGA, Query Suggest, Pokemon Detail Page
-- ⏳ Phase 7 — Vercel hosting
-- ⏳ Phase 8 — Bonus: Passage Retrieval
+1. **Continuous AI-quality measurement.** A 100-question golden dataset, an LLM-as-judge with Pydantic-enforced structured output, and a daily GitHub Actions cron that writes time-series JSON to git — all visualized on a public dashboard.
+2. **Closed-loop self-improvement.** An LLM-assisted analyzer reads the latest eval, identifies regressed categories, samples failing answers verbatim, and proposes prompt refinements. The proposals can be applied interactively (via a Claude Code skill, `/rga-closed-loop`) or autonomously (via a GitHub Actions cron gated by guardrails).
+3. **Code as the source of truth for AI configuration.** The RGA Custom Prompt lives as version-controlled YAML in the repo; an apply script PUTs it to Coveo's ML Models API. No Console click-paste in production.
+4. **95% reproducible infrastructure.** Source config, fields, mappings, scraping rules, URL filters, ML model wiring — all version-controlled JSON + bash. One-command bootstrap (`scripts/bootstrap.sh`). The only manual step is API-key minting (Coveo's deliberate "secret-once" design).
+5. **Two-tier observability.** AI quality (Phase 6D) measures answer correctness. Query observability (Phase 6E, planned) measures user behavior. Different stakeholders, different cadences, same dashboard discipline.
+
+## Status (2026-06-01)
+
+```
+✅ Phase 0  — repo, dev env, API keys, org acceptance
+✅ Phase 1  — Sitemap source: 1,028 Pokémon indexed via versioned scraping config
+✅ Phase 2  — 5 indexed fields + source mappings, clean values verified
+✅ Phase 3  — Console hosted search page validated (search, facets, badges)
+✅ Phase 4  — Source B: Python Push pipeline — per-form docs via PokéAPI
+✅ Phase 5  — Local Atomic UI with RGA panel, facets, sort
+✅ Phase 6A — RGA model + Semantic Encoder + pipeline associations
+✅ Phase 6D — RGA Skill Evaluator + dashboard + daily cron + live Vercel deploy
+✅ Phase 6F — Closed-loop prompt-tuning: analyzer + skill + cron + guardrails
+
+⏳ Phase 6E — Grafana Cloud query observability
+⏳ Phase 6B — Query Suggest (type-ahead)
+⏳ Phase 6C — Pokémon Detail Page (Headless + React)
+⏳ Phase 7  — Vercel hosting for the Atomic search UI (only the dashboard is live so far)
+⏳ Phase 8  — Passage Retrieval API integration (bonus tier)
+⏳ Phase 8.5 — Coveo MCP server integration (beyond-bonus, scope TBD)
+⏳ Phase 9  — Presentation #1: Pokémon Challenge (Topic 1 + Topic 2)
+⏳ Phase 10 — Presentation #2: Escalation & Recovery
+```
 
 ## Architecture
 
 ```
-   pokemondb.net + pokeapi.co
-        │
-        ├──► Source A: Coveo Sitemap source       ✅ live
-        │      (1,028 indexed via versioned scraping config)
-        │
-        └──► Python ingestion ──► Source B: Push source   ⏳ Phase 4
-                                  (per-form docs via PokéAPI)
-                                  │
-                                  ▼
-                       Coveo Cloud Org (benichou)
-                       index + RGA + Query Suggest
-                                  │
-                                  ▼
-                       Hosted Search App (Vercel)       ⏳ Phase 5+7
-                       Atomic main + Headless+React Detail Page
+       pokemondb.net + pokeapi.co
+                │
+       ┌────────┴────────────────────────────────────┐
+       ▼                                             ▼
+  Source A: Coveo Sitemap source             Python push-pokemon/  ──► Source B: Push source
+  (1,028 Pokémon indexed via                                            (PokéAPI per-form docs:
+   versioned scraping config)                                            Mega, Hisuian, Galarian)
+       │                                             │
+       └─────────────────┬───────────────────────────┘
+                         ▼
+          ┌──────────────────────────────────────┐
+          │  Coveo Cloud Org (benichou)          │
+          │  - Unified index (1,353 docs)        │
+          │  - RGA model: pokemon-rga            │
+          │  - Semantic Encoder: pokemon-se      │
+          │  - Pipeline associations + ART       │
+          └─────────┬────────────────────────────┘
+                    │
+       ┌────────────┼─────────────────────────────────────────────┐
+       ▼            ▼                                             ▼
+  /rest/search  /answer/v1/configs/{id}/generate (SSE)     Browser-side use
+  + Headless                                               (atomic-search/, Phase 5)
+       │
+       ▼
+  atomic-search/ (local; Phase 7 will Vercel-host it publicly)
+       │
+       │ ◄── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──┐
+       ▼                                                                       │
+  rga-eval/ (daily 06:00 UTC cron — Phase 6D)                                 │
+  - 100-Q golden dataset                                                       │
+  - Sonnet 4.6 LLM-as-judge (Pydantic tool-use forcing)                       │
+  - Writes eval-runs/YYYY-MM-DD-full.json                                     │
+       │                                                                       │
+       ├──► rga-dashboard/ (Vercel, public — Phase 6D.6)                      │
+       │    pokemon-rga-dashboard.vercel.app                                  │
+       │    Reads eval-runs/*-full.json at build time                         │
+       │                                                                       │
+       └──► rga-closed-loop/ (daily 06:30 UTC cron — Phase 6F)                │
+            Analyzer + guardrails + apply.py                                  │
+            PUTs new prompt → /machinelearning/models/{id} ─────────────────► │  feedback to RGA
+            Bot commits YAML + history + audit log
 ```
+
+## Two parallel narratives, one repo
+
+| Build | Lives at | Phase |
+|---|---|---|
+| **The Pokémon search experience** | `config/` + `scripts/` + `push-pokemon/` + `atomic-search/` | 0 – 6A |
+| **The AI-quality measurement system** | `rga-eval/` + `rga-dashboard/` + `eval-runs/` + `.github/workflows/rga-eval-daily.yml` | 6D |
+| **The closed-loop prompt-tuning system** | `rga-closed-loop/` + `.claude/skills/rga-closed-loop/` + `.github/workflows/closed-loop-daily.yml` | 6F |
+
+The first is the Coveo deliverable. The second + third are the panel-defining add-ons that demonstrate **how production AI should actually be operated**.
 
 ## Getting started (new contributor onboarding)
 
-The repo is designed so a fresh contributor can replicate the org setup with one bootstrap command, given a Coveo org and three API keys. The keys are the only manual step (Coveo shows the secret once at creation by design).
+The repo is designed so a fresh contributor can replicate the org setup with one bootstrap command, given a Coveo org and the five API keys.
 
 ### 1. Prerequisites
 
-- Node 20+, Python 3.12+, `git`, `gh` (GitHub CLI), `curl`
+- Node 20+, Python 3.12+, `git`, `gh` (GitHub CLI), `curl`, `jq`, `uv` ([astral.sh/uv](https://docs.astral.sh/uv/))
 - A Coveo Cloud organization with these features licensed:
   - Passage Retrieval API
   - Relevance Generative Answering (CRGA)
   - Automatic Relevance Tuning
-- Email Coveo (contact in the original challenge invite) requesting the above be enabled on your OrgID if they're not already
+- A personal Anthropic API key (free $5 signup credit covers the build phase)
 
 ### 2. Clone and set up `.env`
 
 ```bash
-git clone https://github.com/<your-username>/coveo-pokemon-challenge.git
+git clone https://github.com/benichou/coveo-pokemon-challenge.git
 cd coveo-pokemon-challenge
 cp .env.example .env
 ```
 
 ### 3. Install pre-commit hooks (recommended)
 
-This repo uses **[ruff](https://docs.astral.sh/ruff/)** (a fast Rust-based Python linter + formatter that replaces flake8 + isort + Black + pyupgrade) via the **[pre-commit](https://pre-commit.com/)** framework. Once installed, every `git commit` automatically lints + formats staged Python files. Catches style and logic issues before they land in git history, and keeps every contributor's code in the same shape.
-
-**One-time install per machine:**
+This repo uses **[ruff](https://docs.astral.sh/ruff/)** via **[pre-commit](https://pre-commit.com/)**. Every `git commit` automatically lints + formats staged Python files.
 
 ```bash
-brew install pre-commit            # macOS, preferred
+brew install pre-commit           # macOS, preferred
 # or: uv tool install pre-commit
 # or: pipx install pre-commit
+pre-commit install                # registers the hook in this clone
 ```
 
-**One-time install per clone** (registers the git hook in `.git/hooks/`):
+If ruff auto-fixes anything, the commit aborts; review, `git add`, re-commit. Run `pre-commit run --all-files` to lint everything outside a commit.
 
-```bash
-pre-commit install
-```
+Config: `.pre-commit-config.yaml` (hooks) + `ruff.toml` (style — line 88, PEP 8, isort, bugbear, naming). The same `ruff.toml` is what VS Code reads for format-on-save.
 
-After that, `git commit` runs ruff on every staged `.py` file automatically. If ruff auto-fixes anything (Black-style reformatting, import order, removed unused imports, etc.), the commit aborts so you can review the diff, `git add` the changes, and re-commit.
+### 4. Create the five API keys
 
-To run the hooks manually any time — for example, before opening a PR or sanity-checking a refactor:
+Follow **[docs/api-keys.md](docs/api-keys.md)** to mint all five in the Coveo Admin Console:
 
-```bash
-pre-commit run                     # only files staged for commit
-pre-commit run --all-files         # every Python file in the repo
-```
+| Key | Template | Used by |
+|---|---|---|
+| `pokemon-push-source` | Push API | `push-pokemon/` ingestion pipeline |
+| `pokemon-source-admin` | Custom (Sources + Fields + Pipelines Edit, ML Models View) | `scripts/` ops |
+| `pokemon-search` | Anonymous Search (public-safe) | `tests/`, `atomic-search/`, RGA generate calls |
+| `pokemon-rga-judge` | Custom (Knowledge.Answer Manager: Edit) | `rga-eval/` answer-config discovery |
+| `pokemon-ml-models-editor` | Custom (Machine Learning Models: Edit) | `rga-closed-loop/apply.py` for prompt PUTs |
 
-Config files (both at the repo root, both committed, both diffable):
-
-- **`.pre-commit-config.yaml`** — which hooks run on commit (ruff lint, ruff format, plus file-hygiene checks for trailing whitespace, EOF newlines, large files, merge-conflict markers, JSON/YAML validation).
-- **`ruff.toml`** — line length (80), enabled rule families (PEP 8 style, pyflakes, isort, bugbear, pyupgrade, simplify, naming), and format style. **The same file VS Code reads for format-on-save**, so the editor and pre-commit + CI all enforce the same rules.
-
-If you use VS Code, the workspace also ships `.vscode/settings.json` that wires ruff as the format-on-save formatter for Python — so your code reaches the same canonical form whether you save in the editor or commit through git.
-
-### 4. Create the three API keys
-
-Follow **[docs/api-keys.md](docs/api-keys.md)** to mint the three keys in the Coveo Admin Console:
-
-- `pokemon-push-source` (Push API template)
-- `pokemon-source-admin` (Custom template — Sources + Fields Edit)
-- `pokemon-search` (Anonymous search template — public-safe)
-
-Paste each into `.env` next to the corresponding variable name. The doc walks through the exact privileges and reasoning for each.
+Plus a personal Anthropic key for the LLM-as-judge + closed-loop analyzer. Five Coveo keys instead of one is deliberate least-privilege scoping (Coveo enforces immutable post-creation privileges, so different roles → different keys).
 
 ### 5. Bootstrap the org
 
@@ -110,111 +155,95 @@ Paste each into `.env` next to the corresponding variable name. The doc walks th
 scripts/bootstrap.sh
 ```
 
-This single command (idempotent):
-
-1. Validates the org has the required licensed features
-2. Validates the three API keys have correct privileges (least-privilege check)
+Single idempotent command:
+1. Validates required licensed features
+2. Validates the five API keys' privileges (least-privilege check)
 3. Creates the 5 Coveo fields if missing
 4. Creates the Sitemap source if missing
 5. Applies the versioned web scraping configuration
 6. Adds the 5 source mappings
-7. Narrows the URL filter to a single Pokemon (safe starting scope)
+7. Narrows the URL filter to a single Pokémon (safe starting scope)
 8. Triggers an initial rebuild
 
-Then run the script to widen the crawl to all ~1,025 Pokemon:
+Then widen the crawl:
 
 ```bash
-scripts/source/widen.sh all       # update URL filter to include all Pokemon
-scripts/source/rebuild.sh         # ~17 minute crawl at 1 req/sec
+scripts/source/widen.sh all       # update URL filter to all ~1,025 Pokémon
+scripts/source/rebuild.sh         # ~17 min crawl at 1 req/sec
 ```
 
 ### 6. Verify (optional, recommended)
 
 ```bash
-cd tests && uv run pytest         # 21 tests against the live org + sitemap
+cd tests && uv run pytest         # 21 integration tests against the live org + sitemap
 ```
 
-## Opening Claude Code with only this repo's tooling
+## Opening Claude Code in this repo
 
-This repo ships a Claude Code skill (`/rga-eval`) and a project-scoped `.claude/` directory. To open Claude Code with **only this repo's skills + MCP** — ignoring any global skills or MCP servers configured in `~/.claude/` (e.g. corporate / org-level tooling that shouldn't load on personal projects) — invoke Claude Code from the repo root with:
+This repo ships a `CLAUDE.md` at the root (auto-loaded every session), a project-scoped `.claude/` directory, and two Claude Code skills (`/rga-eval`, `/rga-closed-loop`). To open Claude Code with **only this repo's tooling** — ignoring any global skills/MCP configured in `~/.claude/`:
 
 ```bash
 claude --setting-sources project --strict-mcp-config --mcp-config .claude/mcp.json
 ```
 
-What each flag does:
-
 | Flag | Effect |
 |---|---|
-| `--setting-sources project` | Loads ONLY `./.claude/settings.json`; ignores user-level `~/.claude/settings.json` and any merged enterprise settings. |
+| `--setting-sources project` | Loads ONLY `./.claude/settings.json`; ignores user-level + enterprise settings. |
 | `--strict-mcp-config` | Disables user-level + enterprise MCP server discovery. |
-| `--mcp-config .claude/mcp.json` | Loads MCP servers from the repo's `.claude/mcp.json` (which is empty by design — Phase 8.5 will add the Coveo MCP server here). |
+| `--mcp-config .claude/mcp.json` | Loads MCP servers from the repo's `.claude/mcp.json` (currently empty by design — Phase 8.5 will populate it). |
 
-**What this isolates:** project-scoped settings + project-scoped MCP servers.
+**Caveat:** Skills in `~/.claude/skills/` still auto-load alongside the repo's `.claude/skills/`. For full skill isolation add `--bare` (at the cost of manually registering the repo's skills in `.claude/settings.json`).
 
-**Caveat:** This does NOT block skills in `~/.claude/skills/` from auto-loading alongside the repo's `.claude/skills/`. If full skill isolation matters (e.g. you don't want Carta skills loading), add `--bare` to the command — at the cost of needing to manually register the `/rga-eval` skill in `.claude/settings.json` (vs. auto-discovery from `.claude/skills/rga-eval/`).
-
-## Claude Code skill: `/rga-eval`
-
-The repo includes a Claude Code skill that operates the RGA Skill Evaluator (Phase 6D) from the terminal. Invoke from inside a Claude Code session:
+## Claude Code skills
 
 ```
-/rga-eval              # latest run summary + category breakdown (no API calls)
-/rga-eval full         # full 100-question evaluation (~10 min, ~$0.60 Sonnet)
-/rga-eval smoke        # 5-question smoke test (~30s)
-/rga-eval failures     # latest run: every failing question + judge reasoning
-/rga-eval hallu        # latest run: every hallucinated answer
-/rga-eval compare 2026-05-31 2026-06-01   # diff two runs
+/rga-eval                       Phase 6D — run / inspect the RGA evaluator
+/rga-eval full                  → fresh 100-Q eval (~10 min, ~$0.60 Sonnet)
+/rga-eval smoke                 → 5-Q smoke test (~30s)
+/rga-eval failures              → drill into failing questions
+/rga-eval compare D1 D2         → diff metrics between two runs
+
+/rga-closed-loop                Phase 6F — drive the closed-loop tuning system
+/rga-closed-loop analyze        → analyzer + interactive review + apply if approved
+/rga-closed-loop apply          → apply current YAML to Coveo (no analyzer)
+/rga-closed-loop verify         → read-only: does live Coveo match YAML?
+/rga-closed-loop rollback DATE  → restore prompts/history/<date>.yaml + apply
 ```
 
-The skill is defined in `.claude/skills/rga-eval/SKILL.md` and uses the pretty-printer in `rga-eval/src/show.py`. It's also auto-triggered when you ask things like *"what's the latest RGA accuracy?"* or *"where is RGA hallucinating?"* — no need to type the slash command explicitly.
+Both skills auto-trigger on natural-language asks ("what's the latest RGA accuracy?", "tune the prompt", "roll back"). Full mode lists in `.claude/skills/<name>/SKILL.md`.
 
-What the eval does is documented in detail at the top of `~/.claude/plans/so-we-are-supposed-purrfect-bachman.md` (Phase 6D). Headline: it runs 100 hand-crafted Pokemon questions against Coveo's RGA endpoint, computes accuracy + precision + hard-recall using a Claude Sonnet 4.6 LLM-as-judge (with Pydantic-enforced structured output), and writes daily snapshots to `eval-runs/YYYY-MM-DD-<mode>.json`. Only `*-full.json` files feed the dashboard; smoke / layer-scan runs are diagnostic.
+## The AI-quality + closed-loop systems (Phases 6D + 6F)
 
-## Claude Code skill: `/rga-closed-loop`
-
-Companion to `/rga-eval`. Drives the **closed-loop prompt-tuning** system (Phase 6F): runs an LLM-assisted analyzer against the latest eval, proposes refinements to the RGA Custom Prompt, and applies approved changes to Coveo via REST API. Invoke from inside Claude Code:
+### What the daily cron does without anyone touching it
 
 ```
-/rga-closed-loop              # current state: YAML version + live-Coveo diff
-/rga-closed-loop analyze      # run analyzer → show proposal → ASK to apply → if approved, archive + update YAML + PUT to Coveo
-/rga-closed-loop apply        # apply current YAML to Coveo (no analyzer — use after manual YAML edits)
-/rga-closed-loop force        # apply with --force (write-path drills, rollback re-sync)
-/rga-closed-loop verify       # read-only check that live Coveo matches the YAML byte-for-byte
-/rga-closed-loop rollback <date>  # restore prompts/history/<date>-*.yaml, then ask to apply
+06:00 UTC  rga-eval-daily.yml fires
+           → 100-question eval against the live RGA model
+           → Sonnet 4.6 judges every answer via tool-use forcing
+           → bot commits eval-runs/YYYY-MM-DD-full.json to main
+           → Vercel rebuilds the dashboard with the new data point
+
+06:30 UTC  closed-loop-daily.yml fires (triggered by upstream completion)
+           → Rollback check: if today's eval dropped > 5pts within 36h
+             of the last apply → auto-revert to prompts/history/<prev>.yaml
+           → Otherwise: analyzer reads latest run, samples failing answers
+             from worst categories, calls Sonnet 4.6 → PromptProposal
+           → Guardrails check (confidence ≥ 0.80, lift ≥ +5pts, sanity,
+             rate-limit ≥ 3 days since last apply, no-op detection)
+           → If all pass: archive current YAML to history/, write new
+             YAML, run apply.py --apply (PUT to Coveo /machinelearning/
+             models/{id}), verify via re-fetch, bot commits everything
+           → Audit log written to logs/closed-loop/ regardless of outcome
 ```
 
-`analyze` is the closed-loop one-shot: analyzer reads latest eval-run + identifies regressed categories + samples failing answers + calls Sonnet 4.6 with tool-use forcing → returns a structured `PromptProposal` (new prompt + rationale + expected lift + sample before/after answers + confidence). The skill shows you the proposal, asks for explicit approval, and only on yes archives the current YAML to `prompts/history/`, updates `prompts/pokemon-rga.yaml`, runs `apply.py --apply` to PUT to Coveo, and verifies via re-fetch.
+### How the dashboard works
 
-### Autonomous cron driver (Phase 6F.5)
-
-The skill is the **interactive** driver. There's also an **autonomous** driver: `.github/workflows/closed-loop-daily.yml` triggers after `rga-eval-daily.yml` completes, runs `rga-closed-loop/src/closed_loop_run.py`, and applies analyzer-proposed changes automatically — gated by **`rga-closed-loop/src/guardrails.py`** instead of human review.
-
-The guardrails:
-
-| Guard | Default threshold | What it prevents |
-|---|---|---|
-| **Confidence** | analyzer self-rated ≥ 0.80 | Vibes-based suggestions |
-| **No-op** | proposal differs from current | Wasting a Coveo API call |
-| **Lift threshold** | predicted overall_accuracy lift ≥ +5pts | Trivial churn |
-| **Sanity** | prompt ≥ 500 chars + contains "retrieved" + "source" | Catastrophic analyzer collapse to defaults |
-| **Rate limit** | last apply ≥ 3 days ago | Compounding bad changes |
-| **Auto-rollback** | next-day eval > 5pt drop within 36h of apply | Bad change silently degrading prod |
-
-If any guard fails, the cron logs the proposal to `logs/closed-loop/` and exits clean — no write. If the rollback guard fires, the cron auto-reverts to the prior YAML in `prompts/history/` and applies that.
-
-Both drivers (skill + cron) share the same `analyzer.py` + `apply.py` core. The skill is human-gated; the cron is guardrail-gated.
-
-## RGA quality dashboard
-
-**🔗 Live dashboard: [pokemon-rga-dashboard.vercel.app](https://pokemon-rga-dashboard.vercel.app)**
-
-The Vercel-hosted dashboard at `rga-dashboard/` reads every `eval-runs/*-full.json` at **build time** (Vite's `import.meta.glob`, no runtime fetch) and renders:
+The Vercel-hosted dashboard at `rga-dashboard/` reads every `eval-runs/*-full.json` at **build time** (Vite's `import.meta.glob`, no runtime fetch, no API keys in the browser) and renders:
 
 - A KPI snapshot of the latest run with Δ vs the previous run
-- A time-series of accuracy / precision / hard-recall / citation-precision (overall + per layer)
-- A per-category breakdown sorted worst-first — surfaces where RGA is degrading
-- A per-question drill-down with judge reasoning + false claims + raw RGA answer
+- A time-series chart of accuracy / precision / hard-recall / citation-precision (overall + per layer)
+- A per-category breakdown sorted worst-first
+- A per-question drill-down with judge reasoning, false claims, and the raw RGA answer
 
 ```bash
 cd rga-dashboard
@@ -223,140 +252,127 @@ npm run dev      # local: http://localhost:5173
 npm run build    # → dist/ for Vercel
 ```
 
-To deploy: import the repo in Vercel, set **Root Directory** to `rga-dashboard`, framework auto-detects as Vite. Every push to the watched branch redeploys with whatever `eval-runs/*-full.json` files are in the commit — so the dashboard always reflects the latest committed history.
+Deploy: import the repo in Vercel, set **Root Directory** to `rga-dashboard`. Framework auto-detects as Vite. Zero env vars (the dashboard is a static site).
 
-The full Vercel + GitHub-Actions-secrets runbook lives in **[`docs/deploy.md`](docs/deploy.md)**. It covers: the 5 secrets to add (and where they go — *not* in Vercel), the Vercel project config, the manual workflow-dispatch verification, and the cost ceiling (~$18/mo).
+The full Vercel + GitHub-Actions-secrets runbook: **[`docs/deploy.md`](docs/deploy.md)**.
 
-### Daily eval automation
+### Closed-loop guardrails (why we can ship autonomous prompt changes)
 
-A scheduled GitHub Actions workflow at `.github/workflows/rga-eval-daily.yml` runs the evaluator every day at **06:00 UTC**, commits the resulting `eval-runs/YYYY-MM-DD-full.json` back to the watched branch, and that push triggers a Vercel rebuild — so the dashboard is self-perpetuating without anyone touching it.
+| Guard | Default | What it prevents |
+|---|---|---|
+| **Confidence** | analyzer self-rated ≥ 0.80 | Vibes-based suggestions |
+| **No-op** | proposal differs from current | Wasting a Coveo API call |
+| **Lift threshold** | predicted overall accuracy lift ≥ +5pts | Trivial churn |
+| **Sanity** | prompt ≥ 500 chars + contains "retrieved" + "source" | Catastrophic analyzer collapse |
+| **Rate limit** | last apply ≥ 3 days ago | Compounding bad changes |
+| **Auto-rollback** | next-day eval > 5pt drop within 36h of apply | Bad change silently degrading prod |
 
-The workflow also exposes a **manual trigger** from the Actions UI (mode dropdown: smoke / layer1 / layer2 / layer3 / full + an optional question limit) for ad-hoc runs, panel-demo dry-runs, and prompt-tuning validation.
+The skill (`/rga-closed-loop analyze`) replaces the guardrails with **interactive human review** for ad-hoc iteration. The cron uses the guardrails for autonomous operation. Same `analyzer.py` + `apply.py` core; two different orchestration shells.
 
 ## Repository layout
 
 ```
 coveo-pokemon-challenge/
-├── README.md                    ← you are here
-├── .env.example                 ← copy to .env and fill with API keys
+├── README.md                    ← you are here (panel-shareable narrative)
+├── CLAUDE.md                    ← operational reference auto-loaded into every Claude session
+├── .env.example                 ← copy to .env and fill with 5 Coveo keys + Anthropic key
 ├── .gitignore
-├── .pre-commit-config.yaml      ← hooks run by git commit (ruff + file hygiene)
-├── ruff.toml                    ← linter + formatter config (line 80, PEP 8, isort, …)
-├── .vscode/                     ← shared workspace settings (settings, launch, extensions)
-├── .github/
-│   └── workflows/
-│       ├── rga-eval-daily.yml      ← daily 06:00 UTC RGA eval cron + manual trigger
-│       └── closed-loop-daily.yml   ← Phase 6F.5: closed-loop cron (triggers after rga-eval-daily)
+├── .pre-commit-config.yaml      ← ruff + file hygiene
+├── ruff.toml                    ← linter + formatter config (line 88, PEP 8, isort, …)
+├── .vscode/                     ← shared workspace settings (format-on-save with ruff)
+│
+├── .github/workflows/
+│   ├── rga-eval-daily.yml       ← daily 06:00 UTC RGA eval + manual trigger
+│   └── closed-loop-daily.yml    ← daily 06:30 UTC closed-loop (post-eval) + manual trigger
+│
 ├── .claude/                     ← project-scoped Claude Code config
 │   ├── settings.json            ← marker for `--setting-sources project`
-│   ├── mcp.json                 ← project-scoped MCP server set (currently empty)
+│   ├── mcp.json                 ← project-scoped MCP servers (empty by design)
 │   └── skills/
-│       ├── rga-eval/SKILL.md    ← /rga-eval slash command
-│       └── rga-closed-loop/SKILL.md  ← /rga-closed-loop slash command (Phase 6F)
+│       ├── rga-eval/SKILL.md            ← /rga-eval slash command
+│       └── rga-closed-loop/SKILL.md     ← /rga-closed-loop slash command
 │
 ├── docs/
-│   ├── api-keys.md              ← how to create the 3 API keys + their privileges
+│   ├── api-keys.md              ← all 5 Coveo keys + their privileges, recreation steps
 │   ├── ml-models.md             ← RGA + Semantic Encoder: what, why, how
 │   ├── deploy.md                ← GitHub Actions secrets + Vercel project setup
-│   ├── rga-prompt.md            ← version-controlled RGA Custom Prompt text + rationale
+│   ├── rga-prompt.md            ← RGA Custom Prompt narrative + change log
 │   └── rga-eval-methodology.md  ← six-stage diagnostic loop (panel-shareable)
 │
 ├── config/                      ← versioned Coveo configuration
-│   ├── README.md                  (intro + glossary)
 │   ├── fields.json              ← index field schema
-│   └── source/                    (source-specific config)
+│   └── source/                  (source-specific config)
 │       ├── definition.json
 │       ├── scraping.json
-│       └── url_filter.json      ← single source of truth (read by scripts AND tests)
+│       └── url_filter.json      ← read by scripts AND tests (single source of truth)
 │
 ├── scripts/                     ← idempotent ops scripts (Coveo REST API)
-│   ├── README.md                  (intro + glossary)
 │   ├── bootstrap.sh             ← one-command full provisioning
 │   ├── validate/                  (read-only preflight checks)
-│   │   ├── org_features.sh
-│   │   └── api_keys.sh
 │   ├── setup/                     (idempotent resource creation)
-│   │   ├── fields.sh
-│   │   ├── source.sh
-│   │   ├── mappings.sh
-│   │   └── scraping.sh
 │   ├── source/                    (source lifecycle ops)
-│   │   ├── widen.sh
-│   │   └── rebuild.sh
 │   ├── ml/                        (machine learning wiring)
-│   │   └── associate_models.sh  ← wires RGA + SE into the query pipeline
 │   └── audit/                     (post-processing data quality)
-│       ├── audit_index.py       ← PokéAPI + structural leak detector
-│       └── purge_index.sh       ← filter-update + rebuild for confirmed leaks
 │
-├── rga-eval/                    ← RGA Skill Evaluator (Phase 6D — daily quality monitoring)
-│   ├── README.md
-│   ├── pyproject.toml + uv.lock
+├── push-pokemon/                ← Python Push-source ingestion (Phase 4)
+│   └── (PokéAPI per-form docs into Source B)
+│
+├── atomic-search/               ← local Atomic UI (Phase 5; Phase 7 will Vercel-host)
+│
+├── rga-eval/                    ← Phase 6D — daily quality monitoring
 │   ├── golden/questions.json    ← 100 hand-crafted Q's (50 L1 / 35 L2 / 15 L3)
 │   ├── src/
-│   │   ├── schemas.py           ← Pydantic models (GoldenQuestion / JudgeVerdict / EvalRun)
+│   │   ├── schemas.py           ← Pydantic: GoldenQuestion / JudgeVerdict / EvalRun
 │   │   ├── coveo_rga.py         ← /answer/v1/configs/{id}/generate SSE client
-│   │   ├── llm_judge.py         ← Sonnet 4.6 with tool-use forcing → JudgeVerdict
+│   │   ├── llm_judge.py         ← Sonnet 4.6 with tool-use forcing
 │   │   ├── metrics.py           ← accuracy / precision / hard-recall computation
-│   │   ├── publish.py           ← write eval-runs/YYYY-MM-DD.json
-│   │   ├── show.py              ← pretty-printer for terminal display
+│   │   ├── publish.py + show.py ← write + pretty-print eval-runs JSON
 │   │   └── main.py              ← orchestrator (--limit / --layer / --dry-run)
 │   └── tests/test_schemas.py    ← 6 dataset-shape tests
 │
-├── eval-runs/                   ← one JSON per day; commit history = time-series database
+├── eval-runs/                   ← one JSON per day; commit history = time-series DB
 │   └── YYYY-MM-DD-<mode>.json
 │
-├── rga-dashboard/               ← Vercel-hosted dashboard (Phase 6D.6 — Vite + React + recharts)
+├── rga-dashboard/               ← Phase 6D.6 — Vercel-hosted Vite + React + recharts
 │   ├── src/
-│   │   ├── App.tsx              ← page shell (header / sections / footer)
-│   │   ├── loadRuns.ts          ← bundles eval-runs/*-full.json at build time (import.meta.glob)
+│   │   ├── App.tsx              ← page shell
+│   │   ├── loadRuns.ts          ← bundles eval-runs/*-full.json at build time
 │   │   ├── schemas.ts           ← TS mirror of rga-eval/src/schemas.py
-│   │   └── components/
-│   │       ├── SummaryCard.tsx       ← latest run KPIs + Δ vs previous
-│   │       ├── TimeSeries.tsx        ← per-metric line charts (overall + per layer)
-│   │       ├── CategoryBreakdown.tsx ← worst-category-first accuracy table
-│   │       └── FailuresTable.tsx     ← per-question drill-down with judge reasoning
+│   │   └── components/          ← SummaryCard, TimeSeries, CategoryBreakdown, FailuresTable
 │   └── vercel.json
 │
-├── rga-closed-loop/             ← Phase 6F: closed-loop RGA prompt-tuning
-│   ├── README.md                ← panel-shareable overview of the loop
-│   ├── pyproject.toml + uv.lock
+├── rga-closed-loop/             ← Phase 6F — closed-loop prompt-tuning
+│   ├── README.md                ← panel-shareable overview
 │   ├── prompts/
-│   │   ├── pokemon-rga.yaml     ← CURRENT live prompt + structured metadata (YAML, single source of truth)
+│   │   ├── pokemon-rga.yaml     ← CURRENT live prompt + structured metadata
 │   │   └── history/             ← previous prompt versions, dated YAMLs
-│   │       └── 2026-05-31-default.yaml  ← the Coveo default we replaced
 │   ├── src/
 │   │   ├── schemas.py           ← Pydantic: PromptVersion + PromptProposal
-│   │   ├── apply.py             ← Layer 1: PUT prompt to Coveo (dry-run default, --apply to write)
-│   │   ├── analyzer.py          ← Layer 2: LLM-proposed prompt deltas (Phase 6F.3, coming)
-│   │   └── pr_opener.py         ← Layer 2: open PR with proposal (Phase 6F.4, coming)
-│   └── tests/test_apply.py      ← 9 unit tests, respx-mocked, no live Coveo calls
+│   │   ├── apply.py             ← PUT prompt to Coveo (dry-run default, --apply, --force)
+│   │   ├── analyzer.py          ← Sonnet 4.6 proposes prompt refinements
+│   │   ├── guardrails.py        ← confidence / lift / sanity / rate-limit / auto-rollback
+│   │   └── closed_loop_run.py   ← cron orchestrator (rollback-check + analyzer + guard + apply)
+│   └── tests/                   ← 38 unit tests (apply + guardrails), respx-mocked, no live calls
 │
-└── tests/                       ← pytest + httpx integration tests (21 tests, ~3s)
-    ├── README.md                  (intro + glossary)
-    ├── pyproject.toml + uv.lock
-    ├── conftest.py
+├── logs/closed-loop/            ← audit trail (one JSON per closed-loop run)
+│
+└── tests/                       ← integration tests against the live org (21 tests, ~3s)
     ├── test_url_set_parity.py   ← sitemap-filtered set == indexed set
-    ├── test_index_audit.py      ← every URI is a real Pokemon (PokéAPI + HTML check)
-    ├── test_field_extraction.py ← 8 spot-check Pokemon, all 5 fields
+    ├── test_index_audit.py      ← every URI is a real Pokémon (PokéAPI + HTML check)
+    ├── test_field_extraction.py ← 8 spot-check Pokémon, all 5 fields
     ├── test_facet_counts.py
     └── test_search_queries.py
 ```
 
-Also in the repo (not shown above to keep the tree readable):
-- `push-pokemon/` — Python ingestion pipeline (Phase 4) — pushes PokéAPI form variants to Source B
-- `atomic-search/` — local Atomic UI (Phase 5) — Vite-hosted Pokemon search experience
-
-Still coming:
-- `detail-page/` — Headless + React Pokemon Detail Page (Phase 6C)
-- Grafana Cloud query observability instrumentation (Phase 6E)
-
 ## Design decisions worth knowing
 
 - **Sitemap source over Web Crawler.** pokemondb.net publishes a sitemap; Coveo's "Leading Practices" explicitly prefer Sitemap source when available — faster, more reliable, same scraping rules apply.
-- **Three API keys, not one.** Coveo enforces "privileges are immutable post-creation," so we follow least-privilege: push key cannot edit sources, search key cannot edit anything, admin key cannot query.
-- **Config as code.** Source URL filters, scraping rules, mappings, fields — everything is versioned JSON + a bash script that applies it via the REST API. The repo is ~95% reproducible via `scripts/bootstrap.sh`; the only manual step is API key minting (Coveo's secret-once design).
-- **Dual-source ingestion.** Source A (Sitemap) captures Pokemon at the page level; Source B (Push, Phase 4) will capture them at the form level (Mega, Hisuian, Galarian, …) via PokéAPI — preserving form→type associations.
+- **Five API keys, not one.** Coveo enforces immutable post-creation privileges → different roles need different keys. Least-privilege scoping limits blast radius: the search key (browser-safe) cannot edit anything; the admin key can edit sources but not write ML models; the ml-models key can write ML models but cannot query.
+- **Config as code.** Every Coveo resource — URL filter, scraping rules, mappings, fields, ML model prompt — is versioned in this repo as JSON / YAML + a bash or Python script that applies it via REST. ~95% reproducible from scratch.
+- **Dual-source ingestion.** Source A (Sitemap) captures Pokémon at the page level; Source B (Push) captures them at the form level (Mega, Hisuian, Galarian, …) via PokéAPI — preserving form→type associations Source A can't.
+- **AI quality is a first-class concern.** Phase 6D measures it daily; Phase 6F closes the loop on it. The default Coveo enterprise template (with unfilled `[Enterprise Name]` placeholders) was the latent cause of our baseline failure modes — the kind of misconfiguration only a measurement system can surface. See [`docs/rga-eval-methodology.md`](docs/rga-eval-methodology.md) for the diagnostic walkthrough.
+- **Skill + cron, not skill OR cron.** The same `analyzer.py` + `apply.py` core drives both an interactive Claude Code skill (for dev iteration + panel demos) and an autonomous GitHub Actions cron (for production). Two orchestration shells, one engine.
+- **Code-as-source-of-truth even for AI prompts.** The RGA Custom Prompt lives as YAML in `rga-closed-loop/prompts/pokemon-rga.yaml`; the live Coveo Console value is what gets PUT *to*, never the source. Every change is diffable in git; rollback is `cp history/X.yaml prompts/pokemon-rga.yaml && uv run python src/apply.py --apply`.
 
 ## License
 
