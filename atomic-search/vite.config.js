@@ -42,6 +42,18 @@ export default defineConfig(({ mode }) => {
     process.env.VITE_COVEO_SEARCH_TOKEN
   );
 
+  // Phase 6E — observability kill-switch only.
+  // Loki credentials live SERVER-SIDE in Vercel env vars (GRAFANA_LOKI_URL +
+  // GRAFANA_LOKI_AUTH, NO VITE_ prefix). The browser POSTs to /api/log-query;
+  // the serverless function at atomic-search/api/log-query.js holds the auth.
+  // This kill-switch is the only Grafana-related value that needs to be in
+  // the bundle, and it's not a secret.
+  const observabilityEnabled = firstDefined(
+    env.VITE_OBSERVABILITY_ENABLED,
+    process.env.VITE_OBSERVABILITY_ENABLED,
+    "true"
+  );
+
   return {
     server: {
       port: 3000,
@@ -58,6 +70,7 @@ export default defineConfig(({ mode }) => {
     define: {
       "import.meta.env.VITE_COVEO_ORG_ID": JSON.stringify(orgId),
       "import.meta.env.VITE_COVEO_SEARCH_TOKEN": JSON.stringify(searchToken),
+      "import.meta.env.VITE_OBSERVABILITY_ENABLED": JSON.stringify(observabilityEnabled),
     },
   };
 });

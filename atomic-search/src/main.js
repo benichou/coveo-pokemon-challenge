@@ -32,6 +32,20 @@ await searchInterface.initialize({
   organizationId: ORG_ID,
 });
 
+// Phase 6E — query-level observability via Grafana Cloud Loki.
+// One fire-and-forget POST per completed search. Silent no-op when
+// Grafana credentials aren't configured (local dev "just works"
+// without setup). See atomic-search/src/observability.js for the
+// implementation + docs/observability.md for the architecture story.
+import("./observability.js").then(({ instrumentEngine }) => {
+  // searchInterface exposes the underlying Coveo Headless engine after
+  // initialize() completes. Pass it to the instrumentation; it subscribes
+  // to state changes and logs each search-completed event.
+  if (searchInterface.engine) {
+    instrumentEngine(searchInterface.engine);
+  }
+});
+
 // -----------------------------------------------------------------------------
 // User-friendly captions for raw field values.
 //
