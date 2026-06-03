@@ -15,7 +15,7 @@
     { "type": "panel", "id": "timeseries", "name": "Time series", "version": "" },
     { "type": "panel", "id": "barchart", "name": "Bar chart", "version": "" },
     { "type": "panel", "id": "piechart", "name": "Pie chart", "version": "" },
-    { "type": "panel", "id": "logs", "name": "Logs", "version": "" },
+    { "type": "panel", "id": "table", "name": "Table", "version": "" },
     { "type": "datasource", "id": "loki", "name": "Loki", "version": "1.0.0" }
   ],
   "annotations": { "list": [] },
@@ -296,26 +296,115 @@
     },
     {
       "id": 8,
-      "title": "Live search logs (raw events)",
-      "type": "logs",
+      "title": "Live search logs (tabular)",
+      "type": "table",
       "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
-      "description": "Every per-search log record streaming in real time. Click a line to expand its full JSON payload — query text, top results, RGA answer text, citations, facets, timing. Use the Loki query bar to filter (e.g. `{app=\"pokemon-search\", rga_fired=\"false\"}` shows searches where RGA refused to ground; `{app=\"pokemon-search\"} | json | response_time_ms > 500` shows slow searches).",
+      "description": "Per-search log records as a sortable table — one row per completed search. Columns: time, query, sort, RGA fired, RGA answer (truncated), latency, total results, status. Click any column header to sort; click any cell value to filter the dashboard. Hidden by default: top_results array, citations, facets_active, client_id, pipeline (all available via the dashboard's expand-row feature or Explore).",
       "gridPos": { "h": 16, "w": 24, "x": 0, "y": 35 },
       "options": {
-        "showTime": true,
-        "showLabels": false,
-        "showCommonLabels": false,
-        "wrapLogMessage": true,
-        "prettifyLogMessage": true,
-        "enableLogDetails": true,
-        "dedupStrategy": "none",
-        "sortOrder": "Descending"
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": { "show": false, "reducer": ["sum"], "countRows": false }
       },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": { "type": "auto" },
+            "inspect": true,
+            "filterable": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "rga_answer" },
+            "properties": [
+              { "id": "custom.width", "value": 400 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "q" },
+            "properties": [
+              { "id": "displayName", "value": "query" },
+              { "id": "custom.width", "value": 200 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "response_time_ms" },
+            "properties": [
+              { "id": "displayName", "value": "latency (ms)" },
+              { "id": "unit", "value": "ms" },
+              { "id": "custom.width", "value": 110 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "total_count" },
+            "properties": [
+              { "id": "displayName", "value": "results" },
+              { "id": "custom.width", "value": 90 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "rga_fired" },
+            "properties": [
+              { "id": "displayName", "value": "RGA" },
+              { "id": "custom.width", "value": 70 }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "sort_criteria" },
+            "properties": [
+              { "id": "displayName", "value": "sort" },
+              { "id": "custom.width", "value": 110 }
+            ]
+          }
+        ]
+      },
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "Line",
+            "format": "json",
+            "keepTime": true,
+            "replace": true
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "tsNs": true,
+              "labels": true,
+              "id": true,
+              "labelTypes": true,
+              "search_hub": true,
+              "pipeline": true,
+              "client_id": true,
+              "facets_active": true,
+              "top_results": true,
+              "rga_requested": true,
+              "rga_citations_count": true,
+              "timestamp": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "q": 1,
+              "sort_criteria": 2,
+              "rga_fired": 3,
+              "rga_answer": 4,
+              "response_time_ms": 5,
+              "total_count": 6,
+              "status": 7
+            }
+          }
+        }
+      ],
       "targets": [
         {
           "refId": "A",
           "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
-          "expr": "{app=\"pokemon-search\"} | json",
+          "expr": "{app=\"pokemon-search\"}",
           "queryType": "range",
           "maxLines": 200
         }
