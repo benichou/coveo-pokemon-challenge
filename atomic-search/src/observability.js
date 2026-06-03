@@ -22,13 +22,12 @@
 
 const PROXY_ENDPOINT = "/api/log-query";
 
-// Wait this long after the search response lands before reading state + posting.
-// Coveo's RGA streams in AFTER the search response — typically ~200-700ms.
-// Logging immediately would capture empty rga_answer / 0 citations. Logging
-// after this delay catches the full streamed answer ~95% of the time. The
-// tradeoff is a tiny perceived latency in the log freshness, which is fine
-// for observability (this isn't a hot path).
-const RGA_STREAM_BUFFER_MS = 750;
+// Fallback timeout — if RGA never reaches a settled state (e.g., backend hang,
+// model timeout, network issue), log the search anyway after this many ms with
+// whatever rga_answer/citations exist at that point. 5s is generous; most RGA
+// responses complete in 1-2s. Without this, a stuck RGA stream would prevent
+// ANY log from being emitted for that search.
+const RGA_SETTLE_TIMEOUT_MS = 5000;
 
 const IS_DEV = Boolean(import.meta.env.DEV);
 const OBSERVABILITY_ENABLED =
@@ -110,10 +109,12 @@ export function buildPayload(state) {
     q: query.q ?? "",
     search_hub: config.search?.searchHub ?? state?.searchHub ?? "",
     sort_criteria: state?.sortCriteria ?? "",
-    rga_requested: Boolean(ga),
-    rga_fired: Boolean(ga?.answer),
-    // RGA answer (truncated). Captured ~750ms after search-completed so the
-    // stream has time to land; bounded length keeps the log payload reasonable.
+    rga_requested: Boolean(ga?.isEnabled),
+    // `isAnswerGenerated` is Headless's authoritative "stream finished, answer is
+    // final" signal. Using it (vs Boolean(answer)) means we don't false-positive
+    // on mid-stream partial text, and we don't false-negative when cannotAnswer
+    // fires (no answer text, but RGA did "fire" — it just refused to ground).
+    rga_fired: Boolean(ga?.isAnswerGenerated),
     rga_answer: truncate(ga?.answer ?? "", RGA_ANSWER_MAX_CHARS),
     rga_citations_count: rgaCitationsCountFromState(ga),
     // Top N result titles + clickUris. Lets us answer "did the top result for
@@ -152,10 +153,14 @@ async function pushToProxy(payload) {
  * Subscribe to a Coveo Headless engine's state changes and log one record
  * per completed search.
  *
- * Detection of "search completed":
- *   - The search has a `searchUid` (Coveo assigns one per successful search)
- *   - We track the last logged uid to dedupe re-renders within the same search
- *   - We skip while the engine is loading (in-flight requests)
+ * Detection of "search completed + RGA settled":
+ *   - Search has a `searchUid` (Coveo assigns one per successful search)
+ *   - Engine is not loading (no in-flight request)
+ *   - Either RGA isn't in play, OR generatedAnswer.isAnswerGenerated is true,
+ *     OR cannotAnswer is true — i.e. the RGA stream has reached a terminal state
+ *   - We dedupe per searchUid so re-renders during the same search log once
+ *   - A safety fallback timer logs anyway after RGA_SETTLE_TIMEOUT_MS if the
+ *     terminal state never arrives (backend hang, network issue, etc.)
  *
  * @param {import("@coveo/headless").SearchEngine} engine
  */
@@ -173,7 +178,20 @@ export function instrumentEngine(engine) {
   }
 
   let lastLoggedUid = null;
-  let pendingTimer = null;
+  let fallbackTimer = null;
+  let pendingUidForFallback = null;
+
+  const logOnce = (uid, state) => {
+    if (uid === lastLoggedUid) return;
+    lastLoggedUid = uid;
+    if (fallbackTimer) {
+      clearTimeout(fallbackTimer);
+      fallbackTimer = null;
+      pendingUidForFallback = null;
+    }
+    pushToProxy(buildPayload(state));
+  };
+
   engine.subscribe(() => {
     const state = engine.state;
     const search = state?.search;
@@ -189,17 +207,39 @@ export function instrumentEngine(engine) {
     if (!uid) return;
     if (uid === lastLoggedUid) return;
 
-    // Don't log immediately — RGA streams in AFTER the search response, so
-    // a `rga_answer` field captured at search-completed would always be
-    // empty. Debounce by ~750ms so the RGA answer + citations have time to
-    // land before we read state and POST. New searches within the debounce
-    // window reset the timer (the lastLoggedUid check still dedupes).
-    lastLoggedUid = uid;
-    if (pendingTimer) clearTimeout(pendingTimer);
-    pendingTimer = setTimeout(() => {
-      pendingTimer = null;
-      pushToProxy(buildPayload(engine.state));
-    }, RGA_STREAM_BUFFER_MS);
+    // RGA streams AFTER the search response settles, so we can't log immediately
+    // or rga_answer/citations will be empty. Instead of a fixed debounce, watch
+    // Headless's own signals:
+    //   - isEnabled=false   → RGA isn't in play for this search; log right away
+    //   - isAnswerGenerated → stream finished, answer is final; log now
+    //   - cannotAnswer      → RGA refused to ground (still a valid log line; we
+    //                         want to capture refusal-rate over time)
+    // Fallback timer covers the pathological case where none of those signals
+    // ever fire (backend hang, malformed response) — log with whatever we have.
+    const ga = state?.generatedAnswer;
+    const rgaInPlay = Boolean(ga?.isEnabled);
+    const rgaSettled =
+      !rgaInPlay ||
+      Boolean(ga?.isAnswerGenerated) ||
+      Boolean(ga?.cannotAnswer);
+
+    if (rgaSettled) {
+      logOnce(uid, state);
+      return;
+    }
+
+    // RGA still streaming. Arm a single fallback timer per uid so a stuck
+    // stream still eventually logs. The next subscribe() tick that observes
+    // the settled state will fire logOnce() first and clear this timer.
+    if (pendingUidForFallback !== uid) {
+      pendingUidForFallback = uid;
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+      fallbackTimer = setTimeout(() => {
+        fallbackTimer = null;
+        pendingUidForFallback = null;
+        logOnce(uid, engine.state);
+      }, RGA_SETTLE_TIMEOUT_MS);
+    }
   });
 }
 
