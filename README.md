@@ -5,6 +5,7 @@ Forward Deployed Engineer technical challenge for Coveo. A Pokémon search exper
 | | URL |
 |---|---|
 | **Live Pokémon search UI** (Atomic) | [pokemon-search-one-chi.vercel.app](https://pokemon-search-one-chi.vercel.app) |
+| **Live Pokémon detail page** (Headless + React) | [pokemon-search-one-chi.vercel.app/pokemon.html?name=charizard](https://pokemon-search-one-chi.vercel.app/pokemon.html?name=charizard) |
 | **Live RGA quality dashboard** | [pokemon-rga-dashboard.vercel.app](https://pokemon-rga-dashboard.vercel.app) |
 | **Live query-observability dashboard** (Grafana, public) | [charmingporridge966.grafana.net/public-dashboards/cf105c8d…](https://charmingporridge966.grafana.net/public-dashboards/cf105c8dabc64e5b95a33a86ef502452) |
 | **GitHub repo** | [github.com/benichou/coveo-pokemon-challenge](https://github.com/benichou/coveo-pokemon-challenge) |
@@ -12,6 +13,7 @@ Forward Deployed Engineer technical challenge for Coveo. A Pokémon search exper
 | **Query observability architecture** (panel-shareable) | [`docs/observability.md`](docs/observability.md) |
 | **Caching strategy** (panel-shareable) | [`docs/caching-strategy.md`](docs/caching-strategy.md) |
 | **Passage Retrieval architecture** (panel-shareable) | [`docs/passage-retrieval.md`](docs/passage-retrieval.md) |
+| **Pokémon Detail Page architecture** (panel-shareable) | [`docs/detail-page.md`](docs/detail-page.md) |
 | **RGA Custom Prompt + history** | [`docs/rga-prompt.md`](docs/rga-prompt.md) + [`rga-closed-loop/prompts/`](rga-closed-loop/prompts/) |
 | **Working plan** (history + decisions) | [`~/.claude/plans/so-we-are-supposed-purrfect-bachman.md`](~/.claude/plans/so-we-are-supposed-purrfect-bachman.md) |
 
@@ -24,8 +26,9 @@ Beyond a working Pokémon search UI, this build is a panel-defining demonstratio
 3. **Code as the source of truth for AI configuration.** The RGA Custom Prompt lives as version-controlled YAML in the repo; an apply script PUTs it to Coveo's ML Models API. No Console click-paste in production.
 4. **95% reproducible infrastructure.** Source config, fields, mappings, scraping rules, URL filters, ML model wiring — all version-controlled JSON + bash. One-command bootstrap (`scripts/bootstrap.sh`). The only manual step is API-key minting (Coveo's deliberate "secret-once" design).
 5. **Two-tier observability.** AI quality (Phase 6D) measures answer correctness. [Query observability (Phase 6E)](docs/observability.md) — a same-origin Vercel proxy forwarding per-search records to Grafana Cloud Loki, fronted by a dashboard-as-code that auto-deploys from `main` — measures user behavior. Different stakeholders, different cadences, same dashboard discipline.
+6. **Two Coveo client libraries, one project.** The Atomic main page (`/`) ships the list view; the [Pokémon Detail Page](docs/detail-page.md) (`/pokemon.html?name=<slug>`) ships a Headless + React deep dive composing **three parallel Coveo queries** — Search API for the hero, Passage Retrieval for verifiable insights (with a noise-score ranker + flattened-table reconstructor to keep PR chunks readable), and a second Headless engine for a same-generation related grid. Multi-entry Vite build, shared `.env`, one Vercel deploy. Picking the right Coveo SDK per surface — the FDE narrative compressed into one repo.
 
-## Status (2026-06-01)
+## Status (2026-06-03)
 
 ```
 ✅ Phase 0  — repo, dev env, API keys, org acceptance
@@ -41,9 +44,9 @@ Beyond a working Pokémon search UI, this build is a panel-defining demonstratio
 ✅ Phase 6E — Grafana Cloud query observability (public dashboard live, dashboard-as-code via CI)
 ✅ Phase 6F.7 — Closed-loop smoothing + dashboard prompt-history (multi-day analyzer + chart markers + diffs)
 ✅ Phase 6B — Query Suggest (type-ahead) — model live + cold-start solved via Default Queries CSV (Advanced Model Configurations API)
+✅ Phase 8  — Passage Retrieval API — panel below RGA, markdown-it rendering, observability extended
+✅ Phase 6C — Pokémon Detail Page (Headless + React) — multi-entry Vite, three composed Coveo surfaces
 
-⏳ Phase 6C — Pokémon Detail Page (Headless + React)
-⏳ Phase 8  — Passage Retrieval API integration (bonus tier)
 ⏳ Phase 8.5 — Coveo MCP server integration (beyond-bonus, scope TBD)
 ⏳ Phase 9  — Presentation #1: Pokémon Challenge (Topic 1 + Topic 2)
 ⏳ Phase 10 — Presentation #2: Escalation & Recovery
@@ -301,10 +304,14 @@ coveo-pokemon-challenge/
 │
 ├── docs/
 │   ├── api-keys.md              ← all 5 Coveo keys + their privileges, recreation steps
-│   ├── ml-models.md             ← RGA + Semantic Encoder: what, why, how
+│   ├── ml-models.md             ← RGA + Semantic Encoder + Query Suggest: what, why, how
 │   ├── deploy.md                ← GitHub Actions secrets + Vercel project setup
 │   ├── rga-prompt.md            ← RGA Custom Prompt narrative + change log
-│   └── rga-eval-methodology.md  ← six-stage diagnostic loop (panel-shareable)
+│   ├── rga-eval-methodology.md  ← six-stage diagnostic loop (panel-shareable)
+│   ├── observability.md         ← query-level Grafana architecture (panel-shareable)
+│   ├── caching-strategy.md      ← multi-tier caching decision (panel-shareable)
+│   ├── passage-retrieval.md     ← PR architecture + Coveo positioning (panel-shareable)
+│   └── detail-page.md           ← Headless + React detail page architecture (panel-shareable)
 │
 ├── config/                      ← versioned Coveo configuration
 │   ├── fields.json              ← index field schema
@@ -324,7 +331,10 @@ coveo-pokemon-challenge/
 ├── push-pokemon/                ← Python Push-source ingestion (Phase 4)
 │   └── (PokéAPI per-form docs into Source B)
 │
-├── atomic-search/               ← local Atomic UI (Phase 5; Phase 7 will Vercel-host)
+├── atomic-search/               ← Vite project, two entry points:
+│                                    - index.html  → Atomic main search page (Phase 5)
+│                                    - pokemon.html → Headless + React detail page (Phase 6C)
+│                                  Shipped to Vercel as one deploy (Phase 7).
 │
 ├── rga-eval/                    ← Phase 6D — daily quality monitoring
 │   ├── golden/questions.json    ← 100 hand-crafted Q's (50 L1 / 35 L2 / 15 L3)
