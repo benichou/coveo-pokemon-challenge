@@ -14,6 +14,7 @@ Forward Deployed Engineer technical challenge for Coveo. A Pokémon search exper
 | **Caching strategy** (panel-shareable) | [`docs/caching-strategy.md`](docs/caching-strategy.md) |
 | **Passage Retrieval architecture** (panel-shareable) | [`docs/passage-retrieval.md`](docs/passage-retrieval.md) |
 | **Pokémon Detail Page architecture** (panel-shareable) | [`docs/detail-page.md`](docs/detail-page.md) |
+| **Coveo MCP Server integration** (panel-shareable) | [`docs/mcp-integration.md`](docs/mcp-integration.md) |
 | **RGA Custom Prompt + history** | [`docs/rga-prompt.md`](docs/rga-prompt.md) + [`rga-closed-loop/prompts/`](rga-closed-loop/prompts/) |
 | **Working plan** (history + decisions) | [`~/.claude/plans/so-we-are-supposed-purrfect-bachman.md`](~/.claude/plans/so-we-are-supposed-purrfect-bachman.md) |
 
@@ -27,8 +28,9 @@ Beyond a working Pokémon search UI, this build is a panel-defining demonstratio
 4. **95% reproducible infrastructure.** Source config, fields, mappings, scraping rules, URL filters, ML model wiring — all version-controlled JSON + bash. One-command bootstrap (`scripts/bootstrap.sh`). The only manual step is API-key minting (Coveo's deliberate "secret-once" design).
 5. **Two-tier observability.** AI quality (Phase 6D) measures answer correctness. [Query observability (Phase 6E)](docs/observability.md) — a same-origin Vercel proxy forwarding per-search records to Grafana Cloud Loki, fronted by a dashboard-as-code that auto-deploys from `main` — measures user behavior. Different stakeholders, different cadences, same dashboard discipline.
 6. **Two Coveo client libraries, one project.** The Atomic main page (`/`) ships the list view; the [Pokémon Detail Page](docs/detail-page.md) (`/pokemon.html?name=<slug>`) ships a Headless + React deep dive composing **three parallel Coveo queries** — Search API for the hero, Passage Retrieval for verifiable insights (with a noise-score ranker + flattened-table reconstructor to keep PR chunks readable), and a second Headless engine for a same-generation related grid. Multi-entry Vite build, shared `.env`, one Vercel deploy. Picking the right Coveo SDK per surface — the FDE narrative compressed into one repo.
+7. **The same Coveo org is also an AI-agent surface.** The [Coveo Hosted MCP Server](docs/mcp-integration.md) (Phase 8.5) exposes our pokemon index as four MCP tools — `search`, `fetch`, `get_passages`, `answer` — to any MCP-compatible client (Claude Code, Claude Desktop, ChatGPT Enterprise, ...). The Atomic UI, the Headless+React detail page, AND now Claude Code itself all query the **same org, same pipeline, same models, same index** — three UI surfaces, one retrieval brain. Customer-pitch slide: *"your Coveo investment is your AI-agent investment, zero new integrations."*
 
-## Status (2026-06-03)
+## Status (2026-06-03, end of day)
 
 ```
 ✅ Phase 0  — repo, dev env, API keys, org acceptance
@@ -46,8 +48,8 @@ Beyond a working Pokémon search UI, this build is a panel-defining demonstratio
 ✅ Phase 6B — Query Suggest (type-ahead) — model live + cold-start solved via Default Queries CSV (Advanced Model Configurations API)
 ✅ Phase 8  — Passage Retrieval API — panel below RGA, markdown-it rendering, observability extended
 ✅ Phase 6C — Pokémon Detail Page (Headless + React) — multi-entry Vite, three composed Coveo surfaces
+✅ Phase 8.5 — Coveo MCP Server integration — pokemon-mcp server live; 4 tools (search / fetch / get_passages / answer) wired into Claude Code via .claude/mcp.json
 
-⏳ Phase 8.5 — Coveo MCP server integration (beyond-bonus, scope TBD)
 ⏳ Phase 9  — Presentation #1: Pokémon Challenge (Topic 1 + Topic 2)
 ⏳ Phase 10 — Presentation #2: Escalation & Recovery
 ```
@@ -217,9 +219,15 @@ claude --setting-sources project --strict-mcp-config --mcp-config .claude/mcp.js
 /rga-closed-loop apply          → apply current YAML to Coveo (no analyzer)
 /rga-closed-loop verify         → read-only: does live Coveo match YAML?
 /rga-closed-loop rollback DATE  → restore prompts/history/<date>.yaml + apply
+
+/pokemon-mcp                    Phase 8.5 — demo the Coveo MCP Server integration
+/pokemon-mcp info               → explain the integration (no API calls)
+/pokemon-mcp tools              → list the four MCP tools + when to pick each
+/pokemon-mcp demo               → run the 4-query panel demo through MCP
+/pokemon-mcp compare "<query>"  → call MCP for <query>, contrast with the live UI
 ```
 
-Both skills auto-trigger on natural-language asks ("what's the latest RGA accuracy?", "tune the prompt", "roll back"). Full mode lists in `.claude/skills/<name>/SKILL.md`.
+All three skills auto-trigger on natural-language asks ("what's the latest RGA accuracy?", "tune the prompt", "demo MCP"). Full mode lists in `.claude/skills/<name>/SKILL.md`.
 
 ## The AI-quality + closed-loop systems (Phases 6D + 6F)
 
@@ -297,10 +305,11 @@ coveo-pokemon-challenge/
 │
 ├── .claude/                     ← project-scoped Claude Code config
 │   ├── settings.json            ← marker for `--setting-sources project`
-│   ├── mcp.json                 ← project-scoped MCP servers (empty by design)
+│   ├── mcp.json                 ← project-scoped MCP servers (declares coveo-pokemon — Phase 8.5)
 │   └── skills/
 │       ├── rga-eval/SKILL.md            ← /rga-eval slash command
-│       └── rga-closed-loop/SKILL.md     ← /rga-closed-loop slash command
+│       ├── rga-closed-loop/SKILL.md     ← /rga-closed-loop slash command
+│       └── pokemon-mcp/SKILL.md         ← /pokemon-mcp slash command (Phase 8.5 demo)
 │
 ├── docs/
 │   ├── api-keys.md              ← all 5 Coveo keys + their privileges, recreation steps
@@ -311,14 +320,21 @@ coveo-pokemon-challenge/
 │   ├── observability.md         ← query-level Grafana architecture (panel-shareable)
 │   ├── caching-strategy.md      ← multi-tier caching decision (panel-shareable)
 │   ├── passage-retrieval.md     ← PR architecture + Coveo positioning (panel-shareable)
-│   └── detail-page.md           ← Headless + React detail page architecture (panel-shareable)
+│   ├── detail-page.md           ← Headless + React detail page architecture (panel-shareable)
+│   └── mcp-integration.md       ← Coveo Hosted MCP Server integration (panel-shareable)
 │
 ├── config/                      ← versioned Coveo configuration
 │   ├── fields.json              ← index field schema
-│   └── source/                  (source-specific config)
-│       ├── definition.json
-│       ├── scraping.json
-│       └── url_filter.json      ← read by scripts AND tests (single source of truth)
+│   ├── source/                  (source-specific config)
+│   │   ├── definition.json
+│   │   ├── scraping.json
+│   │   └── url_filter.json      ← read by scripts AND tests (single source of truth)
+│   ├── ml/                      (machine learning seed data — Phase 6B)
+│   │   ├── default-queries.json
+│   │   └── default-queries.csv
+│   └── mcp/                     (MCP Server config — Phase 8.5)
+│       ├── pokemon-mcp.yaml     ← source-of-truth for the Hosted MCP Server
+│       └── README.md            ← versioning + manual-paste workflow
 │
 ├── scripts/                     ← idempotent ops scripts (Coveo REST API)
 │   ├── bootstrap.sh             ← one-command full provisioning
@@ -326,6 +342,7 @@ coveo-pokemon-challenge/
 │   ├── setup/                     (idempotent resource creation)
 │   ├── source/                    (source lifecycle ops)
 │   ├── ml/                        (machine learning wiring)
+│   ├── mcp/                       (MCP Server diagnostics — Phase 8.5)
 │   └── audit/                     (post-processing data quality)
 │
 ├── push-pokemon/                ← Python Push-source ingestion (Phase 4)

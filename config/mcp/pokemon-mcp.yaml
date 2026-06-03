@@ -1,0 +1,149 @@
+# Coveo Hosted MCP Server — source-of-truth configuration
+#
+# This file mirrors the configuration of the `pokemon-mcp` MCP server in
+# Coveo Admin Console (AI & ML → MCP Server → pokemon-mcp). As of 2026-06-03,
+# Coveo does NOT expose a public REST admin API for managing the MCP Server
+# config — scripts/mcp/discover_api.sh confirmed this by probing 8 candidate
+# endpoint shapes (all returned 404 INVALID_URI). So we follow a documented
+# manual workflow: edit this YAML, paste relevant sections into the Console,
+# commit the YAML.
+#
+# When the Console state diverges from this YAML, the YAML is the truth — and
+# the next manual Console edit must restore parity. See config/mcp/README.md
+# for the full workflow.
+#
+# When/if Coveo publishes an admin REST API, replace the manual flow with an
+# apply script (same pattern as scripts/ml/seed_query_suggest.sh +
+# rga-closed-loop/src/apply.py — see those for the established convention).
+
+# ---------- Identification ----------
+
+name: pokemon-mcp
+version: 1.0.0
+applied_at: "2026-06-03"
+applied_by: franck-benichou
+default: true   # the org's default MCP server (per Console "Default" badge)
+
+# ---------- Endpoint + search hub (informational; Coveo-issued, non-editable) ----------
+
+# Per-server URL Coveo auto-generated at server creation. Used by MCP clients
+# (Claude Code, Claude Desktop, ChatGPT Enterprise, ...). NOT a secret — visible
+# in the Console Overview tab → Details → Endpoint, and stored in .env as
+# COVEO_MCP_ENDPOINT for env-var substitution in .claude/mcp.json.
+endpoint: https://platform.cloud.coveo.com/api/v1/organizations/benichouu9fose4g/mcp/server/53dd0acf-92b9-4a59-8e35-3ea1dddc82a3
+
+# Auto-created search hub Coveo segregates MCP traffic into. Useful for future
+# observability work — filtering on this hub isolates agent-driven traffic from
+# main-UI traffic in Grafana.
+search_hub: MCP_pokemon-mcp
+
+# ---------- Authentication ----------
+
+# Both methods are enabled on the server. Anonymous API key is what we use
+# for local Claude Code wiring (Pokémon content is public, no per-user perms).
+# OAuth is available for enterprise customers with permissioned content.
+auth_methods:
+  - oauth
+  - anonymous_api_key
+
+# The actual API key value lives in .env as COVEO_MCP_API_KEY (gitignored).
+# Auto-scoped by Coveo to the MCP_pokemon-mcp search hub on creation. See
+# docs/api-keys.md → Key 6.
+
+# ---------- Pipeline ----------
+
+# All four tools route through the same Coveo query pipeline. The default
+# pipeline already has pokemon-rga, pokemon-se, pokemon-qs, and pokemon-pr
+# associated — so MCP tools get full ML treatment for free.
+pipeline: default
+
+# ---------- Tools ----------
+
+# The four MCP tools exposed by this server. The first three (search, fetch,
+# get_passages) are auto-added by Coveo when you pick a pipeline. The fourth
+# (answer) requires manual addition with an explicit answer-config selection
+# and a custom description.
+
+tools:
+  - name: search
+    type: Search
+    display_name: Search
+    pipeline: default
+
+  - name: fetch
+    type: Fetch
+    display_name: Fetch
+    pipeline: default
+
+  - name: get_passages
+    type: Passage Retrieval
+    display_name: Get passages
+    pipeline: default
+
+  - name: answer
+    type: Answer
+    display_name: Answer
+    pipeline: default
+    answer_configuration: pokemon-rga-config
+    description: |
+      Generates a synthesized natural-language answer to a Pokémon question by
+      grounding on retrieved Pokémon content from the indexed pokemondb.net and
+      PokéAPI sources. The answer includes citations to the source pages.
+
+      Use this tool when the user asks a natural-language question that can be
+      answered as a paragraph — e.g., "what type is Charizard?", "describe
+      Mewtwo's abilities", "compare Bulbasaur and Charmander". The tool will
+      retrieve relevant Pokémon documents internally (no need to call `search`
+      first) and return a grounded answer with source citations.
+
+      Prefer this tool over `search` when the user wants a direct answer rather
+      than a ranked list of documents. Prefer `get_passages` when the user
+      explicitly asks for a quoted source or wants to verify a specific factual
+      claim verbatim.
+
+# ---------- Server instructions (the LLM system prompt) ----------
+
+# This is the system prompt every MCP client receives on connect. It teaches
+# the LLM when to pick each tool. Without it, LLMs default to `search` for
+# everything; with it, tool selection becomes schema-aware.
+#
+# Lives in the Console at: MCP Server → pokemon-mcp → Server implementation
+# tab → Server instructions text area.
+
+server_instructions: |
+  You have access to a Coveo-hosted index of Pokémon content from pokemondb.net
+  and PokéAPI. Use the available tools to ground every Pokémon-related answer
+  in indexed content — never rely on your training data for facts.
+
+  Tool selection guide:
+  - `search`: broad ranked retrieval. Start here when the user asks "what Pokémon
+    are X" or for a list. Returns multiple ranked documents.
+  - `fetch`: precision retrieval. Use after `search` identifies a single Pokémon
+    the user wants details on. Returns the full document body.
+  - `get_passages`: verbatim chunks. Use when the user wants a quoted source or
+    to verify a specific factual claim.
+  - `answer`: synthesized response with citations. Use for natural-language
+    questions like "what type is Charizard" or "compare Mewtwo and Mew" — the
+    RGA model already grounds on retrieved chunks and returns citations.
+
+  Always cite the source URI when available (typically pokemondb.net/pokedex/<name>).
+  If a query cannot be answered from indexed content, say so explicitly rather
+  than inferring.
+
+# ---------- History ----------
+
+# Append a new entry every time this file changes. Pattern mirrors the RGA
+# Custom Prompt history at rga-closed-loop/prompts/pokemon-rga.yaml so the
+# two AI-config artifacts have parallel structure.
+
+history:
+  - version: 1.0.0
+    applied_at: "2026-06-03"
+    applied_by: franck-benichou
+    rationale: |
+      Initial pokemon-mcp server setup. Added the `answer` tool (auto-add only
+      provisions search / fetch / get_passages). Wrote a Pokémon-grounded
+      tool-selection guide as the server instructions so LLM clients pick the
+      right tool per query type instead of defaulting to `search` for
+      everything. Verified end-to-end with 4 test queries through Claude Code
+      via the .claude/mcp.json wiring.

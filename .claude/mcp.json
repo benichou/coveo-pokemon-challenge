@@ -1,4 +1,12 @@
 {
-  "_comment": "Project-scoped MCP server config for the Coveo Pokemon Challenge. Empty by design — this repo doesn't depend on any MCP server (and explicitly excludes user-global ones like the Carta MCP set when invoked via `claude --strict-mcp-config --mcp-config .claude/mcp.json`). The Coveo MCP server integration is planned for Phase 8.5 (beyond-bonus); when we get there, it'll be declared here.",
-  "mcpServers": {}
+  "_comment": "Project-scoped MCP server config for the Coveo Pokemon Challenge. Wires the Coveo Hosted MCP Server (Phase 8.5) so Claude Code can call the four Coveo MCP tools — search / fetch / get_passages / answer — against this repo's pokemon-mcp server in the benichou org. Auth via Anonymous API key in the Authorization header. Both COVEO_MCP_ENDPOINT and COVEO_MCP_API_KEY are env-var substituted at startup, so secrets stay in .env (gitignored), not in this committed file. Launch Claude Code in this repo with the env loaded (e.g. `set -a; source .env; set +a; claude`) so the substitution resolves; otherwise the tools will 401.",
+  "mcpServers": {
+    "coveo-pokemon": {
+      "type": "http",
+      "url": "${COVEO_MCP_ENDPOINT}",
+      "headers": {
+        "Authorization": "Bearer ${COVEO_MCP_API_KEY}"
+      }
+    }
+  }
 }
