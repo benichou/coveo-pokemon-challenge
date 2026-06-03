@@ -319,7 +319,8 @@
           {
             "matcher": { "id": "byName", "options": "rga_answer" },
             "properties": [
-              { "id": "custom.width", "value": 400 }
+              { "id": "custom.width", "value": 400 },
+              { "id": "custom.inspect", "value": true }
             ]
           },
           {
@@ -363,6 +364,8 @@
             "properties": [
               { "id": "displayName", "value": "top 5 results" },
               { "id": "custom.width", "value": 360 },
+              { "id": "custom.inspect", "value": true },
+              { "id": "custom.displayMode", "value": "json-view" },
               {
                 "id": "custom.cellOptions",
                 "value": {
