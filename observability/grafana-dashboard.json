@@ -15,6 +15,7 @@
     { "type": "panel", "id": "timeseries", "name": "Time series", "version": "" },
     { "type": "panel", "id": "barchart", "name": "Bar chart", "version": "" },
     { "type": "panel", "id": "piechart", "name": "Pie chart", "version": "" },
+    { "type": "panel", "id": "logs", "name": "Logs", "version": "" },
     { "type": "datasource", "id": "loki", "name": "Loki", "version": "1.0.0" }
   ],
   "annotations": { "list": [] },
@@ -133,7 +134,8 @@
               { "color": "red", "value": 0.05 }
             ]
           },
-          "unit": "percentunit"
+          "unit": "percentunit",
+          "noValue": "0%"
         }
       },
       "targets": [
@@ -213,21 +215,21 @@
         {
           "refId": "A",
           "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
-          "expr": "quantile_over_time(0.50, {app=\"pokemon-search\"} | json | unwrap response_time_ms [$__interval])",
+          "expr": "avg by () (quantile_over_time(0.50, {app=\"pokemon-search\"} | json | __error__=\"\" | unwrap response_time_ms [5m]))",
           "legendFormat": "p50",
           "queryType": "range"
         },
         {
           "refId": "B",
           "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
-          "expr": "quantile_over_time(0.95, {app=\"pokemon-search\"} | json | unwrap response_time_ms [$__interval])",
+          "expr": "avg by () (quantile_over_time(0.95, {app=\"pokemon-search\"} | json | __error__=\"\" | unwrap response_time_ms [5m]))",
           "legendFormat": "p95",
           "queryType": "range"
         },
         {
           "refId": "C",
           "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
-          "expr": "quantile_over_time(0.99, {app=\"pokemon-search\"} | json | unwrap response_time_ms [$__interval])",
+          "expr": "avg by () (quantile_over_time(0.99, {app=\"pokemon-search\"} | json | __error__=\"\" | unwrap response_time_ms [5m]))",
           "legendFormat": "p99",
           "queryType": "range"
         }
@@ -249,14 +251,15 @@
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
-          "custom": { "hideFrom": { "legend": false, "tooltip": false, "viz": false } }
+          "custom": { "hideFrom": { "legend": false, "tooltip": false, "viz": false } },
+          "displayName": "${__field.labels.sort_criteria}"
         }
       },
       "targets": [
         {
           "refId": "A",
           "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
-          "expr": "sum by (sort_criteria) (count_over_time({app=\"pokemon-search\"} | json [$__range]))",
+          "expr": "sum by (sort_criteria) (count_over_time({app=\"pokemon-search\"} | json | sort_criteria != `` [$__range]))",
           "legendFormat": "{{sort_criteria}}",
           "queryType": "instant"
         }
@@ -277,7 +280,8 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "palette-classic" }
+          "color": { "mode": "palette-classic" },
+          "displayName": "${__field.labels.search_hub}"
         }
       },
       "targets": [
@@ -287,6 +291,33 @@
           "expr": "sum by (search_hub) (count_over_time({app=\"pokemon-search\"}[$__range]))",
           "legendFormat": "{{search_hub}}",
           "queryType": "instant"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Live search logs (raw events)",
+      "type": "logs",
+      "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
+      "description": "Every per-search log record streaming in real time. Click a line to expand its full JSON payload — query text, top results, RGA answer text, citations, facets, timing. Use the Loki query bar to filter (e.g. `{app=\"pokemon-search\", rga_fired=\"false\"}` shows searches where RGA refused to ground; `{app=\"pokemon-search\"} | json | response_time_ms > 500` shows slow searches).",
+      "gridPos": { "h": 16, "w": 24, "x": 0, "y": 35 },
+      "options": {
+        "showTime": true,
+        "showLabels": false,
+        "showCommonLabels": false,
+        "wrapLogMessage": true,
+        "prettifyLogMessage": true,
+        "enableLogDetails": true,
+        "dedupStrategy": "none",
+        "sortOrder": "Descending"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
+          "expr": "{app=\"pokemon-search\"} | json",
+          "queryType": "range",
+          "maxLines": 200
         }
       ]
     }
