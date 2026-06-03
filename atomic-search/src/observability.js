@@ -95,6 +95,18 @@ function rgaCitationsCountFromState(ga) {
   return Array.isArray(c) ? c.length : 0;
 }
 
+// Coveo's analytics client sets a `coveo_visitorId` cookie on first page load.
+// That cookie is the *real* analytics session identifier — the same UUID that
+// the UA endpoint receives — so it's the right thing to log as `client_id`.
+// engine.state.configuration.analytics doesn't surface it (only the `anonymous`
+// flag). Reading the cookie directly keeps log records joinable with Coveo UA
+// exports if we ever cross-reference them.
+function visitorIdFromCookie() {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie.match(/(?:^|;\s*)coveo_visitorId=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : "";
+}
+
 export function buildPayload(state) {
   // Defensive reads — Coveo Headless state shape varies across versions.
   // Anything we can't read falls back to a sensible default; we'd rather
@@ -122,8 +134,17 @@ export function buildPayload(state) {
     top_results: topResultsFromState(search),
     total_count: search.response?.totalCount ?? 0,
     response_time_ms: search.duration ?? 0,
-    pipeline: state?.pipeline ?? "default",
-    client_id: config.analytics?.clientId ?? "",
+    // Pipeline can live in a few places: as a bare string on state.pipeline
+    // (Headless < 3), nested under state.pipeline.pipeline (some 3.x builds),
+    // or pulled from configuration.search.pipeline if explicitly set. `||`
+    // (not `??`) so empty strings fall through to "default" — Coveo applies
+    // the org's default pipeline server-side when none is specified.
+    pipeline:
+      state?.pipeline?.pipeline ||
+      config.search?.pipeline ||
+      state?.pipeline ||
+      "default",
+    client_id: visitorIdFromCookie(),
     facets_active: activeFacetsFromState(state),
     status: statusFromState(search),
   };
