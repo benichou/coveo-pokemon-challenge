@@ -47,11 +47,10 @@ So SE is upstream of RGA in the data flow, but both live in the same pipeline, i
 
 ### `pokemon-qs` — Query Suggest (type-ahead)
 
-**What it does.** Query Suggest (QS) drives the type-ahead dropdown in the Atomic `<atomic-search-box>`. As the user types, Coveo returns the top suggestions ranked by relevance to the prefix. The model trains on two signals: (a) the org's own UA query history (what people have actually typed and clicked), and (b) — for fresh orgs without much organic traffic — a curated **Default Queries** preload that we upload via the Advanced Model Configurations API.
+**What it does.** Query Suggest (QS) drives the type-ahead dropdown in the Atomic `<atomic-search-box>`. As the user types, Coveo returns the top suggestions ranked by relevance to the prefix. The model trains exclusively on UA search events — what people have actually typed (and what they clicked afterward).
 
 **Why we chose it.**
 - Doc 2 Intermediate tier explicitly asks for type-ahead. With QS associated to the pipeline, the existing `<atomic-search-box number-of-queries="6">` markup activates automatically — no frontend changes.
-- It's the only ML model whose *preload* path is fully scriptable on a Pokémon dataset (unlike commerce-specific PQS models, which are catalog-driven). Mirrors our "code as source of truth" pattern.
 - Closes a UX gap: without QS, the search box is a blank text input. With QS, the first click reveals the dataset's vocabulary — which is what a non-expert user (or a panel reviewer) needs to discover what's searchable.
 
 **How it pairs with RGA + SE.** QS lives at a different layer of the request lifecycle than RGA/SE:
@@ -60,7 +59,42 @@ So SE is upstream of RGA in the data flow, but both live in the same pipeline, i
 
 So QS is upstream of the search submit itself. It shapes WHAT the user searches for; SE + RGA shape what they see back.
 
-**Seeding strategy.** A QS model on a fresh org has effectively no UA history (we have ~74 search events / 9 unique visitors at session start). Without seed queries, the type-ahead would be empty for days/weeks until enough real traffic accumulates. We preload `config/ml/default-queries.json` — 152 queries in three categories (102 Pokémon names + 30 type/generation filters + 20 natural-language questions) — via `scripts/ml/seed_query_suggest.sh`. Over time, organic UA events from the live site blend with the seed at training; Coveo's algorithm weights recent organic events higher.
+**Seeding strategy — avoiding the cold-start problem.**
+
+A QS model on a fresh org has effectively no UA history (we had ~340 search events at the start of Phase 6B, from our own development testing). Without seed queries, the type-ahead would be empty for any prefix nobody had typed yet — meaning a panel reviewer who lands on the live site would see suggestions only for "char", "mega", and a handful of other prefixes we happened to have typed during testing. Day-one usability would be poor.
+
+The working solution is Coveo's documented **Default Queries** advanced configuration file:
+
+```
+PUT /rest/organizations/{orgId}/machinelearning/models/{modelId}/configs/DEFAULT_QUERIES?languageCode=en
+Content-Type: multipart/form-data; field name = "configFile"
+Body: a UTF-8 CSV with two columns — query, importance
+```
+
+The CSV gets stored on the model at `<orgId>/.../DefaultQueries/en` and is incorporated as suggestion candidates at the next rebuild — bypassing the UA-event ingestion path entirely (no click-through-rate threshold to satisfy).
+
+We weight by category to reflect realistic relative search frequencies on a Pokédex:
+
+- **Names** (102 queries) — importance `10`. Primary use case; users mostly search by Pokémon name.
+- **Type / generation filters** (30 queries, e.g. `fire pokemon`, `gen 1 pokemon`) — importance `5`. Medium-frequency.
+- **Natural-language questions** (20 queries, e.g. `what type is charizard`) — importance `3`. Least common typing pattern.
+
+After upload + one rebuild, `modelSizeStatistic` jumped from `5` (organic only) → `157` (5 organic + 152 seeded), and `/querySuggest` returns the right completions for previously-empty prefixes (`snor` → `snorlax`, `pika` → `pikachu`, `fire` → `fire pokemon`, etc.).
+
+Files involved (both versioned):
+- `config/ml/default-queries.json` — the human-authored source of truth (152 queries grouped by category with comments). Edit this file when you want to add / remove / re-weight queries.
+- `config/ml/default-queries.csv` — the generated artifact that Coveo actually receives. Two-column CSV with no header (Coveo's parser treats `#` as data). Re-generated from the JSON on every script run; committed alongside the JSON so a git diff of one always matches a git diff of the other.
+- `scripts/ml/seed_query_suggest.sh` — reads the JSON, regenerates the CSV at the versioned path, PUTs to Coveo's `/configs/DEFAULT_QUERIES` endpoint. Idempotent and re-runnable: a re-run with the same JSON regenerates the same CSV and re-uploads it (no-op outcome on Coveo's side).
+
+### Dead ends we tried first (worth knowing, so future Coveo work doesn't repeat them)
+
+Finding the right path took two wrong turns. Both dead ends *look* documented and *look* like they should work, which is why we tried them:
+
+1. **`extraConfig.defaultQueries` on the QS model.** Coveo's ML Models API lets you PUT arbitrary fields into a model's `extraConfig`. We wrote our seed list there. The PUT succeeded (HTTP 200), the JSON editor in the Console showed the data persisted, but the QS engine never read it. `modelSizeStatistic` stayed at 5 across multiple rebuilds. **Why:** `defaultQueries` is actually a parameter of Coveo's *Drill* engine, not the Query Suggest engine — Coveo's API doesn't validate that an `extraConfig` field applies to the model's engine, so writing it succeeds even though nothing reads it. The Console eventually surfaces a "Limited" warning for this exact case: *"Configuration file defined in `coveo.drill.defaultQueries` was overridden. Avoid manually configuring `coveo.drill.defaultQueries` and prefer using advanced configuration files."* — confirming the diagnosis.
+
+2. **UA synthesis** (POSTing fake search + click events to `/rest/ua/v15/analytics/search` and `.../click`). The endpoint accepts events readily (HTTP 200 on every POST), and the model's `searchEventCount` did grow correctly after we added `clientId` to the payload. But `modelSizeStatistic` still didn't budge. **Why:** Coveo's QS algorithm promotes a query to "candidate" only after multiple searches *followed by clicks*. Our synthetic clicks failed to clear the engagement threshold (clickEventCount stayed at 47 across all our synthetic batches), so the events were ingested but never became candidates. UA synthesis works in principle — it's how organic traffic grows the model — but it's a slow, indirect path with a hidden engagement threshold that's hard to satisfy synthetically.
+
+The Default Queries CSV path **bypasses both problems** because it adds queries to the candidate set *directly*, without flowing through UA event ingestion or click-rate scoring. This is, per Coveo's docs, the official mechanism for cold-start bootstrap of a QS model.
 
 ---
 

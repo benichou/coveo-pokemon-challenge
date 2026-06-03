@@ -36,9 +36,10 @@ Beyond a working Pokémon search UI, this build is a panel-defining demonstratio
 ✅ Phase 6D — RGA Skill Evaluator + dashboard + daily cron + live Vercel deploy
 ✅ Phase 6F — Closed-loop prompt-tuning: analyzer + skill + cron + guardrails
 ✅ Phase 7  — Atomic search UI live on Vercel (pokemon-search-one-chi.vercel.app)
+✅ Phase 6E — Grafana Cloud query observability (public dashboard live, dashboard-as-code via CI)
+✅ Phase 6F.7 — Closed-loop smoothing + dashboard prompt-history (multi-day analyzer + chart markers + diffs)
+✅ Phase 6B — Query Suggest (type-ahead) — model live + cold-start solved via Default Queries CSV (Advanced Model Configurations API)
 
-⏳ Phase 6E — Grafana Cloud query observability
-⏳ Phase 6B — Query Suggest (type-ahead)
 ⏳ Phase 6C — Pokémon Detail Page (Headless + React)
 ⏳ Phase 8  — Passage Retrieval API integration (bonus tier)
 ⏳ Phase 8.5 — Coveo MCP server integration (beyond-bonus, scope TBD)
