@@ -139,6 +139,41 @@ jobs:
             cat "logs/closed-loop/${LATEST}" | jq '{started_at, exit_code, rollback_decision, guardrails, apply_returncode}'
           fi
 
+      - name: Auto-fix cron-written files via pre-commit
+        # Hold the cron's commits to the same quality standard as human commits.
+        # The cron writes log JSON + YAML prompts and then commits via the bot
+        # identity, which would otherwise bypass the repo's pre-commit hooks
+        # (those only fire on local laptop commits). Without this step, hook
+        # violations (e.g., missing trailing newlines, JSON formatting) land
+        # on main and fail pr-checks.yml on the *next* human push — a fragile
+        # pattern that bit us on 2026-06-02.
+        #
+        # Strategy: run hooks twice.
+        #   Pass 1 may auto-fix files (exits non-zero on first run if it modifies anything).
+        #   Pass 2 must be clean — if it still fails, there's a real lint error
+        #   that can't be auto-fixed and we want the cron to abort loudly.
+        run: |
+          set +e
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Working tree clean — nothing to lint."
+            exit 0
+          fi
+          python -m pip install --quiet pre-commit
+          git add -A
+          pre-commit run --all-files
+          pass1=$?
+          git add -A
+          pre-commit run --all-files
+          pass2=$?
+          set -e
+          if [ $pass2 -ne 0 ]; then
+            echo "::error::pre-commit still failing after autofix pass — manual fix needed"
+            exit 1
+          fi
+          if [ $pass1 -ne 0 ]; then
+            echo "::notice::pre-commit auto-fixed $(git diff --cached --name-only | wc -l) file(s)"
+          fi
+
       - name: Commit + push results
         # Only commit when the orchestrator actually changed files (exit codes 10 / 11).
         # On exit code 0, only logs/ is dirty — we still commit so the audit trail lands.
