@@ -45,6 +45,23 @@ We chose these two because **Doc 2's Advanced tier explicitly asks for RGA**, an
 
 So SE is upstream of RGA in the data flow, but both live in the same pipeline, independently associated.
 
+### `pokemon-qs` — Query Suggest (type-ahead)
+
+**What it does.** Query Suggest (QS) drives the type-ahead dropdown in the Atomic `<atomic-search-box>`. As the user types, Coveo returns the top suggestions ranked by relevance to the prefix. The model trains on two signals: (a) the org's own UA query history (what people have actually typed and clicked), and (b) — for fresh orgs without much organic traffic — a curated **Default Queries** preload that we upload via the Advanced Model Configurations API.
+
+**Why we chose it.**
+- Doc 2 Intermediate tier explicitly asks for type-ahead. With QS associated to the pipeline, the existing `<atomic-search-box number-of-queries="6">` markup activates automatically — no frontend changes.
+- It's the only ML model whose *preload* path is fully scriptable on a Pokémon dataset (unlike commerce-specific PQS models, which are catalog-driven). Mirrors our "code as source of truth" pattern.
+- Closes a UX gap: without QS, the search box is a blank text input. With QS, the first click reveals the dataset's vocabulary — which is what a non-expert user (or a panel reviewer) needs to discover what's searchable.
+
+**How it pairs with RGA + SE.** QS lives at a different layer of the request lifecycle than RGA/SE:
+- QS fires on **keystroke** — every character the user types triggers a `/rest/search/v2/querySuggest` call that returns suggested completions.
+- SE + RGA fire on **submit** — once the user hits Enter, the search query runs through the pipeline, SE re-ranks, RGA generates the answer.
+
+So QS is upstream of the search submit itself. It shapes WHAT the user searches for; SE + RGA shape what they see back.
+
+**Seeding strategy.** A QS model on a fresh org has effectively no UA history (we have ~74 search events / 9 unique visitors at session start). Without seed queries, the type-ahead would be empty for days/weeks until enough real traffic accumulates. We preload `config/ml/default-queries.json` — 152 queries in three categories (102 Pokémon names + 30 type/generation filters + 20 natural-language questions) — via `scripts/ml/seed_query_suggest.sh`. Over time, organic UA events from the live site blend with the seed at training; Coveo's algorithm weights recent organic events higher.
+
 ---
 
 ## Why these two together (panel narrative)

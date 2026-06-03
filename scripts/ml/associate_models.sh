@@ -68,6 +68,7 @@ ORG_QS="organizationId=${COVEO_ORG_ID}"
 # them in the Console under these exact names (see docs/ml-models.md).
 RGA_NAME="pokemon-rga"
 SE_NAME="pokemon-se"
+QS_NAME="pokemon-qs"
 
 # ---------------------------------------------------------------------------
 # Step 1: find the default query pipeline ID
@@ -141,8 +142,23 @@ if not m:
 print(m['id'])  # Coveo's ML endpoint returns 'id', not 'modelId'
 ")
 
+# pokemon-qs (Query Suggest, Phase 6B) — added later than RGA + SE; warn if
+# missing rather than exit, so this script stays usable on orgs where QS
+# hasn't been created yet.
+QS_ID=$(echo "$models_body" | QS_NAME="$QS_NAME" python3 -c "
+import json, os, sys
+models = json.load(sys.stdin)
+m = next((m for m in models if m.get('modelDisplayName') == os.environ['QS_NAME']), None)
+print(m['id'] if m else '')
+")
+
 echo "  ✓ $RGA_NAME → $RGA_ID"
 echo "  ✓ $SE_NAME  → $SE_ID"
+if [[ -n "$QS_ID" ]]; then
+  echo "  ✓ $QS_NAME  → $QS_ID"
+else
+  echo "  ⚠ $QS_NAME  not found — skipping (create it in the Console first; see docs/ml-models.md)"
+fi
 
 # ---------------------------------------------------------------------------
 # Step 3: list existing associations on this pipeline (for idempotency)
@@ -209,6 +225,9 @@ echo ""
 echo "[4/4] Creating missing associations..."
 associate "$RGA_NAME" "$RGA_ID"
 associate "$SE_NAME"  "$SE_ID"
+if [[ -n "$QS_ID" ]]; then
+  associate "$QS_NAME" "$QS_ID"
+fi
 
 # ---------------------------------------------------------------------------
 # Final state
