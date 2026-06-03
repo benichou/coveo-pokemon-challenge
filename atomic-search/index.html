@@ -201,7 +201,14 @@
                 </atomic-result-section-badges>
 
                 <atomic-result-section-title>
-                  <atomic-result-link>
+                  <!-- Phase 6C — clicking a result navigates to the in-app
+                       Pokémon Detail Page (Headless + React) instead of the
+                       upstream pokemondb.net source. The detail page receives
+                       ?name=<slug>, fires its own Coveo searches, and renders
+                       a single-Pokémon view with Hero + Featured Passage +
+                       Related Grid. The "View source page" link inside the
+                       Hero still points back to the original document. -->
+                  <atomic-result-link href-template="/pokemon.html?name=${raw.pokemon_name}">
                     <atomic-result-text field="pokemon_name"></atomic-result-text>
                   </atomic-result-link>
                 </atomic-result-section-title>

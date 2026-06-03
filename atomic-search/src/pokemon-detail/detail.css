@@ -1,0 +1,456 @@
+/* Phase 6C — Pokémon Detail Page styles.
+ *
+ * Mirrors the design tokens from atomic-search/src/style.css so the
+ * detail page and the main Atomic page feel like one product. Plain
+ * stylesheet (no shadow DOM here — this is a React app, not Atomic).
+ */
+
+:root {
+  --bg: #fafaf6;
+  --surface: #fff;
+  --ink: #1c1d21;
+  --ink-soft: #5a5f6a;
+  --accent: #ee1515;
+  --accent-soft: #fde7e7;
+  --border: #e3e4e8;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
+    sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.detail-app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.detail-nav {
+  padding-top: 0.25rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.back-link:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ----- Hero ----- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr;
+  gap: 2rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 640px) {
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+}
+
+.hero-image-placeholder {
+  width: 100%;
+  height: 220px;
+  display: grid;
+  place-items: center;
+  font-size: 5rem;
+  color: var(--ink-soft);
+  background: var(--accent-soft);
+  border-radius: 12px;
+}
+
+.hero-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.hero-dex {
+  margin: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+}
+
+.hero-name {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.hero-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 640px) {
+  .hero-types {
+    justify-content: center;
+  }
+}
+
+.hero-gen {
+  margin: 0;
+  display: inline-block;
+  width: fit-content;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: #4caf50;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 640px) {
+  .hero-gen {
+    margin: 0 auto;
+  }
+}
+
+.hero-source {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+/* ----- Type badges (Pokémon palette) ----- */
+
+.type-badge {
+  display: inline-block;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.type-normal   { background: #a8a878; }
+.type-fire     { background: #f08030; }
+.type-water    { background: #6890f0; }
+.type-electric { background: #f8d030; color: #1c1d21; }
+.type-grass    { background: #78c850; }
+.type-ice      { background: #98d8d8; color: #1c1d21; }
+.type-fighting { background: #c03028; }
+.type-poison   { background: #a040a0; }
+.type-ground   { background: #e0c068; color: #1c1d21; }
+.type-flying   { background: #a890f0; }
+.type-psychic  { background: #f85888; }
+.type-bug      { background: #a8b820; }
+.type-rock     { background: #b8a038; }
+.type-ghost    { background: #705898; }
+.type-dragon   { background: #7038f8; }
+.type-dark     { background: #705848; }
+.type-steel    { background: #b8b8d0; color: #1c1d21; }
+.type-fairy    { background: #ee99ac; color: #1c1d21; }
+
+/* ----- Featured passage ----- */
+
+.featured-passage {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--shadow);
+}
+
+.featured-passage--loading {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.featured-passage-header h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+
+.featured-passage-subtitle {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+/* Stack of passage cards. Mirrors the .passage-panel pattern in the
+ * Atomic main page: each card is a <details> element, default-open for
+ * the cleanest passage (lowest noise score), default-closed for the
+ * tabular/structured ones. Same markdown-it rendering on both surfaces.
+ */
+.passage-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.passage-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff8f8;
+  border-left: 3px solid var(--accent);
+}
+
+.passage-card-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  padding: 0.6rem 0.85rem;
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.passage-card-summary::-webkit-details-marker {
+  display: none;
+}
+
+.passage-card-rank {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.passage-card-source-hint {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.passage-card-chevron {
+  display: inline-block;
+  transition: transform 0.15s ease;
+  color: var(--accent);
+}
+
+.passage-card[open] > .passage-card-summary > .passage-card-chevron {
+  transform: rotate(90deg);
+}
+
+.passage-card-body {
+  padding: 0 0.85rem 0.6rem;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.passage-card-source {
+  padding: 0 0.85rem 0.7rem;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+/* Markdown-rendered passage content: tables, headers, lists pulled from
+ * pokemondb.net page chunks. Style conservatively so the panel reads
+ * like prose even when the underlying chunk is structured data.
+ */
+.passage-card-body > *:first-child { margin-top: 0; }
+.passage-card-body > *:last-child { margin-bottom: 0; }
+
+.passage-card-body h1,
+.passage-card-body h2,
+.passage-card-body h3,
+.passage-card-body h4 {
+  font-size: 1rem;
+  margin: 0.75rem 0 0.4rem;
+  color: var(--ink);
+}
+
+.passage-card-body p {
+  margin: 0.4rem 0;
+}
+
+.passage-card-body ul,
+.passage-card-body ol {
+  margin: 0.4rem 0;
+  padding-left: 1.4rem;
+}
+
+.passage-card-body table {
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.passage-card-body th,
+.passage-card-body td {
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.5rem;
+  text-align: left;
+}
+
+.passage-card-body th {
+  background: #faecec;
+  font-weight: 600;
+}
+
+.passage-card-body a {
+  color: var(--accent);
+}
+
+.passage-card-body code {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.05rem 0.3rem;
+  border-radius: 3px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85em;
+}
+
+
+/* ----- Related grid ----- */
+
+.related h2 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+
+.related--loading {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.related-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+  color: var(--ink);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+
+.related-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--accent-soft);
+  text-decoration: none;
+}
+
+.related-card img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+}
+
+.related-card-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.related-card-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.related-card-types .type-badge {
+  padding: 0.1rem 0.45rem;
+  font-size: 0.65rem;
+}
+
+/* ----- Loading / error states ----- */
+
+.detail-loading,
+.detail-error {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.detail-error h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  color: var(--ink);
+}
+
+.detail-error code {
+  background: var(--accent-soft);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85rem;
+}
+
+/* ----- Footer ----- */
+
+.detail-footer {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.detail-footer p {
+  margin: 0;
+  max-width: 640px;
+  margin: 0 auto;
+}

@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from "vite";
 import { resolve } from "path";
+import react from "@vitejs/plugin-react";
 
 // Resolve Coveo credentials with two-environment compatibility:
 //
@@ -55,6 +56,7 @@ export default defineConfig(({ mode }) => {
   );
 
   return {
+    plugins: [react()],
     server: {
       port: 3000,
       strictPort: true,
@@ -62,7 +64,19 @@ export default defineConfig(({ mode }) => {
     // ES2022 lets us use top-level await in main.js (for the
     // searchInterface.initialize() call). All modern browsers support it
     // natively as of mid-2022; only ancient targets would need a polyfill.
-    build: { target: "es2022" },
+    //
+    // Phase 6C — multi-entry: index.html is the Atomic main page;
+    // pokemon.html is the Headless+React Detail Page at /pokemon.html?name=X.
+    // Same Vite project bundles both; both share .env and the log-query proxy.
+    build: {
+      target: "es2022",
+      rollupOptions: {
+        input: {
+          index: resolve(__dirname, "index.html"),
+          pokemon: resolve(__dirname, "pokemon.html"),
+        },
+      },
+    },
     optimizeDeps: { esbuildOptions: { target: "es2022" } },
     // Expose only the VITE_-prefixed vars to the browser bundle. Coveo's
     // anonymous search key is public-safe (Anonymous Search template); the

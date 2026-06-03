@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokémon Detail — Pokedex Search</title>
+    <link rel="stylesheet" href="/src/pokemon-detail/detail.css" />
+  </head>
+  <body>
+    <!-- Phase 6C — Pokémon Detail Page.
+         Rendered by a Headless + React app (NOT Atomic). The main Atomic
+         page bundles result links pointing here: /pokemon.html?name=charizard.
+         The React app reads the name from the URL, fires Headless queries
+         against the same Coveo org + pipeline, and renders a dedicated
+         single-Pokémon view that composes search + RGA + Passage Retrieval
+         in a context-aware layout (vs. the Atomic main page's list view). -->
+    <div id="pokemon-detail-root"></div>
+    <script type="module" src="/src/pokemon-detail/main.tsx"></script>
+  </body>
+</html>
