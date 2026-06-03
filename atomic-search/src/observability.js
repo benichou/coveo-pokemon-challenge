@@ -22,6 +22,14 @@
 
 const PROXY_ENDPOINT = "/api/log-query";
 
+// Wait this long after the search response lands before reading state + posting.
+// Coveo's RGA streams in AFTER the search response — typically ~200-700ms.
+// Logging immediately would capture empty rga_answer / 0 citations. Logging
+// after this delay catches the full streamed answer ~95% of the time. The
+// tradeoff is a tiny perceived latency in the log freshness, which is fine
+// for observability (this isn't a hot path).
+const RGA_STREAM_BUFFER_MS = 750;
+
 const IS_DEV = Boolean(import.meta.env.DEV);
 const OBSERVABILITY_ENABLED =
   import.meta.env.VITE_OBSERVABILITY_ENABLED !== "false";
@@ -30,14 +38,6 @@ const OBSERVABILITY_ENABLED =
 // Default to disabled on localhost to avoid console noise from failed
 // fetches on every search.
 const SAFE_TO_LOG = OBSERVABILITY_ENABLED && !IS_DEV;
-
-// TEMP — diagnostic for Phase 6E launch. Remove after observability is verified
-// working end-to-end in production. Will print once when the module loads.
-console.log("[observability] module loaded", {
-  SAFE_TO_LOG,
-  IS_DEV,
-  OBSERVABILITY_ENABLED,
-});
 
 // ---------- Pure helpers ----------
 
@@ -65,6 +65,37 @@ function statusFromState(searchState) {
   return "5xx";
 }
 
+// Cap RGA answer text in the log. Loki's per-line ingest limit is generous
+// (~64KB default) but bounded payloads keep the Grafana log-viewer readable
+// and the time-series index lean. Most RGA answers are <500 chars anyway.
+const RGA_ANSWER_MAX_CHARS = 500;
+
+// How many top results to capture per search. 5 is panel-friendly: enough
+// to spot relevance drift ("did Charizard fall out of the top 5?") without
+// bloating the log payload.
+const TOP_N_RESULTS = 5;
+
+function topResultsFromState(searchState) {
+  const results = searchState?.response?.results ?? [];
+  return results.slice(0, TOP_N_RESULTS).map((r) => ({
+    title: r?.title ?? "",
+    // clickUri is the canonical link; uri is the indexed id. clickUri is what
+    // the user actually navigated to and is more meaningful for the log.
+    uri: r?.clickUri ?? r?.uri ?? "",
+  }));
+}
+
+function truncate(s, n) {
+  if (typeof s !== "string") return "";
+  return s.length > n ? s.slice(0, n) + "…" : s;
+}
+
+function rgaCitationsCountFromState(ga) {
+  if (!ga) return 0;
+  const c = ga.citations ?? ga.citationsList ?? [];
+  return Array.isArray(c) ? c.length : 0;
+}
+
 export function buildPayload(state) {
   // Defensive reads — Coveo Headless state shape varies across versions.
   // Anything we can't read falls back to a sensible default; we'd rather
@@ -81,6 +112,13 @@ export function buildPayload(state) {
     sort_criteria: state?.sortCriteria ?? "",
     rga_requested: Boolean(ga),
     rga_fired: Boolean(ga?.answer),
+    // RGA answer (truncated). Captured ~750ms after search-completed so the
+    // stream has time to land; bounded length keeps the log payload reasonable.
+    rga_answer: truncate(ga?.answer ?? "", RGA_ANSWER_MAX_CHARS),
+    rga_citations_count: rgaCitationsCountFromState(ga),
+    // Top N result titles + clickUris. Lets us answer "did the top result for
+    // 'charizard' suddenly change?" without re-running the query.
+    top_results: topResultsFromState(search),
     total_count: search.response?.totalCount ?? 0,
     response_time_ms: search.duration ?? 0,
     pipeline: state?.pipeline ?? "default",
@@ -93,9 +131,8 @@ export function buildPayload(state) {
 // ---------- Network (side-effecting) ----------
 
 async function pushToProxy(payload) {
-  console.log("[observability] pushToProxy — fetching", PROXY_ENDPOINT);
   try {
-    const r = await fetch(PROXY_ENDPOINT, {
+    await fetch(PROXY_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -104,9 +141,7 @@ async function pushToProxy(payload) {
       // flow where the page navigates away ~ms after the search completes.
       keepalive: true,
     });
-    console.log("[observability] pushToProxy result:", r.status);
-  } catch (e) {
-    console.log("[observability] pushToProxy threw:", e?.message);
+  } catch {
     // Fire-and-forget. Never propagate; never break the UI.
   }
 }
@@ -137,43 +172,34 @@ export function instrumentEngine(engine) {
     return;
   }
 
-  console.log("[observability] instrumentEngine OK — installing subscriber");
-
   let lastLoggedUid = null;
-  let fireCount = 0;
+  let pendingTimer = null;
   engine.subscribe(() => {
-    fireCount++;
     const state = engine.state;
     const search = state?.search;
-    if (!search) {
-      if (fireCount <= 3) console.log("[observability] skip — no search state");
-      return;
-    }
-    if (search.isLoading) {
-      if (fireCount <= 3) console.log("[observability] skip — isLoading");
-      return;
-    }
+    if (!search) return;
+    if (search.isLoading) return;
 
+    // Coveo's search uid lives in slightly different places depending on
+    // Headless version. Try several locations; any one is enough.
     const uid =
       search.response?.searchUid ??
       search.searchResponseId ??
       search.searchUid;
-    if (!uid) {
-      if (fireCount <= 3) console.log("[observability] skip — no uid yet");
-      return;
-    }
-    if (uid === lastLoggedUid) {
-      // Common case (same search re-rendering) — don't spam
-      return;
-    }
+    if (!uid) return;
+    if (uid === lastLoggedUid) return;
 
+    // Don't log immediately — RGA streams in AFTER the search response, so
+    // a `rga_answer` field captured at search-completed would always be
+    // empty. Debounce by ~750ms so the RGA answer + citations have time to
+    // land before we read state and POST. New searches within the debounce
+    // window reset the timer (the lastLoggedUid check still dedupes).
     lastLoggedUid = uid;
-    console.log("[observability] PUSH —", {
-      uid: uid.slice(0, 8),
-      q: state.query?.q ?? "",
-      isLoading: search.isLoading,
-    });
-    pushToProxy(buildPayload(state));
+    if (pendingTimer) clearTimeout(pendingTimer);
+    pendingTimer = setTimeout(() => {
+      pendingTimer = null;
+      pushToProxy(buildPayload(engine.state));
+    }, RGA_STREAM_BUFFER_MS);
   });
 }
 
