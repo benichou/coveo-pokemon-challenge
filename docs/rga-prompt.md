@@ -6,7 +6,7 @@ This markdown file is the **narrative** note — what the prompt is, why we chos
 
 > **For the full diagnostic methodology** that led to this prompt — including the six-stage analytical loop and the worked example on the 2026-05-31 baseline — see [`docs/rga-eval-methodology.md`](rga-eval-methodology.md). For the closed-loop architecture that turns the eval output into automated prompt improvements, see [`rga-closed-loop/README.md`](../rga-closed-loop/README.md).
 >
-> **For an interactive view of every version that has been live on the model**, including diffs vs the prior version and the predicted-vs-realized lift table, scroll to the **Prompt history** section on the [RGA quality dashboard](https://pokemon-rga-dashboard.vercel.app). Each prompt change on the time-series chart has a vertical marker; click any marker to jump to its version card. The dashboard reads `rga-closed-loop/prompts/history/*.yaml` at build time, so the repo is the single source of truth.
+> **For an interactive view of every version that has been live on the model**, including diffs vs the prior version and the predicted-vs-realized lift table, scroll to the **Prompt history** section on the [RGA quality dashboard](https://pokemon-rga-dashboard.vercel.app). Each prompt change on the time-series chart has a vertical marker (with multi-version chain labels like `v1.0.0 → v1.1.0` when multiple applies land the same day); click any marker to jump to its version card. Cards are collapsed by default — header only — and the list sits in a bounded scroll container so it stays compact as the history grows. The dashboard reads `rga-closed-loop/prompts/history/*.yaml` at build time, so the repo is the single source of truth.
 
 ## Why a prompt enhancement was needed
 
