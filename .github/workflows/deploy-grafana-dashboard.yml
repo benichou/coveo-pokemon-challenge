@@ -1,0 +1,132 @@
+# Deploy the Grafana dashboard JSON to Grafana Cloud on every push to main.
+#
+# Why this exists:
+#   `observability/grafana-dashboard.json` is the source of truth for the
+#   query-observability dashboard. Without this workflow we'd have to manually
+#   re-import the JSON in the Grafana UI every time we tweak a panel — which
+#   means humans drift from git. This makes the dashboard literally
+#   code-deployed: edit JSON, push, dashboard updates within ~30 seconds.
+#
+# How it works:
+#   1. Resolve the Loki data source UID via Grafana's HTTP API (so the JSON
+#      stays portable — anyone can import it manually and pick their own DS).
+#   2. Substitute `${DS_LOKI}` → real UID throughout the dashboard JSON.
+#   3. Strip the `__inputs`/`__elements`/`__requires` template-import metadata
+#      (the API doesn't want it; it's only for the UI import wizard).
+#   4. Wrap in the `{dashboard, overwrite, message}` envelope the API expects.
+#   5. POST to /api/dashboards/db with `overwrite: true` so re-pushes update
+#      the existing dashboard instead of creating a duplicate.
+#
+# Required GitHub repo secrets (Settings → Secrets and variables → Actions):
+#   GRAFANA_URL          e.g. https://benichou.grafana.net (no trailing slash)
+#   GRAFANA_API_TOKEN    service account token with Editor role
+#   GRAFANA_LOKI_DS_NAME exact data source name, e.g. grafanacloud-benichou-logs
+#
+# Failure mode: hard-fail. Any non-200 from Grafana or invalid JSON aborts the
+# run with a red X. Forces us to fix the dashboard before the change can land.
+
+name: Deploy Grafana dashboard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "observability/grafana-dashboard.json"
+      - ".github/workflows/deploy-grafana-dashboard.yml"
+  workflow_dispatch: # allow manual re-deploy without changing the file
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate dashboard JSON parses
+        # Catches accidental JSON syntax errors before we try to push the
+        # dashboard to Grafana. `jq empty` exits non-zero on parse failure.
+        run: jq empty observability/grafana-dashboard.json
+
+      - name: Resolve Loki data source UID
+        id: ds
+        env:
+          GRAFANA_URL: ${{ secrets.GRAFANA_URL }}
+          GRAFANA_API_TOKEN: ${{ secrets.GRAFANA_API_TOKEN }}
+          DS_NAME: ${{ secrets.GRAFANA_LOKI_DS_NAME }}
+        run: |
+          set -euo pipefail
+          # Hit /api/datasources/name/<name> — returns the full data source
+          # object including its UID. We don't bake the UID into the JSON
+          # because it differs per stack; resolving at deploy-time keeps the
+          # repo agnostic to which Grafana org / stack imports it.
+          response=$(curl -fsS \
+            -H "Authorization: Bearer $GRAFANA_API_TOKEN" \
+            "$GRAFANA_URL/api/datasources/name/$DS_NAME")
+          uid=$(echo "$response" | jq -r '.uid')
+          if [[ -z "$uid" || "$uid" == "null" ]]; then
+            echo "::error::Could not resolve UID for Loki data source '$DS_NAME'"
+            echo "API response: $response"
+            exit 1
+          fi
+          echo "Loki UID resolved: $uid"
+          echo "uid=$uid" >> "$GITHUB_OUTPUT"
+
+      - name: Build dashboard deploy payload
+        env:
+          DS_UID: ${{ steps.ds.outputs.uid }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          short_sha="${COMMIT_SHA:0:7}"
+          # `walk` recursively visits every value. We match the structural
+          # pattern { "uid": "${DS_LOKI}", ... } anywhere in the tree and swap
+          # the placeholder for the real UID — works whether the placeholder
+          # appears in a panel datasource, a target datasource, or a future
+          # nested location.
+          jq --arg uid "$DS_UID" --arg sha "$short_sha" '
+            walk(
+              if type == "object" and .uid == "${DS_LOKI}"
+              then .uid = $uid
+              else .
+              end
+            )
+            | del(.__inputs, .__elements, .__requires)
+            | .id = null
+            | {
+                dashboard: .,
+                overwrite: true,
+                message: ("Deployed via GitHub Actions from " + $sha)
+              }
+          ' observability/grafana-dashboard.json > /tmp/payload.json
+          echo "Payload size: $(wc -c < /tmp/payload.json) bytes"
+
+      - name: Push dashboard to Grafana
+        env:
+          GRAFANA_URL: ${{ secrets.GRAFANA_URL }}
+          GRAFANA_API_TOKEN: ${{ secrets.GRAFANA_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          # We don't use `curl -f` here because we want to see the response
+          # body on error (Grafana returns a JSON error message that's actually
+          # useful for debugging — e.g., "uid X already exists in folder Y").
+          response=$(curl -sS -w "\n%{http_code}" -X POST \
+            -H "Authorization: Bearer $GRAFANA_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d @/tmp/payload.json \
+            "$GRAFANA_URL/api/dashboards/db")
+          status=$(echo "$response" | tail -n 1)
+          body=$(echo "$response" | sed '$d')
+          echo "HTTP $status"
+          echo "Response: $body"
+          if [[ "$status" != "200" ]]; then
+            echo "::error::Grafana API returned HTTP $status"
+            exit 1
+          fi
+          dashboard_path=$(echo "$body" | jq -r '.url')
+          echo "Dashboard deployed: ${GRAFANA_URL}${dashboard_path}"
+          echo "## Dashboard deployed" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "[Open in Grafana](${GRAFANA_URL}${dashboard_path})" >> "$GITHUB_STEP_SUMMARY"
