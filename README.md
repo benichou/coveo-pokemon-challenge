@@ -128,6 +128,16 @@ flowchart TB
     end
 
     %% ===========================================
+    %% Claude Code skills (interactive drivers)
+    %% ===========================================
+    subgraph skills["🧩 Claude Code skills · interactive drivers"]
+        direction LR
+        SK_EVAL["/rga-eval"]
+        SK_LOOP["/rga-closed-loop"]
+        SK_MCP["/pokemon-mcp"]
+    end
+
+    %% ===========================================
     %% Inter-zone connections
     %% ===========================================
     PDB --> SRC_A
@@ -144,6 +154,13 @@ flowchart TB
     RGA --> EVAL
     PROMPT -. PUT to ML Models API .-> RGA
 
+    %% Skill drivers — each skill is an interactive entry point into
+    %% one part of the architecture (the same code paths the daily
+    %% crons + the live UIs use, just human-triggered)
+    SK_EVAL -. invokes .-> EVAL
+    SK_LOOP -. invokes .-> LOOP
+    SK_MCP -. demos .-> MCP_UI
+
     %% ===========================================
     %% Styling
     %% ===========================================
@@ -153,6 +170,7 @@ flowchart TB
     classDef qualNode fill:#fff4d4,stroke:#d9a200,stroke-width:2px,color:#1c1d21
     classDef obsNode fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1c1d21
     classDef storeNode fill:#f3e8ff,stroke:#6a1b9a,stroke-width:2px,color:#1c1d21
+    classDef skillNode fill:#fff,stroke:#1c1d21,stroke-width:1px,stroke-dasharray: 4 2,color:#1c1d21
 
     class PDB,PKAPI extNode
     class SRC_A,SRC_B,IDX,RGA,SE,QS,PR coveoNode
@@ -160,6 +178,7 @@ flowchart TB
     class EVAL,LOOP,DASH qualNode
     class PROXY,GRAF obsNode
     class RUNS,PROMPT storeNode
+    class SK_EVAL,SK_LOOP,SK_MCP skillNode
 ```
 
 ### Four flows worth tracing on the diagram
@@ -171,15 +190,168 @@ flowchart TB
 
 Beyond the diagram, three more code-as-source-of-truth artifacts that aren't shown (intentionally — they're configuration, not data flow): `config/source/` (URL filter + scraping config + source definition), `config/ml/default-queries.json` (QS seed CSV applied via Coveo's Advanced Model Configurations API), `config/mcp/pokemon-mcp.yaml` (Hosted MCP Server config — manually mirrored to Console until Coveo publishes the admin API).
 
-## Two parallel narratives, one repo
+### Tech stack
+
+The diagram nodes stay text-only because GitHub's mermaid renderer strips `<img>` tags from labels. The brand-logo view of the same stack:
+
+**Search platform**
+
+![Coveo](https://img.shields.io/badge/Coveo-FF6600?style=for-the-badge&logoColor=white)
+![Atomic](https://img.shields.io/badge/Coveo_Atomic-FF6600?style=for-the-badge&logoColor=white)
+![Headless](https://img.shields.io/badge/Coveo_Headless-FF6600?style=for-the-badge&logoColor=white)
+![MCP](https://img.shields.io/badge/Model_Context_Protocol-000?style=for-the-badge&logoColor=white)
+
+**Frontend (`atomic-search/`, `rga-dashboard/`)**
+
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=000)
+![Vite](https://img.shields.io/badge/Vite_6-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-22B5BF?style=for-the-badge&logoColor=white)
+![markdown-it](https://img.shields.io/badge/markdown--it-000?style=for-the-badge&logo=markdown&logoColor=white)
+
+**Backend (`push-pokemon/`, `rga-eval/`, `rga-closed-loop/`)**
+
+![Python 3.13](https://img.shields.io/badge/Python_3.13-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![uv](https://img.shields.io/badge/uv-DE5FE9?style=for-the-badge&logo=python&logoColor=white)
+![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=for-the-badge&logo=pydantic&logoColor=white)
+![httpx](https://img.shields.io/badge/httpx-2E73B8?style=for-the-badge&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)
+![ruff](https://img.shields.io/badge/ruff-D7FF64?style=for-the-badge&logo=ruff&logoColor=000)
+
+**AI / LLM**
+
+![Anthropic](https://img.shields.io/badge/Anthropic_Claude-D4A27F?style=for-the-badge&logo=anthropic&logoColor=000)
+![Sonnet 4.6](https://img.shields.io/badge/Sonnet_4.6-D4A27F?style=for-the-badge&logoColor=000)
+![Opus 4.7](https://img.shields.io/badge/Opus_4.7-D4A27F?style=for-the-badge&logoColor=000)
+
+**Infrastructure / Ops**
+
+![Vercel](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=vercel&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+![Grafana](https://img.shields.io/badge/Grafana_Cloud-F46800?style=for-the-badge&logo=grafana&logoColor=white)
+![Loki](https://img.shields.io/badge/Grafana_Loki-F46800?style=for-the-badge&logo=grafana&logoColor=white)
+![Mermaid](https://img.shields.io/badge/Mermaid-FF3670?style=for-the-badge&logo=mermaid&logoColor=white)
+![pre-commit](https://img.shields.io/badge/pre--commit-FAB040?style=for-the-badge&logo=precommit&logoColor=000)
+
+**Data sources**
+
+![PokémonDB](https://img.shields.io/badge/pokemondb.net-3B4CCA?style=for-the-badge&logoColor=white)
+![PokéAPI](https://img.shields.io/badge/PokéAPI-FFCC00?style=for-the-badge&logoColor=000)
+
+## Dynamic behavior — two sequence diagrams
+
+The flowchart above shows **what things are**. The two sequence diagrams below show **what they do over time** — the two narratives that make the system feel alive (one user-facing, one autonomous).
+
+### Sequence A — A user query through the live Atomic UI
+
+What happens between *user hits Enter* and *all three AI surfaces are rendered + the search is logged to Grafana*. Three parallel Coveo round-trips, fire-and-forget observability.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant User as 👤 User
+    participant Atomic as ⚛️ Atomic UI<br/>(pokemon-search-one-chi.vercel.app)
+    participant Search as 🔍 Coveo Search API
+    participant RGA as 🤖 Coveo RGA API
+    participant PR as 📄 Coveo Passage Retrieval
+    participant Proxy as 🌐 Vercel proxy<br/>(/api/log-query)
+    participant Loki as 📊 Grafana Cloud Loki
+
+    User->>Atomic: types query, hits Enter
+
+    par parallel — all three fire on the same submit
+        Atomic->>Search: POST /rest/search/v2
+        Search-->>Atomic: ranked results + facets
+        Atomic-->>User: list renders
+    and
+        Atomic->>RGA: POST /answer/v1/configs/{id}/generate (SSE)
+        RGA-->>Atomic: streaming answer + citations
+        Atomic-->>User: RGA panel streams progressively
+    and
+        Atomic->>PR: POST /rest/search/v3/passages/retrieve
+        PR-->>Atomic: top passages + relevance scores
+        Atomic-->>User: PR panel renders (collapsed by default)
+    end
+
+    Note over Atomic: search settles<br/>(isAnswerGenerated OR cannotAnswer)
+
+    Atomic->>Proxy: POST /api/log-query<br/>(fire-and-forget, browser keepalive)
+    Proxy->>Loki: POST /loki/api/v1/push<br/>(server-side write token, never in browser)
+    Loki-->>Proxy: 204 No Content
+    Note right of Loki: Public Grafana dashboard<br/>reflects the new log line (~1–2s async)
+```
+
+**Worth tracing on the diagram**: three Coveo APIs fire **in parallel** (not serial) so total latency = `max(search, RGA, PR)`, not sum. The observability log is fire-and-forget *after* settle — never blocks the user's perceived latency. The Loki write token never reaches the browser; it lives in the Vercel proxy. **Same pattern works for the `/pokemon.html` detail page**, just with one extra Coveo call for the related-grid query and a slightly different settle signal.
+
+### Sequence B — The daily closed-loop run (06:00 + 06:30 UTC)
+
+What happens autonomously every day without anyone touching the system. The eval cron measures quality; the closed-loop cron acts on what it sees. The whole story takes ~30 minutes of wall-clock time and produces a bot-committed audit trail every run.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Cron as ⏰ GitHub Actions cron
+    participant Eval as 🔬 rga-eval
+    participant Coveo as 🧠 Coveo RGA + ML Models API
+    participant Judge as 🤖 Sonnet 4.6 (judge)
+    participant Git as 📦 git<br/>(eval-runs/, prompts/, history/)
+    participant Dash as 📊 rga-dashboard.vercel.app
+    participant ClosedLoop as 🔁 rga-closed-loop
+    participant Analyzer as 🤖 Sonnet 4.6 (analyzer)
+
+    Note over Cron,Analyzer: Day N — 06:00 UTC · daily quality measurement
+    Cron->>Eval: fire rga-eval-daily.yml
+    loop 100 golden questions
+        Eval->>Coveo: /answer/v1/.../generate (SSE)
+        Coveo-->>Eval: RGA answer + citations
+        Eval->>Judge: judge this answer (tool-use forcing)
+        Judge-->>Eval: verdict (accuracy/precision/hallucination)
+    end
+    Eval->>Git: write eval-runs/YYYY-MM-DD-full.json
+    Eval->>Git: bot-commit + push
+    Git->>Dash: Vercel auto-redeploys with new data point
+
+    Note over Cron,Analyzer: Day N — 06:30 UTC · closed-loop self-improvement
+    Cron->>ClosedLoop: fire closed-loop-daily.yml<br/>(workflow_run trigger after eval)
+    ClosedLoop->>Git: read last 5 eval-runs (multi-day window)
+
+    alt rollback trigger — accuracy dropped >5pts within 36h of last apply
+        ClosedLoop->>Git: restore prompts/history/<prev>.yaml
+        ClosedLoop->>Coveo: PUT rolled-back prompt to ML Models API
+        ClosedLoop->>Git: bot-commit audit log
+    else normal path
+        ClosedLoop->>Analyzer: failing samples + multi-day persistence/drift
+        Analyzer-->>ClosedLoop: PromptProposal<br/>(new prompt + rationale + predicted lift)
+        ClosedLoop->>ClosedLoop: guardrails check<br/>(confidence ≥ 0.80, lift ≥ +5pts,<br/>rate-limit ≥ 3d, sanity, no-op)
+
+        alt all guards pass
+            ClosedLoop->>Git: archive current YAML to prompts/history/
+            ClosedLoop->>Git: write new prompts/pokemon-rga.yaml
+            ClosedLoop->>Coveo: PUT new prompt to ML Models API
+            Coveo-->>ClosedLoop: 200 OK
+            ClosedLoop->>Coveo: re-fetch to verify
+            ClosedLoop->>Git: bot-commit YAML + history + audit log
+        else any guard blocked
+            ClosedLoop->>Git: bot-commit audit log (no apply)
+        end
+    end
+
+    Note over Cron,Analyzer: Day N+1 — 06:00 UTC re-measures the new prompt<br/>(loop continues forever)
+```
+
+**Worth tracing on the diagram**: two crons, one chained off the other. The analyzer NEVER applies a change without passing five guardrails. The auto-rollback path is a defensive shortcut that bypasses the analyzer entirely when yesterday's apply degraded production. Every outcome — apply, blocked, rollback — produces a bot-committed audit JSON in `logs/closed-loop/`. **The commit history is the time-series database**; no external store.
+
+## Five parallel narratives, one repo
 
 | Build | Lives at | Phase |
 |---|---|---|
-| **The Pokémon search experience** | `config/` + `scripts/` + `push-pokemon/` + `atomic-search/` | 0 – 6A |
-| **The AI-quality measurement system** | `rga-eval/` + `rga-dashboard/` + `eval-runs/` + `.github/workflows/rga-eval-daily.yml` | 6D |
-| **The closed-loop prompt-tuning system** | `rga-closed-loop/` + `.claude/skills/rga-closed-loop/` + `.github/workflows/closed-loop-daily.yml` | 6F |
+| **The Pokémon search experience** (the Coveo deliverable) | `config/` + `scripts/` + `push-pokemon/` + `atomic-search/` | 0 – 6C, 8 |
+| **The AI-quality measurement system** | `rga-eval/` + `rga-dashboard/` + `eval-runs/` + `.claude/skills/rga-eval/` + `.github/workflows/rga-eval-daily.yml` | 6D, 6F.7 |
+| **The closed-loop self-improvement system** | `rga-closed-loop/` + `.claude/skills/rga-closed-loop/` + `.github/workflows/closed-loop-daily.yml` + `logs/closed-loop/` | 6F, 6F.7 |
+| **The query observability system** | `atomic-search/src/observability.js` + `atomic-search/api/log-query.js` + `observability/grafana-dashboard.json` + `.github/workflows/deploy-grafana-dashboard.yml` | 6E |
+| **The AI-agent surface (MCP)** | `config/mcp/` + `scripts/mcp/` + `.claude/mcp.json` + `.claude/skills/pokemon-mcp/` + `docs/mcp-integration.md` | 8.5 |
 
-The first is the Coveo deliverable. The second + third are the panel-defining add-ons that demonstrate **how production AI should actually be operated**.
+The first is the Coveo deliverable. The other four are the panel-defining add-ons that demonstrate **how production AI should actually be operated** — measured, self-improving, observable, and addressable by any LLM client. Each narrative has its own Claude Code skill (where applicable) for interactive operation alongside the autonomous cron / surface.
 
 ## Getting started (new contributor onboarding)
 
