@@ -110,12 +110,50 @@
       ]
     },
     {
+      "id": 9,
+      "title": "Passage Retrieval fire rate",
+      "type": "stat",
+      "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
+      "description": "Phase 8. Share of searches where the Passage Retrieval API returned at least one passage (passage_retrieval_fired=true). Complements the RGA fire rate above: RGA synthesizes prose, PR returns verbatim extracted text. Both should fire on relevancy-sorted queries; drops indicate the PR model is unhealthy or no source content matched.",
+      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 5 },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "auto"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 0.4 },
+              { "color": "green", "value": 0.7 }
+            ]
+          },
+          "unit": "percentunit",
+          "noValue": "0%"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
+          "expr": "sum(count_over_time({app=\"pokemon-search\", passage_retrieval_fired=\"true\"}[$__range])) / sum(count_over_time({app=\"pokemon-search\"}[$__range]))",
+          "queryType": "instant"
+        }
+      ]
+    },
+    {
       "id": 3,
       "title": "Error rate (4xx/5xx)",
       "type": "stat",
       "datasource": { "type": "loki", "uid": "${DS_LOKI}" },
       "description": "Share of searches where Coveo returned a non-200 status. Should be ~0%. Spikes mean rate-limiting, auth issues, pipeline misconfig, or platform incident.",
-      "gridPos": { "h": 5, "w": 12, "x": 12, "y": 5 },
+      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 5 },
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -396,7 +434,8 @@
               "rga_requested": true,
               "rga_citations_count": true,
               "timestamp": true,
-              "top_results": true
+              "top_results": true,
+              "passage_source_uri": true
             },
             "indexByName": {
               "Time": 0,
@@ -404,14 +443,17 @@
               "sort_criteria": 2,
               "rga_fired": 3,
               "rga_answer": 4,
-              "top_1": 5,
-              "top_2": 6,
-              "top_3": 7,
-              "top_4": 8,
-              "top_5": 9,
-              "response_time_ms": 10,
-              "total_count": 11,
-              "status": 12
+              "passage_retrieval_fired": 5,
+              "passage_text": 6,
+              "passage_count": 7,
+              "top_1": 8,
+              "top_2": 9,
+              "top_3": 10,
+              "top_4": 11,
+              "top_5": 12,
+              "response_time_ms": 13,
+              "total_count": 14,
+              "status": 15
             }
           }
         }

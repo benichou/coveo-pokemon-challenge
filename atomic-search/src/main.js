@@ -46,6 +46,19 @@ import("./observability.js").then(({ instrumentEngine }) => {
   }
 });
 
+// Phase 8 — Coveo Passage Retrieval below RGA.
+// Fires a parallel POST to the PR API on every search settle, renders the
+// top 3 extracted passages into #passage-retrieval-panel. Falls through to
+// silent no-op if the PR model isn't ready yet (422) or the kill-switch
+// VITE_PASSAGE_RETRIEVAL_ENABLED=false is set.
+import("./passage-retrieval.js").then(
+  ({ instrumentEngine: instrumentPassageRetrieval }) => {
+    if (searchInterface.engine) {
+      instrumentPassageRetrieval(searchInterface.engine);
+    }
+  },
+);
+
 // -----------------------------------------------------------------------------
 // User-friendly captions for raw field values.
 //

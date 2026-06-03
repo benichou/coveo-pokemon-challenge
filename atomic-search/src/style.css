@@ -119,3 +119,344 @@ body:not(.rga-disabled) .rga-disabled-note {
 .rga-disabled-note strong {
   color: #4a3c10;
 }
+
+/* Phase 8 — Passage Retrieval panel.
+ *
+ * Sits below the RGA panel on the main search page as a click-to-expand
+ * <details> element. Default state: COLLAPSED — the user explicitly opts
+ * in to see the source content. Hides entirely when the RGA flow is off
+ * (sort != relevancy → body.rga-disabled): PR's framing is "fact-check
+ * the AI"; if RGA isn't running, the PR surface doesn't have a job to do.
+ */
+.passage-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid #3b6db8;
+  border-radius: 8px;
+  /* The parent `.results` is a flex column with gap: 1rem between every
+   * child. We want RGA and PR visually paired — AI synthesis + source-
+   * of-truth verification — so we use a negative top margin to cancel
+   * that 1rem gap entirely. Bottom margin is also negated since the
+   * .results flex gap re-establishes spacing to the results-toolbar
+   * below. */
+  margin-top: -1rem;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+.passage-panel[hidden] { display: none; }
+
+/* RGA-flow gate: when the body has `rga-disabled` (set by main.js when
+ * sort != relevancy), the PR panel hides too. PR's job is verification
+ * of RGA's output; without RGA in play, the surface is noise. */
+body.rga-disabled .passage-panel { display: none; }
+
+/* Outer summary — the click target. Hide native disclosure marker,
+ * use our own chevron. */
+.passage-panel > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+.passage-panel > summary::-webkit-details-marker { display: none; }
+
+.passage-panel-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 1.1rem;
+}
+
+.passage-panel-summary:hover {
+  background: rgba(59, 109, 184, 0.04);
+}
+
+.passage-panel-chevron {
+  display: inline-block;
+  color: #3b6db8;
+  font-size: 1rem;
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.passage-panel[open] > .passage-panel-summary .passage-panel-chevron {
+  transform: rotate(90deg);
+}
+
+.passage-panel-title-block {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.passage-panel-title-block h3 {
+  margin: 0;
+  /* Match Atomic's "Generated answer" header size in the RGA panel above
+   * (Atomic uses 0.875rem / 14px for that label). Keeps the two panels
+   * visually paired in typographic weight, not just spatial proximity. */
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1c3a6d;
+}
+
+.passage-panel-count {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+
+.passage-panel-summary-hint {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  flex-shrink: 0;
+}
+
+.passage-panel[open] .passage-panel-summary-hint {
+  /* Once open, the hint stops being useful — fade it. */
+  opacity: 0.5;
+}
+
+.passage-panel-body-wrap {
+  padding: 0 1.1rem 1rem 2.05rem; /* align body with title via summary indent */
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.passage-panel-subtitle {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.passage-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Each passage is a <details>/<summary> for collapse/expand. Hide the
+ * native disclosure triangle — we use our own chevron span instead so we
+ * can style it. */
+.passage-card {
+  background: #f5f8fd;
+  border: 1px solid #d7e2f3;
+  border-radius: 6px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.passage-card > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+.passage-card > summary::-webkit-details-marker {
+  display: none;
+}
+
+.passage-card-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.78rem;
+}
+
+.passage-card-summary:hover {
+  background: rgba(59, 109, 184, 0.06);
+}
+
+.passage-card-chevron {
+  display: inline-block;
+  color: #3b6db8;
+  font-size: 0.85rem;
+  transition: transform 0.15s ease;
+}
+
+.passage-card[open] > .passage-card-summary .passage-card-chevron {
+  transform: rotate(90deg);
+}
+
+/* Body padding moves into the details body so the summary alone has
+ * uniform vertical padding. */
+.passage-card > .passage-text {
+  padding: 0.1rem 0.8rem 0.75rem 1.65rem;
+}
+
+/* Source-URI row shown at the top of each expanded passage body. Gives
+ * the user the literal URL they'd cite if writing a paper from this
+ * passage — distinct from the summary's title-link, which is a friendly
+ * display name. The host is muted; the path is full-strength to show
+ * the meaningful slug (e.g. /pokedex/charizard). */
+.passage-source-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem 0.4rem 1.65rem;
+  font-size: 0.74rem;
+  border-bottom: 1px solid #e3ecf6;
+  background: #fcfdfe;
+}
+
+.passage-source-row-label {
+  color: var(--ink-soft);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.66rem;
+}
+
+.passage-source-row-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.1rem;
+  color: #3b6db8;
+  text-decoration: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.passage-source-row-link:hover {
+  text-decoration: underline;
+}
+
+.passage-source-row-host {
+  color: var(--ink-soft);
+}
+
+.passage-source-row-path {
+  color: #1c3a6d;
+  font-weight: 500;
+}
+
+.passage-source-row-icon {
+  margin-left: 0.15rem;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+}
+
+.passage-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.78rem;
+}
+
+.passage-rank {
+  font-weight: 700;
+  color: #3b6db8;
+}
+
+.passage-source {
+  font-weight: 600;
+  color: #1c3a6d;
+  text-decoration: none;
+}
+
+.passage-source:hover {
+  text-decoration: underline;
+}
+
+.passage-score {
+  margin-left: auto;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.passage-text {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* When the passage text is rendered through markdown-it, it produces a
+ * mix of paragraphs, headers, lists, and most importantly tables — the
+ * Pokémon stat tables, move lists, ability lists, etc. Style each
+ * element so the structured content renders readably inside the card. */
+.passage-text--markdown > * {
+  margin: 0.3rem 0;
+}
+.passage-text--markdown > *:first-child { margin-top: 0; }
+.passage-text--markdown > *:last-child { margin-bottom: 0; }
+
+.passage-text--markdown h1,
+.passage-text--markdown h2,
+.passage-text--markdown h3,
+.passage-text--markdown h4 {
+  margin: 0.4rem 0 0.2rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #1c3a6d;
+}
+
+.passage-text--markdown ul,
+.passage-text--markdown ol {
+  margin: 0.3rem 0;
+  padding-left: 1.2rem;
+}
+
+.passage-text--markdown li { margin: 0.1rem 0; }
+
+.passage-text--markdown a {
+  color: #3b6db8;
+  text-decoration: none;
+}
+.passage-text--markdown a:hover {
+  text-decoration: underline;
+}
+
+/* Tables — the high-value part. Width-constrained to the card, with
+ * horizontal scroll on overflow so very-wide tables don't blow out
+ * the page layout. Tight cell padding to fit more data per row. */
+.passage-text--markdown table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  margin: 0.4rem 0;
+  background: #fff;
+  border: 1px solid #d7e2f3;
+  border-radius: 4px;
+}
+
+.passage-text--markdown thead th {
+  background: #eaf1fb;
+  color: #1c3a6d;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid #d7e2f3;
+  white-space: nowrap;
+}
+
+.passage-text--markdown tbody td {
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid #eef2f8;
+  vertical-align: top;
+}
+
+.passage-text--markdown tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.passage-text--markdown tbody tr:hover td {
+  background: #f7fafd;
+}
+
+/* Inline code (e.g., field names like @pokemon_type) — should be visible
+ * but not visually dominant. */
+.passage-text--markdown code {
+  background: #eef2f8;
+  padding: 0.05rem 0.3rem;
+  border-radius: 3px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82em;
+  color: #1c3a6d;
+}

@@ -69,6 +69,12 @@ export default async function handler(req, res) {
           search_hub: payload.search_hub || "unknown",
           status: String(payload.status || "200"),
           rga_fired: String(Boolean(payload.rga_fired)),
+          // Phase 8 — track Passage Retrieval fire rate alongside RGA so
+          // the Grafana dashboard can compute "of all searches, what %
+          // returned a passage vs. an RGA answer vs. neither."
+          passage_retrieval_fired: String(
+            Boolean(payload.passage_retrieval_fired),
+          ),
         },
         values: [[nanos, JSON.stringify(payload)]],
       },

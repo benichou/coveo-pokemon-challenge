@@ -12,5 +12,8 @@
   "comment": "@coveo/atomic is loaded from Coveo's CDN at runtime (see index.html), so it's not an npm dep here. The CDN serves the JS + i18n assets + icons together, which is the supported deployment pattern for hosted Atomic apps.",
   "devDependencies": {
     "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "markdown-it": "^14.2.0"
   }
 }

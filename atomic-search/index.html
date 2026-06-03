@@ -89,6 +89,35 @@
             see AI answers again.
           </div>
 
+          <!-- Phase 8 — Passage Retrieval panel.
+               Populated by atomic-search/src/passage-retrieval.js after each
+               search settles. Shows the top extracted passages from the
+               Coveo Passage Retrieval API — complementary to RGA: RGA
+               synthesizes a paragraph; this shows verbatim extracted text
+               from indexed Pokémon pages. Hidden until first search; falls
+               back to a graceful empty state when no passages are returned. -->
+          <details id="passage-retrieval-panel" class="passage-panel" hidden>
+            <summary class="passage-panel-summary">
+              <span class="passage-panel-chevron" aria-hidden>▸</span>
+              <div class="passage-panel-title-block">
+                <h3>Verify with source passages</h3>
+                <span class="passage-panel-count" data-passage-count></span>
+              </div>
+              <span class="passage-panel-summary-hint">click to expand</span>
+            </summary>
+            <div class="passage-panel-body-wrap">
+              <p class="passage-panel-subtitle">
+                Verbatim text from indexed Pokémon pages, ranked by
+                <strong>semantic similarity</strong> to your query (Coveo
+                Semantic Encoder). Use these to fact-check the AI answer
+                above. RGA runs its own internal chunk extraction — these
+                passages are a parallel surface for verification, not the
+                exact text RGA grounded on.
+              </p>
+              <div class="passage-panel-body"></div>
+            </div>
+          </details>
+
           <div class="results-toolbar">
             <atomic-query-summary></atomic-query-summary>
             <atomic-sort-dropdown>

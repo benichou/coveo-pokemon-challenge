@@ -69,6 +69,7 @@ ORG_QS="organizationId=${COVEO_ORG_ID}"
 RGA_NAME="pokemon-rga"
 SE_NAME="pokemon-se"
 QS_NAME="pokemon-qs"
+PR_NAME="pokemon-pr"
 
 # ---------------------------------------------------------------------------
 # Step 1: find the default query pipeline ID
@@ -152,12 +153,25 @@ m = next((m for m in models if m.get('modelDisplayName') == os.environ['QS_NAME'
 print(m['id'] if m else '')
 ")
 
+# pokemon-pr (Passage Retrieval, Phase 8) — same warn-if-missing pattern as QS.
+PR_ID=$(echo "$models_body" | PR_NAME="$PR_NAME" python3 -c "
+import json, os, sys
+models = json.load(sys.stdin)
+m = next((m for m in models if m.get('modelDisplayName') == os.environ['PR_NAME']), None)
+print(m['id'] if m else '')
+")
+
 echo "  ✓ $RGA_NAME → $RGA_ID"
 echo "  ✓ $SE_NAME  → $SE_ID"
 if [[ -n "$QS_ID" ]]; then
   echo "  ✓ $QS_NAME  → $QS_ID"
 else
   echo "  ⚠ $QS_NAME  not found — skipping (create it in the Console first; see docs/ml-models.md)"
+fi
+if [[ -n "$PR_ID" ]]; then
+  echo "  ✓ $PR_NAME  → $PR_ID"
+else
+  echo "  ⚠ $PR_NAME  not found — skipping (create it in the Console first; see docs/ml-models.md)"
 fi
 
 # ---------------------------------------------------------------------------
@@ -227,6 +241,9 @@ associate "$RGA_NAME" "$RGA_ID"
 associate "$SE_NAME"  "$SE_ID"
 if [[ -n "$QS_ID" ]]; then
   associate "$QS_NAME" "$QS_ID"
+fi
+if [[ -n "$PR_ID" ]]; then
+  associate "$PR_NAME" "$PR_ID"
 fi
 
 # ---------------------------------------------------------------------------

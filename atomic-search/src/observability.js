@@ -20,6 +20,8 @@
 //     want local proxying.
 //   - VITE_OBSERVABILITY_ENABLED is the literal string "false".
 
+import { latestForUid as latestPassageForUid } from "./passage-retrieval-state.js";
+
 const PROXY_ENDPOINT = "/api/log-query";
 
 // Fallback timeout — if RGA never reaches a settled state (e.g., backend hang,
@@ -142,6 +144,30 @@ export function buildPayload(state) {
     rga_fired: Boolean(ga?.isAnswerGenerated),
     rga_answer: truncate(ga?.answer ?? "", RGA_ANSWER_MAX_CHARS),
     rga_citations_count: rgaCitationsCountFromState(ga),
+    // Phase 8 — Passage Retrieval fields. Read from the in-memory store
+    // populated by passage-retrieval.js. If the PR call hasn't settled by
+    // log time (rare; PR is typically faster than RGA since no LLM hop),
+    // the read returns null and these fields stay empty/false.
+    ...(() => {
+      const sUid =
+        search.response?.searchUid ??
+        search.searchResponseId ??
+        search.searchUid;
+      const pr = latestPassageForUid(sUid);
+      return pr
+        ? {
+            passage_retrieval_fired: pr.fired,
+            passage_count: pr.count,
+            passage_text: pr.top_text,
+            passage_source_uri: pr.top_source_uri,
+          }
+        : {
+            passage_retrieval_fired: false,
+            passage_count: 0,
+            passage_text: "",
+            passage_source_uri: "",
+          };
+    })(),
     // Top N result titles + clickUris. Lets us answer "did the top result for
     // 'charizard' suddenly change?" without re-running the query.
     top_results: topResultsFromState(search),

@@ -11,6 +11,7 @@ Forward Deployed Engineer technical challenge for Coveo. A Pokémon search exper
 | **Diagnostic methodology** (panel-shareable) | [`docs/rga-eval-methodology.md`](docs/rga-eval-methodology.md) |
 | **Query observability architecture** (panel-shareable) | [`docs/observability.md`](docs/observability.md) |
 | **Caching strategy** (panel-shareable) | [`docs/caching-strategy.md`](docs/caching-strategy.md) |
+| **Passage Retrieval architecture** (panel-shareable) | [`docs/passage-retrieval.md`](docs/passage-retrieval.md) |
 | **RGA Custom Prompt + history** | [`docs/rga-prompt.md`](docs/rga-prompt.md) + [`rga-closed-loop/prompts/`](rga-closed-loop/prompts/) |
 | **Working plan** (history + decisions) | [`~/.claude/plans/so-we-are-supposed-purrfect-bachman.md`](~/.claude/plans/so-we-are-supposed-purrfect-bachman.md) |
 
