@@ -50,6 +50,35 @@ jobs:
         # dashboard to Grafana. `jq empty` exits non-zero on parse failure.
         run: jq empty observability/grafana-dashboard.json
 
+      - name: Verify required secrets are present
+        # Cheap upfront check. Without this, missing/empty secrets fail
+        # downstream with cryptic curl errors ("No host part in the URL"
+        # when GRAFANA_URL is empty, "401" when GRAFANA_API_TOKEN is empty).
+        # Failing fast here with a named error saves debug time on
+        # first-time setup.
+        env:
+          GRAFANA_URL: ${{ secrets.GRAFANA_URL }}
+          GRAFANA_API_TOKEN: ${{ secrets.GRAFANA_API_TOKEN }}
+          DS_NAME: ${{ secrets.GRAFANA_LOKI_DS_NAME }}
+        run: |
+          set -euo pipefail
+          missing=()
+          [[ -z "${GRAFANA_URL:-}" ]] && missing+=("GRAFANA_URL")
+          [[ -z "${GRAFANA_API_TOKEN:-}" ]] && missing+=("GRAFANA_API_TOKEN")
+          [[ -z "${DS_NAME:-}" ]] && missing+=("GRAFANA_LOKI_DS_NAME")
+          if (( ${#missing[@]} > 0 )); then
+            echo "::error::Missing required GitHub secret(s): ${missing[*]}"
+            echo "Add them at Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          # Sanity: GRAFANA_URL must include scheme. We can't print the
+          # value (secret), but we can structurally check + give a hint.
+          if [[ ! "$GRAFANA_URL" =~ ^https?:// ]]; then
+            echo "::error::GRAFANA_URL is set but doesn't start with http(s)://"
+            echo "Expected format: https://<stack>.grafana.net (no trailing slash)"
+            exit 1
+          fi
+
       - name: Resolve Loki data source UID
         id: ds
         env:

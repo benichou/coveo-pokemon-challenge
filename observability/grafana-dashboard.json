@@ -357,6 +357,19 @@
               { "id": "displayName", "value": "sort" },
               { "id": "custom.width", "value": 110 }
             ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "top_results" },
+            "properties": [
+              { "id": "displayName", "value": "top 5 results" },
+              { "id": "custom.width", "value": 360 },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "json-view"
+                }
+              }
+            ]
           }
         ]
       },
@@ -382,7 +395,6 @@
               "pipeline": true,
               "client_id": true,
               "facets_active": true,
-              "top_results": true,
               "rga_requested": true,
               "rga_citations_count": true,
               "timestamp": true
@@ -393,9 +405,10 @@
               "sort_criteria": 2,
               "rga_fired": 3,
               "rga_answer": 4,
-              "response_time_ms": 5,
-              "total_count": 6,
-              "status": 7
+              "top_results": 5,
+              "response_time_ms": 6,
+              "total_count": 7,
+              "status": 8
             }
           }
         }
