@@ -191,7 +191,7 @@ cd tests && uv run pytest         # 21 integration tests against the live org + 
 
 ## Opening Claude Code in this repo
 
-This repo ships a `CLAUDE.md` at the root (auto-loaded every session), a project-scoped `.claude/` directory, and two Claude Code skills (`/rga-eval`, `/rga-closed-loop`). To open Claude Code with **only this repo's tooling** — ignoring any global skills/MCP configured in `~/.claude/`:
+This repo ships a `CLAUDE.md` at the root (auto-loaded every session), a project-scoped `.claude/` directory, three Claude Code skills (`/rga-eval`, `/rga-closed-loop`, `/pokemon-mcp`), and one project-scoped MCP server (`coveo-pokemon`, Phase 8.5). To open Claude Code with **only this repo's tooling** — ignoring any global skills/MCP configured in `~/.claude/`:
 
 ```bash
 claude --setting-sources project --strict-mcp-config --mcp-config .claude/mcp.json
@@ -201,7 +201,7 @@ claude --setting-sources project --strict-mcp-config --mcp-config .claude/mcp.js
 |---|---|
 | `--setting-sources project` | Loads ONLY `./.claude/settings.json`; ignores user-level + enterprise settings. |
 | `--strict-mcp-config` | Disables user-level + enterprise MCP server discovery. |
-| `--mcp-config .claude/mcp.json` | Loads MCP servers from the repo's `.claude/mcp.json` (currently empty by design — Phase 8.5 will populate it). |
+| `--mcp-config .claude/mcp.json` | Loads MCP servers from the repo's `.claude/mcp.json` (declares the `coveo-pokemon` Hosted MCP server — Phase 8.5; needs `COVEO_MCP_ENDPOINT` + `COVEO_MCP_API_KEY` in the env to resolve). |
 
 **Caveat:** Skills in `~/.claude/skills/` still auto-load alongside the repo's `.claude/skills/`. For full skill isolation add `--bare` (at the cost of manually registering the repo's skills in `.claude/settings.json`).
 
@@ -228,6 +228,91 @@ claude --setting-sources project --strict-mcp-config --mcp-config .claude/mcp.js
 ```
 
 All three skills auto-trigger on natural-language asks ("what's the latest RGA accuracy?", "tune the prompt", "demo MCP"). Full mode lists in `.claude/skills/<name>/SKILL.md`.
+
+## Using the Coveo MCP integration (Phase 8.5)
+
+The repo's `coveo-pokemon` MCP server makes our Pokémon Coveo org queryable from any MCP-compatible client — Claude Code, Claude Desktop, ChatGPT Enterprise, etc. — through four tools: `search`, `fetch`, `get_passages`, `answer`. For the full architecture, see [`docs/mcp-integration.md`](docs/mcp-integration.md). For the source-of-truth server configuration (Console state mirrored as code), see [`config/mcp/pokemon-mcp.yaml`](config/mcp/pokemon-mcp.yaml).
+
+### Prerequisites (one-time)
+
+1. The `pokemon-mcp` server must be configured in Coveo Admin Console → AI & ML → MCP Server. Mirror what's in `config/mcp/pokemon-mcp.yaml` (server instructions, tools, auth method, etc.) — see `config/mcp/README.md` for the manual-paste workflow.
+2. The 6th API key (`COVEO_MCP_API_KEY`, auto-created by Coveo when you set up the MCP server) must be in your local `.env`. See [`docs/api-keys.md`](docs/api-keys.md) → Key 6.
+3. The per-server endpoint URL must be in your local `.env` as `COVEO_MCP_ENDPOINT`. Visible in the Console MCP Server Overview tab → Details → Endpoint.
+
+### Launch Claude Code with the MCP server connected
+
+From the repo root, in a fresh terminal:
+
+```bash
+set -a; source .env; set +a
+claude --setting-sources project --strict-mcp-config --mcp-config .claude/mcp.json
+```
+
+The `set -a; source .env; set +a` line exports every variable in `.env` to the shell environment so Claude Code can resolve `${COVEO_MCP_ENDPOINT}` and `${COVEO_MCP_API_KEY}` from `.claude/mcp.json`. Without this, the MCP server will fail to connect (401 on tool calls).
+
+### Verify the connection
+
+Inside Claude Code:
+
+```
+/mcp
+```
+
+Expected output: `coveo-pokemon` listed with status `connected` and four tools — `search`, `fetch`, `get_passages`, `answer`. If status is `failed`, double-check the env vars are exported (`echo $COVEO_MCP_API_KEY | head -c 8` to print only the prefix, not the full key).
+
+### Run the panel demo
+
+```
+/pokemon-mcp demo
+```
+
+This runs **four curated queries against the live MCP server**, narrating what each one demonstrates:
+
+| Query | Tool called | What it shows |
+|---|---|---|
+| *"what type is Charizard?"* | `answer` | Grounded RGA response with citation to pokemondb.net |
+| *"fire-type Pokémon from Generation 1"* | `search` | Ranked list + LLM self-flagging that "Generation 1" was a keyword search, not a structured filter |
+| *"top 3 passages about Mewtwo's psychic abilities"* | `get_passages` | 3 verbatim chunks with relevance scores; LLM flags they're all from the same source doc |
+| *"fetch the full document for Bulbasaur"* | `search` → `fetch` | Multi-tool chaining: LLM autonomously calls `search` first to find the ID, then `fetch`. Discovers the index's structured fields mid-conversation and proposes a refined `advancedQuery` for the earlier Gen-1 fire query. |
+
+~60-90 seconds of live agent activity, with the tool-call indicator visible in the Claude Code UI. **This is the panel demo.**
+
+### Other skill modes
+
+```
+/pokemon-mcp info                       # explain the integration (no API calls)
+/pokemon-mcp tools                      # list the four MCP tools + when to pick each
+/pokemon-mcp compare "<your query>"     # call MCP for <query>, then describe what the live Vercel UI would show for the same input
+```
+
+### Natural-language invocation
+
+The skill also auto-triggers on plain English — no slash needed:
+
+- *"Demo the MCP integration"* → `demo` mode
+- *"Show me how MCP works here"* → `info` mode
+- *"List the MCP tools"* → `tools` mode
+- *"How would MCP answer 'who is Pikachu?' vs our live UI?"* → `compare` mode
+
+### Calling MCP tools directly (without the skill)
+
+You can also bypass the skill and ask Claude Code to call MCP tools naturally — the four tools are always available in the tool catalog once the server is connected:
+
+- *"Use the Coveo MCP server to answer: what's special about Eevee's evolutions?"* → Claude picks `answer` based on the server's tool-selection guide
+- *"Search Coveo for ghost-type Pokémon"* → Claude picks `search`
+- *"Fetch the Coveo document for Mewtwo"* → Claude picks `search` → `fetch`
+
+The skill is a curated demo script; everyday usage is just natural-language prompts that mention MCP or Coveo.
+
+### Editing the server configuration
+
+The Coveo Console is the live state, but `config/mcp/pokemon-mcp.yaml` is the source of truth. To change anything (server instructions, tool descriptions, auth methods):
+
+1. Edit `config/mcp/pokemon-mcp.yaml`, bump the version, add a `history` entry
+2. Paste the changed section into the matching Console tab (`config/mcp/README.md` lists which section goes where)
+3. Save in the Console, commit the YAML
+
+Coveo doesn't yet publish a public REST admin API for the MCP Server (confirmed by `scripts/mcp/discover_api.sh` — 8 candidate endpoints all returned 404). Re-run that script periodically; the day a 200 appears, replace the manual paste step with `scripts/mcp/apply_mcp_server.sh`.
 
 ## The AI-quality + closed-loop systems (Phases 6D + 6F)
 
