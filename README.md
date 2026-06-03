@@ -6,8 +6,10 @@ Forward Deployed Engineer technical challenge for Coveo. A Pokémon search exper
 |---|---|
 | **Live Pokémon search UI** (Atomic) | [pokemon-search-one-chi.vercel.app](https://pokemon-search-one-chi.vercel.app) |
 | **Live RGA quality dashboard** | [pokemon-rga-dashboard.vercel.app](https://pokemon-rga-dashboard.vercel.app) |
+| **Live query-observability dashboard** (Grafana, public) | [charmingporridge966.grafana.net/public-dashboards/cf105c8d…](https://charmingporridge966.grafana.net/public-dashboards/cf105c8dabc64e5b95a33a86ef502452) |
 | **GitHub repo** | [github.com/benichou/coveo-pokemon-challenge](https://github.com/benichou/coveo-pokemon-challenge) |
 | **Diagnostic methodology** (panel-shareable) | [`docs/rga-eval-methodology.md`](docs/rga-eval-methodology.md) |
+| **Query observability architecture** (panel-shareable) | [`docs/observability.md`](docs/observability.md) |
 | **RGA Custom Prompt + history** | [`docs/rga-prompt.md`](docs/rga-prompt.md) + [`rga-closed-loop/prompts/`](rga-closed-loop/prompts/) |
 | **Working plan** (history + decisions) | [`~/.claude/plans/so-we-are-supposed-purrfect-bachman.md`](~/.claude/plans/so-we-are-supposed-purrfect-bachman.md) |
 
@@ -19,7 +21,7 @@ Beyond a working Pokémon search UI, this build is a panel-defining demonstratio
 2. **Closed-loop self-improvement.** An LLM-assisted analyzer reads the latest eval, identifies regressed categories, samples failing answers verbatim, and proposes prompt refinements. The proposals can be applied interactively (via a Claude Code skill, `/rga-closed-loop`) or autonomously (via a GitHub Actions cron gated by guardrails).
 3. **Code as the source of truth for AI configuration.** The RGA Custom Prompt lives as version-controlled YAML in the repo; an apply script PUTs it to Coveo's ML Models API. No Console click-paste in production.
 4. **95% reproducible infrastructure.** Source config, fields, mappings, scraping rules, URL filters, ML model wiring — all version-controlled JSON + bash. One-command bootstrap (`scripts/bootstrap.sh`). The only manual step is API-key minting (Coveo's deliberate "secret-once" design).
-5. **Two-tier observability.** AI quality (Phase 6D) measures answer correctness. Query observability (Phase 6E, planned) measures user behavior. Different stakeholders, different cadences, same dashboard discipline.
+5. **Two-tier observability.** AI quality (Phase 6D) measures answer correctness. [Query observability (Phase 6E)](docs/observability.md) — a same-origin Vercel proxy forwarding per-search records to Grafana Cloud Loki, fronted by a dashboard-as-code that auto-deploys from `main` — measures user behavior. Different stakeholders, different cadences, same dashboard discipline.
 
 ## Status (2026-06-01)
 
