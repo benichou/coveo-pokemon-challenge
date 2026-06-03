@@ -255,15 +255,18 @@ export function PromptHistory() {
         newest first. Each entry is the result of the closed-loop analyzer
         proposing a change → guardrails passing → the apply script PUTting it
         to Coveo's ML Models API. Click a chart marker above to jump to a
-        specific version.
+        specific version; the list scrolls independently of the page once it
+        grows past the visible window.
       </p>
-      {pairs.map(({ current, previous }) => (
-        <PromptCard
-          key={current.filename}
-          current={current}
-          previous={previous}
-        />
-      ))}
+      <div className="prompt-history-list">
+        {pairs.map(({ current, previous }) => (
+          <PromptCard
+            key={current.filename}
+            current={current}
+            previous={previous}
+          />
+        ))}
+      </div>
     </section>
   );
 }
