@@ -31,6 +31,14 @@ const OBSERVABILITY_ENABLED =
 // fetches on every search.
 const SAFE_TO_LOG = OBSERVABILITY_ENABLED && !IS_DEV;
 
+// TEMP — diagnostic for Phase 6E launch. Remove after observability is verified
+// working end-to-end in production. Will print once when the module loads.
+console.log("[observability] module loaded", {
+  SAFE_TO_LOG,
+  IS_DEV,
+  OBSERVABILITY_ENABLED,
+});
+
 // ---------- Pure helpers ----------
 
 function activeFacetsFromState(state) {
@@ -85,8 +93,9 @@ export function buildPayload(state) {
 // ---------- Network (side-effecting) ----------
 
 async function pushToProxy(payload) {
+  console.log("[observability] pushToProxy — fetching", PROXY_ENDPOINT);
   try {
-    await fetch(PROXY_ENDPOINT, {
+    const r = await fetch(PROXY_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -95,7 +104,9 @@ async function pushToProxy(payload) {
       // flow where the page navigates away ~ms after the search completes.
       keepalive: true,
     });
-  } catch {
+    console.log("[observability] pushToProxy result:", r.status);
+  } catch (e) {
+    console.log("[observability] pushToProxy threw:", e?.message);
     // Fire-and-forget. Never propagate; never break the UI.
   }
 }
@@ -126,23 +137,42 @@ export function instrumentEngine(engine) {
     return;
   }
 
+  console.log("[observability] instrumentEngine OK — installing subscriber");
+
   let lastLoggedUid = null;
+  let fireCount = 0;
   engine.subscribe(() => {
+    fireCount++;
     const state = engine.state;
     const search = state?.search;
-    if (!search) return;
-    if (search.isLoading) return;
+    if (!search) {
+      if (fireCount <= 3) console.log("[observability] skip — no search state");
+      return;
+    }
+    if (search.isLoading) {
+      if (fireCount <= 3) console.log("[observability] skip — isLoading");
+      return;
+    }
 
-    // Coveo's search uid lives in slightly different places depending on
-    // Headless version. Try several locations; any one is enough.
     const uid =
       search.response?.searchUid ??
       search.searchResponseId ??
       search.searchUid;
-    if (!uid) return;
-    if (uid === lastLoggedUid) return;
+    if (!uid) {
+      if (fireCount <= 3) console.log("[observability] skip — no uid yet");
+      return;
+    }
+    if (uid === lastLoggedUid) {
+      // Common case (same search re-rendering) — don't spam
+      return;
+    }
 
     lastLoggedUid = uid;
+    console.log("[observability] PUSH —", {
+      uid: uid.slice(0, 8),
+      q: state.query?.q ?? "",
+      isLoading: search.isLoading,
+    });
     pushToProxy(buildPayload(state));
   });
 }
