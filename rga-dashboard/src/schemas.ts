@@ -98,3 +98,19 @@ export type PromptChangeEvent = {
   // can scroll-to the corresponding card.
   anchor_id: string;
 };
+
+// One chart marker per *date*. Multiple prompt changes that all landed on
+// the same day collapse into one marker; the label renders the full chain
+// (e.g. "v1.0.0 → v1.1.0") and the click target is the LAST version applied
+// that day (which is what's most relevant to scroll to).
+export type PromptChangeDayMarker = {
+  applied_date: string; // YYYY-MM-DD; matches the x-axis tick
+  // Versions applied on this date, in the order they were applied (oldest →
+  // newest). All elements are PromptChangeEvent entries from that day.
+  versions: PromptChangeEvent[];
+  // The anchor of the LAST version on this day — that's what marker-click
+  // scrolls to (most recent change = most relevant card).
+  click_anchor_id: string;
+  // Pre-rendered label for the chart, e.g. "v1.1.0" or "v1.0.0 → v1.1.0".
+  label: string;
+};

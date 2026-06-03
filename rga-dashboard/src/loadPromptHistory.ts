@@ -18,7 +18,11 @@
 // derived PromptChangeEvent[] for the time-series chart markers.
 
 import yaml from "js-yaml";
-import type { PromptVersion, PromptChangeEvent } from "./schemas";
+import type {
+  PromptVersion,
+  PromptChangeEvent,
+  PromptChangeDayMarker,
+} from "./schemas";
 
 // ---- Source globs (raw strings; parsed below) -------------------------------
 
@@ -114,9 +118,9 @@ export const promptHistory: PromptVersion[] = (() => {
   return items;
 })();
 
-// What the TimeSeries chart consumes — one marker per prompt change. We
-// skip the "very first" version (no prior to compare against; not really
-// a "change" event in the user-facing sense).
+// All prompt-change events (one per version that has a predecessor). The
+// "very first" version is skipped because it isn't a change-from-something
+// — there's no prior to compare against.
 export const promptChangeEvents: PromptChangeEvent[] = promptHistory
   .filter((v) => v.replaces !== "")
   .map((v) => ({
@@ -125,6 +129,48 @@ export const promptChangeEvents: PromptChangeEvent[] = promptHistory
     applied_by: v.applied_by,
     anchor_id: makeAnchorId(v.version, v.filename),
   }));
+
+// What the TimeSeries chart actually renders — one marker per *date*, even
+// when multiple versions were applied on the same day. Eval-run dates are
+// truncated to YYYY-MM-DD, so two changes that landed at different UTC times
+// on the same day would otherwise stack at the same x-position and visually
+// occlude each other.
+//
+// Label rules: a single-change day renders just the version (e.g. "v1.1.0");
+// a multi-change day renders the full chain in apply order (e.g. "v1.0.0
+// → v1.1.0"). Three or more renders just first → last with a "(+N)" suffix
+// to keep the label compact.
+export const promptChangeDayMarkers: PromptChangeDayMarker[] = (() => {
+  const byDate = new Map<string, PromptChangeEvent[]>();
+  for (const evt of promptChangeEvents) {
+    if (!byDate.has(evt.applied_date)) byDate.set(evt.applied_date, []);
+    byDate.get(evt.applied_date)!.push(evt);
+  }
+  const out: PromptChangeDayMarker[] = [];
+  for (const [date, events] of byDate.entries()) {
+    // events are already in chronological order because promptChangeEvents
+    // inherits the sort from promptHistory.
+    let label: string;
+    if (events.length === 1) {
+      label = `v${events[0].version}`;
+    } else if (events.length === 2) {
+      label = `v${events[0].version} → v${events[1].version}`;
+    } else {
+      const first = events[0];
+      const last = events[events.length - 1];
+      label = `v${first.version} → v${last.version} (+${events.length - 2})`;
+    }
+    out.push({
+      applied_date: date,
+      versions: events,
+      click_anchor_id: events[events.length - 1].anchor_id,
+      label,
+    });
+  }
+  return out.sort((a, b) =>
+    a.applied_date.localeCompare(b.applied_date),
+  );
+})();
 
 // Lookup by anchor_id, used by the marker-click → scroll-to handler.
 export const promptByAnchorId: Record<string, PromptVersion> =

@@ -1,6 +1,6 @@
 import "./App.css";
 import { runs, latestRun, previousRun } from "./loadRuns";
-import { promptChangeEvents } from "./loadPromptHistory";
+import { promptChangeDayMarkers } from "./loadPromptHistory";
 import { SummaryCard } from "./components/SummaryCard";
 import { TimeSeries } from "./components/TimeSeries";
 import { CategoryBreakdown } from "./components/CategoryBreakdown";
@@ -36,7 +36,7 @@ function App() {
     <main className="app">
       <Header />
       <SummaryCard latest={latestRun} previous={previousRun} />
-      <TimeSeries runs={runs} promptEvents={promptChangeEvents} />
+      <TimeSeries runs={runs} promptMarkers={promptChangeDayMarkers} />
       <PromptHistory />
       <CategoryBreakdown run={latestRun} />
       <FailuresTable run={latestRun} />

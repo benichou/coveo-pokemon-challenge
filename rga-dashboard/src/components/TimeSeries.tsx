@@ -13,7 +13,7 @@ import {
 import type {
   EvalRunWithMeta,
   LayerStats,
-  PromptChangeEvent,
+  PromptChangeDayMarker,
 } from "../schemas";
 
 type SeriesPoint = {
@@ -66,28 +66,29 @@ function handleMarkerClick(anchorId: string) {
   }
 }
 
-// Vertical reference line on the chart for every prompt change. Color matches
-// the "applied" semantic across the dashboard. The label sits above the line
-// and is click-to-scroll-to-history-entry.
-function PromptMarkers({ events }: { events: PromptChangeEvent[] }) {
+// Vertical reference line on the chart, one per *date* on which a prompt
+// change happened. Multiple changes on the same date collapse into one
+// marker — the loader's day-grouping logic owns the label format. Click
+// scrolls to the LAST version applied that day (most relevant card).
+function PromptMarkers({ markers }: { markers: PromptChangeDayMarker[] }) {
   return (
     <>
-      {events.map((evt) => (
+      {markers.map((m) => (
         <ReferenceLine
-          key={evt.anchor_id}
-          x={evt.applied_date}
+          key={m.applied_date}
+          x={m.applied_date}
           stroke="#0ea5e9"
           strokeDasharray="4 3"
           strokeWidth={1.5}
         >
           <Label
-            value={`v${evt.version}`}
+            value={m.label}
             position="top"
             fill="#0ea5e9"
             fontSize={11}
             fontWeight={600}
             style={{ cursor: "pointer" }}
-            onClick={() => handleMarkerClick(evt.anchor_id)}
+            onClick={() => handleMarkerClick(m.click_anchor_id)}
           />
         </ReferenceLine>
       ))}
@@ -99,19 +100,19 @@ function Chart({
   title,
   subtitle,
   data,
-  promptEvents,
+  promptMarkers,
 }: {
   title: string;
   subtitle?: string;
   data: SeriesPoint[];
-  promptEvents?: PromptChangeEvent[];
+  promptMarkers?: PromptChangeDayMarker[];
 }) {
   // Only show markers that fall inside the current chart's x-domain (the
   // dates that actually appear in `data`). Prompt-changes from before the
   // earliest eval run can't be positioned meaningfully on a date-string axis.
   const xDates = new Set(data.map((d) => d.date));
-  const inRange = (promptEvents ?? []).filter((e) =>
-    xDates.has(e.applied_date),
+  const inRange = (promptMarkers ?? []).filter((m) =>
+    xDates.has(m.applied_date),
   );
 
   return (
@@ -150,7 +151,7 @@ function Chart({
                 activeDot={{ r: 5 }}
               />
             ))}
-            <PromptMarkers events={inRange} />
+            <PromptMarkers markers={inRange} />
           </LineChart>
         </ResponsiveContainer>
       </div>
@@ -160,48 +161,50 @@ function Chart({
 
 type Props = {
   runs: EvalRunWithMeta[];
-  promptEvents?: PromptChangeEvent[];
+  promptMarkers?: PromptChangeDayMarker[];
 };
 
-export function TimeSeries({ runs, promptEvents }: Props) {
+export function TimeSeries({ runs, promptMarkers }: Props) {
   return (
     <section className="time-series">
       <h2>Quality over time</h2>
-      {promptEvents && promptEvents.length > 0 && (
+      {promptMarkers && promptMarkers.length > 0 && (
         <p className="chart-legend-note">
           <span
             className="prompt-marker-dot"
             aria-hidden
             style={{ background: "#0ea5e9" }}
           />
-          Dashed vertical lines mark dates the closed loop applied a new RGA
-          prompt version. Click a label to jump to the version's diff.
+          Dashed vertical lines mark dates a new RGA prompt version was
+          applied. Days with multiple applies are collapsed into one marker
+          (e.g. <code>v1.0.0 → v1.1.0</code>). Click a label to jump to the
+          version's diff.
         </p>
       )}
       <Chart
         title="Overall"
         subtitle="All 100 golden questions per run"
         data={toSeries(runs, (r) => r.overall)}
-        promptEvents={promptEvents}
+        promptMarkers={promptMarkers}
       />
       <div className="chart-grid">
         <Chart
           title="Layer 1 — single-fact"
           subtitle="50 questions · type/gen/ability/stat lookups"
           data={toSeries(runs, (r) => r.by_layer["1"])}
-          promptEvents={promptEvents}
+          promptMarkers={promptMarkers}
         />
         <Chart
           title="Layer 2 — multi-doc synthesis"
           subtitle="35 questions · the SE-aided sweet spot"
           data={toSeries(runs, (r) => r.by_layer["2"])}
-          promptEvents={promptEvents}
+          promptMarkers={promptMarkers}
         />
         <Chart
           title="Layer 3 — refusal / edge"
           subtitle="15 questions · RGA should refuse or stay nuanced"
           data={toSeries(runs, (r) => r.by_layer["3"])}
-          promptEvents={promptEvents}
+          promptMarkers={promptMarkers}
         />
       </div>
     </section>

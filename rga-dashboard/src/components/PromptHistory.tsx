@@ -11,6 +11,7 @@
 // We render the diff ourselves rather than pulling in a full diff-viewer
 // UI library; the dashboard bundle is already heavy from recharts.
 
+import { useEffect, useState } from "react";
 import { diffLines } from "diff";
 import { pairWithPrevious } from "../loadPromptHistory";
 import type { PromptVersion } from "../schemas";
@@ -96,102 +97,145 @@ function PromptCard({
   const { added, removed } = countDiffChanges(current, previous);
   const liftEntries = Object.entries(current.expected_lift);
 
+  // Default open for: (a) the currently-live version (most relevant card)
+  // OR (b) the card the user landed on via a deep-link / marker click
+  // (URL hash matches). Everything else stays compact-by-default — the
+  // header alone is enough to scan the timeline.
+  const initialOpen = (() => {
+    if (typeof window === "undefined") return current.is_current;
+    if (window.location.hash === `#${anchorId}`) return true;
+    return current.is_current;
+  })();
+  const [open, setOpen] = useState(initialOpen);
+
+  // If the user clicks a chart marker for THIS card after first render, the
+  // URL hash changes — open the card automatically so the rationale/diff
+  // are visible without a second click.
+  useEffect(() => {
+    function onHashChange() {
+      if (window.location.hash === `#${anchorId}`) setOpen(true);
+    }
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, [anchorId]);
+
+  // Stop the anchor-link click from bubbling up and toggling the outer
+  // <details>. Clicking the # should copy the deep-link only.
+  function stopPropagation(e: React.MouseEvent) {
+    e.stopPropagation();
+  }
+
   return (
     <article
       id={anchorId}
       className={`prompt-card${current.is_current ? " prompt-card--live" : ""}`}
     >
-      <header className="prompt-card-header">
-        <div className="prompt-card-title">
-          <h3>
-            v{current.version}
-            {current.is_current && (
-              <span className="prompt-live-badge">Live now</span>
-            )}
-          </h3>
-          <p className="prompt-card-meta">
-            Applied {current.applied_date} by{" "}
-            <code>{current.applied_by}</code>
-            {previous && (
-              <>
-                {" · "}
-                <span className="diff-count">
-                  <span className="diff-count-added">+{added}</span>{" "}
-                  <span className="diff-count-removed">−{removed}</span> lines
-                  vs v{previous.version}
-                </span>
-              </>
-            )}
-          </p>
-        </div>
-        <a className="prompt-card-anchor" href={`#${anchorId}`} aria-label="Direct link to this version">
-          #
-        </a>
-      </header>
+      <details
+        className="prompt-card-collapse"
+        open={open}
+        onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
+      >
+        <summary className="prompt-card-summary">
+          <span className="prompt-card-chevron" aria-hidden>
+            ▸
+          </span>
+          <div className="prompt-card-title">
+            <h3>
+              v{current.version}
+              {current.is_current && (
+                <span className="prompt-live-badge">Live now</span>
+              )}
+            </h3>
+            <p className="prompt-card-meta">
+              Applied {current.applied_date} by{" "}
+              <code>{current.applied_by}</code>
+              {previous && (
+                <>
+                  {" · "}
+                  <span className="diff-count">
+                    <span className="diff-count-added">+{added}</span>{" "}
+                    <span className="diff-count-removed">−{removed}</span>{" "}
+                    lines vs v{previous.version}
+                  </span>
+                </>
+              )}
+            </p>
+          </div>
+          <a
+            className="prompt-card-anchor"
+            href={`#${anchorId}`}
+            aria-label="Direct link to this version"
+            onClick={stopPropagation}
+          >
+            #
+          </a>
+        </summary>
 
-      <section className="prompt-rationale">
-        <h4>Rationale</h4>
-        <pre>{current.rationale}</pre>
-      </section>
+        <div className="prompt-card-body">
+          <section className="prompt-rationale">
+            <h4>Rationale</h4>
+            <pre>{current.rationale}</pre>
+          </section>
 
-      {liftEntries.length > 0 && (
-        <section className="prompt-lift">
-          <h4>Predicted lift at apply time</h4>
-          <table>
-            <thead>
-              <tr>
-                <th>Metric</th>
-                <th>From</th>
-                <th>Target</th>
-                <th>Δ</th>
-              </tr>
-            </thead>
-            <tbody>
-              {liftEntries.map(([metric, lift]) => {
-                const from = lift.from ?? lift.from_;
-                const delta =
-                  from !== undefined ? lift.target - from : undefined;
-                return (
-                  <tr key={metric}>
-                    <td>{metric}</td>
-                    <td>{formatPercent(from)}</td>
-                    <td>{formatPercent(lift.target)}</td>
-                    <td>
-                      {delta !== undefined
-                        ? `${delta >= 0 ? "+" : ""}${(delta * 100).toFixed(
-                            0,
-                          )}pts`
-                        : "—"}
-                    </td>
+          {liftEntries.length > 0 && (
+            <section className="prompt-lift">
+              <h4>Predicted lift at apply time</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th>From</th>
+                    <th>Target</th>
+                    <th>Δ</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          {current.validated_against && (
-            <p className="prompt-validated">
-              Measured against{" "}
-              <code>{current.validated_against}</code>
+                </thead>
+                <tbody>
+                  {liftEntries.map(([metric, lift]) => {
+                    const from = lift.from ?? lift.from_;
+                    const delta =
+                      from !== undefined ? lift.target - from : undefined;
+                    return (
+                      <tr key={metric}>
+                        <td>{metric}</td>
+                        <td>{formatPercent(from)}</td>
+                        <td>{formatPercent(lift.target)}</td>
+                        <td>
+                          {delta !== undefined
+                            ? `${delta >= 0 ? "+" : ""}${(
+                                delta * 100
+                              ).toFixed(0)}pts`
+                            : "—"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              {current.validated_against && (
+                <p className="prompt-validated">
+                  Measured against <code>{current.validated_against}</code>
+                </p>
+              )}
+            </section>
+          )}
+
+          {previous && (
+            <details className="prompt-diff">
+              <summary>
+                Show diff vs v{previous.version} ({added} added, {removed}{" "}
+                removed)
+              </summary>
+              <DiffView current={current} previous={previous} />
+            </details>
+          )}
+
+          {!previous && (
+            <p className="prompt-baseline-note">
+              Baseline version — no predecessor to diff against.
             </p>
           )}
-        </section>
-      )}
-
-      {previous && (
-        <details className="prompt-diff">
-          <summary>
-            Show diff vs v{previous.version} ({added} added, {removed}{" "}
-            removed)
-          </summary>
-          <DiffView current={current} previous={previous} />
-        </details>
-      )}
-
-      {!previous && (
-        <p className="prompt-baseline-note">
-          Baseline version — no predecessor to diff against.
-        </p>
-      )}
+        </div>
+      </details>
     </article>
   );
 }
