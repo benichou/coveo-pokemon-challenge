@@ -535,7 +535,7 @@ def main() -> int:
 
     if args.emit:
         args.emit.parent.mkdir(parents=True, exist_ok=True)
-        args.emit.write_text(proposal.model_dump_json(indent=2))
+        args.emit.write_text(proposal.model_dump_json(indent=2) + "\n")
         print(f"\n→ Proposal emitted to {args.emit}")
 
     return 0

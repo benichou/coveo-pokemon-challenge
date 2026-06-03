@@ -77,7 +77,10 @@ def log_run(payload: dict) -> Path:
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
     ts = datetime.now(UTC).strftime("%Y-%m-%dT%H-%M-%S")
     path = LOGS_DIR / f"{ts}.json"
-    path.write_text(json.dumps(payload, indent=2, default=str))
+    # Trailing newline keeps the file POSIX-compliant and prevents the daily
+    # cron's auto-commits from later failing the repo's end-of-file-fixer
+    # pre-commit hook (the cron commits without running pre-commit locally).
+    path.write_text(json.dumps(payload, indent=2, default=str) + "\n")
     return path
 
 
