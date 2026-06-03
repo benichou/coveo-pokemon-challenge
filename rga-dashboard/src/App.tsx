@@ -1,9 +1,11 @@
 import "./App.css";
 import { runs, latestRun, previousRun } from "./loadRuns";
+import { promptChangeEvents } from "./loadPromptHistory";
 import { SummaryCard } from "./components/SummaryCard";
 import { TimeSeries } from "./components/TimeSeries";
 import { CategoryBreakdown } from "./components/CategoryBreakdown";
 import { FailuresTable } from "./components/FailuresTable";
+import { PromptHistory } from "./components/PromptHistory";
 
 function EmptyState() {
   return (
@@ -34,7 +36,8 @@ function App() {
     <main className="app">
       <Header />
       <SummaryCard latest={latestRun} previous={previousRun} />
-      <TimeSeries runs={runs} />
+      <TimeSeries runs={runs} promptEvents={promptChangeEvents} />
+      <PromptHistory />
       <CategoryBreakdown run={latestRun} />
       <FailuresTable run={latestRun} />
       <Footer />

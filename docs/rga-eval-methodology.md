@@ -88,6 +88,25 @@ The largest gaps are in **L1 ability-lookup (+85)** and **L1 stat-lookup (+60)**
 
 Interestingly, **L1 type-lookup (+7)** and **L1 generation-lookup (+10)** show almost no gap — RGA handles those cleanly. Why? Because there's nothing to embellish: a Pokémon's type is one or two words; there's no room to fabricate context around it. That contrast is itself a clue.
 
+### Multi-day window — distinguishing chronic failures from one-day noise
+
+The table above is from a single eval run. A single-run view has a known blind spot: it can't tell the difference between a category that has been failing for a week (a real, persistent problem worth fixing) and one that flunked yesterday because the LLM judge happened to misjudge a borderline answer (noise — fixing it overfits to a transient artefact).
+
+The closed-loop analyzer (Phase 6F) reads the **last N=5 eval runs** and ranks categories using two derived signals on top of the single-run gap:
+
+- **Persistence** — count of runs in the window where this category was below the failing threshold (default 70% accuracy). 5/5 is chronic; 1/5 is noise.
+- **Drift** — accuracy change from the first half of the window to the second half. Positive = declining over time (worth surfacing before it gets worse); negative = improving (no fix needed).
+
+The composite ranker prioritizes chronic persistence first, then drift, then absolute latest accuracy, then sample size as a tiebreaker. The effect on prompt-tuning behavior:
+
+- A category that drops to 60% for one day, then recovers — won't trigger a proposal.
+- A category that drifts from 85% → 80% → 75% → 70% → 65% over the window — surfaces *before* it lands in the table above as a single bad day.
+- A category that has been failing at 30% every day for a month — stays at the top of the ranker until the prompt change actually moves it.
+
+This makes the closed loop's proposals **smoother** in two senses: fewer noisy proposals (we don't chase single-day spikes) and more confident proposals (when we DO propose, persistence vouches for the signal). The trade-off is responsiveness: it takes ~3 runs for a brand-new degradation to register as "persistent." For prompt tuning on a daily eval cadence, that's the right balance.
+
+See `rga-closed-loop/src/analyzer.py` (`CategoryHistory`, `rank_worst_categories`) for the implementation. CLI flags `--window-size` and `--persistence-threshold` let you tune the window and threshold per run.
+
 ---
 
 ## Stage 3 — Diagnose (read the actual failing answers)

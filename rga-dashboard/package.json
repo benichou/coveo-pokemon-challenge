@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/diff": "^7.0.2",
+    "@types/js-yaml": "^4.0.9",
+    "diff": "^9.0.0",
+    "js-yaml": "^4.2.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "recharts": "^3.8.1"

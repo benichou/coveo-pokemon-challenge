@@ -35,8 +35,11 @@ from pathlib import Path
 
 import yaml
 from analyzer import (
+    DEFAULT_PERSISTENCE_THRESHOLD,
+    DEFAULT_WINDOW_SIZE,
     JUDGE_MODEL,
     call_analyzer,
+    compute_category_histories,
     list_full_runs,
     load_current_prompt,
     rank_worst_categories,
@@ -247,12 +250,24 @@ def main() -> int:
         log_run(log_payload)
         return EXIT_ERROR
 
-    latest_path = runs[-1]
-    prior_path = runs[-2] if len(runs) >= 2 else None
+    # Load the most recent DEFAULT_WINDOW_SIZE runs for the analyzer; older
+    # ones inform persistence + drift signals. Still derive `prior` for the
+    # rollback check below (which only needs the single previous run).
+    window_paths = runs[-DEFAULT_WINDOW_SIZE:]
+    latest_path = window_paths[-1]
+    prior_path = window_paths[-2] if len(window_paths) >= 2 else None
 
-    latest_summary, latest_perq = summarize_run(latest_path)
-    prior_summary = summarize_run(prior_path)[0] if prior_path else None
+    window: list = []
+    latest_perq: list[dict] = []
+    for i, p in enumerate(window_paths):
+        s, perq = summarize_run(p)
+        window.append(s)
+        if i == len(window_paths) - 1:
+            latest_perq = perq
+    latest_summary = window[-1]
+    prior_summary = window[-2] if len(window) >= 2 else None
 
+    log_payload["window_runs"] = [p.name for p in window_paths]
     log_payload["latest_run"] = latest_path.name
     log_payload["prior_run"] = prior_path.name if prior_path else None
     log_payload["latest_overall_accuracy"] = latest_summary.overall_accuracy
@@ -303,16 +318,34 @@ def main() -> int:
         log_run(log_payload)
         return EXIT_NO_CHANGE
 
-    print("\n→ Running analyzer (LLM call — Sonnet 4.6)...")
-    worst = rank_worst_categories(latest_summary, prior_summary, top_n=3)
+    print(
+        f"\n→ Running analyzer (LLM call — Sonnet 4.6) over a "
+        f"{len(window)}-run window..."
+    )
+    histories = compute_category_histories(window)
+    worst = rank_worst_categories(
+        histories,
+        top_n=3,
+        persistence_threshold=DEFAULT_PERSISTENCE_THRESHOLD,
+    )
     failing = sample_failures(latest_perq, worst, per_category=3)
+    log_payload["analyzer_window_size"] = len(window)
+    log_payload["analyzer_worst_categories"] = [
+        {
+            "key": h.key,
+            "latest_accuracy": h.latest.accuracy,
+            "persistence": h.persistence(DEFAULT_PERSISTENCE_THRESHOLD),
+            "drift": h.drift(),
+        }
+        for h in worst
+    ]
     try:
         proposal = call_analyzer(
             current_pv.prompt.strip(),
-            latest_summary,
-            prior_summary,
+            window,
             worst,
             failing,
+            persistence_threshold=DEFAULT_PERSISTENCE_THRESHOLD,
             model=JUDGE_MODEL,
         )
     except Exception as e:

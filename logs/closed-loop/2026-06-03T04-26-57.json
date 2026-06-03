@@ -1,0 +1,23 @@
+{
+  "started_at": "2026-06-03T04:26:57.021925+00:00",
+  "args": {
+    "dry_run": true,
+    "skip_analyzer": true,
+    "no_rollback_check": false
+  },
+  "exit_code": 0,
+  "window_runs": [
+    "2026-05-31-full.json",
+    "2026-06-01-full.json",
+    "2026-06-02-full.json"
+  ],
+  "latest_run": "2026-06-02-full.json",
+  "prior_run": "2026-06-01-full.json",
+  "latest_overall_accuracy": 0.77,
+  "current_yaml_version": "1.1.0",
+  "rollback_decision": {
+    "should_rollback": false,
+    "reason": "last apply was 1d 22h ago (> 36h rollback window). Today's regression has a different cause; no rollback.",
+    "accuracy_drop_pts": 0.020000000000000018
+  }
+}
