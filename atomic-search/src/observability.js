@@ -107,6 +107,19 @@ function visitorIdFromCookie() {
   return match ? decodeURIComponent(match[1]) : "";
 }
 
+// Flatten top_results into top_1..top_5 string fields. Grafana's table panel
+// can't natively split an array field into separate columns, so we pre-flatten
+// at write time. Title only (the URI lives in the parallel top_results array
+// for drill-down inspection). Empty string when fewer than N results returned.
+function flatTopResults(search) {
+  const arr = topResultsFromState(search);
+  const flat = {};
+  for (let i = 0; i < TOP_N_RESULTS; i++) {
+    flat[`top_${i + 1}`] = arr[i]?.title ?? "";
+  }
+  return flat;
+}
+
 export function buildPayload(state) {
   // Defensive reads — Coveo Headless state shape varies across versions.
   // Anything we can't read falls back to a sensible default; we'd rather
@@ -132,6 +145,9 @@ export function buildPayload(state) {
     // Top N result titles + clickUris. Lets us answer "did the top result for
     // 'charizard' suddenly change?" without re-running the query.
     top_results: topResultsFromState(search),
+    // Flat top_1..top_5 mirrors of top_results[i].title for Grafana table panel
+    // columns (Grafana can't split nested arrays into columns natively).
+    ...flatTopResults(search),
     total_count: search.response?.totalCount ?? 0,
     response_time_ms: search.duration ?? 0,
     // Pipeline can live in a few places: as a bare string on state.pipeline

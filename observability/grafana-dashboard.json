@@ -360,18 +360,13 @@
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "top_results" },
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^top_[1-5]$"
+            },
             "properties": [
-              { "id": "displayName", "value": "top 5 results" },
-              { "id": "custom.width", "value": 360 },
-              { "id": "custom.inspect", "value": true },
-              { "id": "custom.displayMode", "value": "json-view" },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "json-view"
-                }
-              }
+              { "id": "custom.width", "value": 180 },
+              { "id": "custom.inspect", "value": true }
             ]
           }
         ]
@@ -400,7 +395,8 @@
               "facets_active": true,
               "rga_requested": true,
               "rga_citations_count": true,
-              "timestamp": true
+              "timestamp": true,
+              "top_results": true
             },
             "indexByName": {
               "Time": 0,
@@ -408,10 +404,14 @@
               "sort_criteria": 2,
               "rga_fired": 3,
               "rga_answer": 4,
-              "top_results": 5,
-              "response_time_ms": 6,
-              "total_count": 7,
-              "status": 8
+              "top_1": 5,
+              "top_2": 6,
+              "top_3": 7,
+              "top_4": 8,
+              "top_5": 9,
+              "response_time_ms": 10,
+              "total_count": 11,
+              "status": 12
             }
           }
         }
