@@ -56,49 +56,120 @@ Beyond a working Pokémon search UI, this build is a panel-defining demonstratio
 
 ## Architecture
 
+```mermaid
+flowchart TB
+    %% ===========================================
+    %% Data sources
+    %% ===========================================
+    subgraph data["📚 Data sources"]
+        direction LR
+        PDB["pokemondb.net<br/>sitemap · 12,915 URLs"]
+        PKAPI["PokéAPI<br/>per-form variants"]
+    end
+
+    %% ===========================================
+    %% Ingestion (95% as-code)
+    %% ===========================================
+    subgraph ingest["🛠️ Ingestion · 95% as-code"]
+        direction LR
+        SRC_A["Source A<br/>Coveo Sitemap source<br/>1,028 docs"]
+        SRC_B["Source B<br/>Python Push pipeline<br/>+325 form variants"]
+    end
+
+    %% ===========================================
+    %% The Coveo brain
+    %% ===========================================
+    subgraph coveo["🧠 Coveo Cloud Org · benichou · 1,353 docs"]
+        IDX[("Unified index<br/>5 indexed fields")]
+        subgraph models["default pipeline + 4 ML models"]
+            direction LR
+            RGA["pokemon-rga<br/>RGA"]
+            SE["pokemon-se<br/>Semantic Encoder"]
+            QS["pokemon-qs<br/>Query Suggest"]
+            PR["pokemon-pr<br/>Passage Retrieval"]
+        end
+        IDX --- models
+    end
+
+    %% ===========================================
+    %% Three UI surfaces (one retrieval brain)
+    %% ===========================================
+    subgraph surfaces["🎯 Three UI surfaces · one retrieval brain"]
+        direction LR
+        ATOMIC["Atomic main page · /<br/>list · RGA · PR · type-ahead<br/>Phases 5 · 6A · 6B · 8"]
+        DETAIL["Headless + React<br/>/pokemon.html?name=X<br/>hero · passages · related<br/>Phase 6C"]
+        MCP_UI["Coveo Hosted MCP Server<br/>coveo-pokemon<br/>search · fetch · passages · answer<br/>Phase 8.5"]
+    end
+
+    %% ===========================================
+    %% Continuous AI quality + closed loop
+    %% ===========================================
+    subgraph quality["🔬 Continuous AI quality · Phases 6D · 6F · 6F.7"]
+        EVAL["rga-eval cron · 06:00 UTC<br/>100-Q golden + Sonnet 4.6 judge"]
+        RUNS[("eval-runs/<br/>*.json")]
+        DASH["pokemon-rga-dashboard<br/>.vercel.app"]
+        LOOP["rga-closed-loop cron · 06:30 UTC<br/>analyzer + guardrails + apply"]
+        PROMPT[("prompts/pokemon-rga.yaml<br/>versioned in git")]
+        EVAL --> RUNS
+        RUNS --> DASH
+        RUNS --> LOOP
+        LOOP --> PROMPT
+    end
+
+    %% ===========================================
+    %% Query-level observability
+    %% ===========================================
+    subgraph obs["📊 Query observability · Phase 6E"]
+        PROXY["Vercel serverless proxy<br/>/api/log-query"]
+        LOKI[("Grafana Cloud<br/>Loki")]
+        GRAF["Public Grafana<br/>dashboard"]
+        PROXY --> LOKI
+        LOKI --> GRAF
+    end
+
+    %% ===========================================
+    %% Inter-zone connections
+    %% ===========================================
+    PDB --> SRC_A
+    PKAPI --> SRC_B
+    SRC_A --> IDX
+    SRC_B --> IDX
+
+    models --> ATOMIC
+    models --> DETAIL
+    models --> MCP_UI
+
+    ATOMIC -. log every search .-> PROXY
+
+    RGA --> EVAL
+    PROMPT -. PUT to ML Models API .-> RGA
+
+    %% ===========================================
+    %% Styling
+    %% ===========================================
+    classDef extNode fill:#fafaf6,stroke:#999,stroke-width:1px,color:#1c1d21
+    classDef coveoNode fill:#dbf2ff,stroke:#0078d4,stroke-width:2px,color:#0a1929
+    classDef uiNode fill:#fde7e7,stroke:#ee1515,stroke-width:2px,color:#1c1d21
+    classDef qualNode fill:#fff4d4,stroke:#d9a200,stroke-width:2px,color:#1c1d21
+    classDef obsNode fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1c1d21
+    classDef storeNode fill:#f3e8ff,stroke:#6a1b9a,stroke-width:2px,color:#1c1d21
+
+    class PDB,PKAPI extNode
+    class SRC_A,SRC_B,IDX,RGA,SE,QS,PR coveoNode
+    class ATOMIC,DETAIL,MCP_UI uiNode
+    class EVAL,LOOP,DASH qualNode
+    class PROXY,GRAF obsNode
+    class RUNS,PROMPT storeNode
 ```
-       pokemondb.net + pokeapi.co
-                │
-       ┌────────┴────────────────────────────────────┐
-       ▼                                             ▼
-  Source A: Coveo Sitemap source             Python push-pokemon/  ──► Source B: Push source
-  (1,028 Pokémon indexed via                                            (PokéAPI per-form docs:
-   versioned scraping config)                                            Mega, Hisuian, Galarian)
-       │                                             │
-       └─────────────────┬───────────────────────────┘
-                         ▼
-          ┌──────────────────────────────────────┐
-          │  Coveo Cloud Org (benichou)          │
-          │  - Unified index (1,353 docs)        │
-          │  - RGA model: pokemon-rga            │
-          │  - Semantic Encoder: pokemon-se      │
-          │  - Pipeline associations + ART       │
-          └─────────┬────────────────────────────┘
-                    │
-       ┌────────────┼─────────────────────────────────────────────┐
-       ▼            ▼                                             ▼
-  /rest/search  /answer/v1/configs/{id}/generate (SSE)     Browser-side use
-  + Headless                                               (atomic-search/, Phase 5)
-       │
-       ▼
-  atomic-search/ (local; Phase 7 will Vercel-host it publicly)
-       │
-       │ ◄── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──┐
-       ▼                                                                       │
-  rga-eval/ (daily 06:00 UTC cron — Phase 6D)                                 │
-  - 100-Q golden dataset                                                       │
-  - Sonnet 4.6 LLM-as-judge (Pydantic tool-use forcing)                       │
-  - Writes eval-runs/YYYY-MM-DD-full.json                                     │
-       │                                                                       │
-       ├──► rga-dashboard/ (Vercel, public — Phase 6D.6)                      │
-       │    pokemon-rga-dashboard.vercel.app                                  │
-       │    Reads eval-runs/*-full.json at build time                         │
-       │                                                                       │
-       └──► rga-closed-loop/ (daily 06:30 UTC cron — Phase 6F)                │
-            Analyzer + guardrails + apply.py                                  │
-            PUTs new prompt → /machinelearning/models/{id} ─────────────────► │  feedback to RGA
-            Bot commits YAML + history + audit log
-```
+
+### Four flows worth tracing on the diagram
+
+1. **Ingestion (top-down)**: pokemondb.net's sitemap feeds Source A (Coveo's Sitemap source, 1,028 docs); PokéAPI feeds Source B (a Python Push pipeline, +325 per-form variants). Both land in the same Coveo org. Every step is versioned in `config/` + `scripts/`.
+2. **Three surfaces, one brain**: the same Coveo pipeline + four ML models powers (a) the Atomic main page at `/`, (b) the Headless + React detail page at `/pokemon.html?name=X`, and (c) the Coveo Hosted MCP Server addressable from Claude Code, Claude Desktop, and ChatGPT Enterprise. **Picking the right Coveo SDK per surface — the FDE narrative compressed.**
+3. **Closed loop (the dotted feedback arrow on the right)**: every day at 06:00 UTC, `rga-eval` measures RGA quality against a 100-question golden dataset using Sonnet 4.6 as judge → writes `eval-runs/*.json` → the public dashboard rebuilds → at 06:30 UTC, `rga-closed-loop` reads the last 5 runs, proposes a prompt refinement, runs it through guardrails, and (if approved) PUTs the new prompt to Coveo's ML Models API. The prompt YAML is the source of truth; the Coveo Console mirrors it. **Code-as-source-of-truth for AI configuration.**
+4. **Parallel observability (the dotted arrow on the left)**: every user search on the Atomic page fires a fire-and-forget log to a same-origin Vercel proxy → Grafana Cloud Loki → public dashboard. The Loki write token never reaches the browser. **Two-tier observability — AI quality + user behavior — same dashboard discipline.**
+
+Beyond the diagram, three more code-as-source-of-truth artifacts that aren't shown (intentionally — they're configuration, not data flow): `config/source/` (URL filter + scraping config + source definition), `config/ml/default-queries.json` (QS seed CSV applied via Coveo's Advanced Model Configurations API), `config/mcp/pokemon-mcp.yaml` (Hosted MCP Server config — manually mirrored to Console until Coveo publishes the admin API).
 
 ## Two parallel narratives, one repo
 
