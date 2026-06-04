@@ -80,10 +80,20 @@ cd rga-closed-loop && uv run pytest
 - When the user asks for a shorter commit message, **shorter is much better than "complete"** — they review every commit themselves.
 - **Pre-commit hooks** (ruff, ruff-format, trailing whitespace, end-of-file fixer, check-yaml, check-json) auto-modify files; if a commit aborts because "files were modified by this hook", just `git add -A` and retry — the hooks already fixed it.
 
-### Branching
+### Branching — trunk-based development
 
-- `main` is the working branch. The four legacy `feature/*` branches (essential/intermediate/advanced/bonus) exist but are not used — all work lands on `main`.
-- Don't create branches without an explicit user ask.
+This repo follows **trunk-based development**: `main` is the single shared trunk, and all work lands on it directly (or via very short-lived branches that merge within hours). No long-lived feature branches, no `develop`/`staging` mirror, no GitFlow.
+
+**What that means in practice for Claude Code sessions in this repo:**
+
+- **Default branch for all commits = `main`.** When the user says "commit + push", that goes to `main`. Don't ask which branch unless they explicitly say so.
+- **Don't create branches without an explicit user ask.** Even for "experimental" work — small enough changes go straight to `main`; larger ones the user will explicitly request a branch for.
+- **The four legacy `feature/*` branches** (essential/intermediate/advanced/bonus) exist from an earlier planning phase but are abandoned. Don't reference them, don't merge to them, don't push to them.
+- **Continuous integration in spirit**: every push to `main` should be releasable. `pr-checks.yml` runs pre-commit + tests + build + TruffleHog on every push to `main` AND every PR — so the same gates apply whichever path is used.
+- **PRs are optional, not required.** This is a personal repo with one human contributor. The user commits directly to `main`. If a change is risky enough to want PR review, the user will ask for a branch + PR explicitly.
+- **Force-push to `main` is allowed but rare.** Per the security section, always back up the pre-rewrite SHAs to `refs/backup/*` first and confirm with the user before running.
+
+**What this rules out:** Don't propose "let's create a feature branch for this", don't ask "should I open a PR?", don't suggest GitFlow-style release branches. If the change is large enough that a feature branch would help, the user will explicitly request one.
 
 ### Python
 
