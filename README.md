@@ -97,7 +97,7 @@ flowchart TB
     subgraph surfaces["🎯 Three UI surfaces · one retrieval brain"]
         direction LR
         ATOMIC["Atomic main page · /<br/>list · RGA · PR · type-ahead<br/>Phases 5 · 6A · 6B · 8"]
-        DETAIL["Headless + React<br/>/pokemon.html?name=X<br/>hero · passages · related<br/>Phase 6C"]
+        DETAIL["Pokémon Detail Page<br/>Headless + React<br/>/pokemon.html?name=X<br/>hero · passages · related<br/>Phase 6C"]
         MCP_UI["Coveo Hosted MCP Server<br/>coveo-pokemon<br/>search · fetch · passages · answer<br/>Phase 8.5"]
     end
 
@@ -184,7 +184,7 @@ flowchart TB
 ### Four flows worth tracing on the diagram
 
 1. **Ingestion (top-down)**: pokemondb.net's sitemap feeds Source A (Coveo's Sitemap source, 1,028 docs); PokéAPI feeds Source B (a Python Push pipeline, +325 per-form variants). Both land in the same Coveo org. Every step is versioned in `config/` + `scripts/`.
-2. **Three surfaces, one brain**: the same Coveo pipeline + four ML models powers (a) the Atomic main page at `/`, (b) the Headless + React detail page at `/pokemon.html?name=X`, and (c) the Coveo Hosted MCP Server addressable from Claude Code, Claude Desktop, and ChatGPT Enterprise. **Picking the right Coveo SDK per surface — the FDE narrative compressed.**
+2. **Three surfaces, one brain**: the same Coveo pipeline + four ML models powers (a) the Atomic main page at `/`, (b) the Pokémon Detail Page (Headless + React) at `/pokemon.html?name=X`, and (c) the Coveo Hosted MCP Server addressable from Claude Code, Claude Desktop, and ChatGPT Enterprise. **Picking the right Coveo SDK per surface — the FDE narrative compressed.**
 3. **Closed loop (the dotted feedback arrow on the right)**: every day at 06:00 UTC, `rga-eval` measures RGA quality against a 100-question golden dataset using Sonnet 4.6 as judge → writes `eval-runs/*.json` → the public dashboard rebuilds → at 06:30 UTC, `rga-closed-loop` reads the last 5 runs, proposes a prompt refinement, runs it through guardrails, and (if approved) PUTs the new prompt to Coveo's ML Models API. The prompt YAML is the source of truth; the Coveo Console mirrors it. **Code-as-source-of-truth for AI configuration.**
 4. **Parallel observability (the dotted arrow on the left)**: every user search on the Atomic page fires a fire-and-forget log to a same-origin Vercel proxy → Grafana Cloud Loki → public dashboard. The Loki write token never reaches the browser. **Two-tier observability — AI quality + user behavior — same dashboard discipline.**
 
@@ -222,7 +222,6 @@ The diagram nodes stay text-only because GitHub's mermaid renderer strips `<img>
 
 ![Anthropic](https://img.shields.io/badge/Anthropic_Claude-D4A27F?style=for-the-badge&logo=anthropic&logoColor=000)
 ![Sonnet 4.6](https://img.shields.io/badge/Sonnet_4.6-D4A27F?style=for-the-badge&logoColor=000)
-![Opus 4.7](https://img.shields.io/badge/Opus_4.7-D4A27F?style=for-the-badge&logoColor=000)
 
 **Infrastructure / Ops**
 

@@ -18,6 +18,17 @@
     -->
     <script type="module" src="https://static.cloud.coveo.com/atomic/v3/atomic.esm.js"></script>
     <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v3/themes/coveo.css" />
+
+    <!-- "Press Start 2P" — the canonical retro pixel-art font, used here
+         for the Pokedex Search title to give the topbar a Game Boy Color
+         vibe. Single ~13KB woff2 file; preconnect hints make it land in
+         parallel with the Coveo Atomic CDN bundle so it doesn't extend
+         LCP. font-display: swap (Google Fonts default) means the title
+         falls back to monospace if the font hasn't loaded yet. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
@@ -241,7 +252,27 @@
             </atomic-result-template>
           </atomic-result-list>
 
-          <atomic-pager></atomic-pager>
+          <!-- Pager with first/last skip buttons. Atomic's <atomic-pager>
+               ships only previous/next + numbered pages; the «/» buttons
+               are wired in src/main.js using Coveo Headless's buildPager
+               controller (same engine, same pagination state). -->
+          <div class="pager-wrap">
+            <button
+              type="button"
+              class="pager-skip pager-first"
+              aria-label="First page"
+              title="First page"
+              disabled
+            >«</button>
+            <atomic-pager></atomic-pager>
+            <button
+              type="button"
+              class="pager-skip pager-last"
+              aria-label="Last page"
+              title="Last page"
+              disabled
+            >»</button>
+          </div>
           <atomic-results-per-page choices-displayed="10,25,50"></atomic-results-per-page>
         </section>
       </main>

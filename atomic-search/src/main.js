@@ -7,6 +7,15 @@
 // for the interface element to be upgraded, then call initialize() with
 // our org credentials.
 
+import { buildPager } from "@coveo/headless";
+import { applyTheme } from "./theme.js";
+
+// Pick a random Pokémon-biome theme on every page load. The theme
+// repaints both the body background pattern and the topbar's GBC
+// palette so the look is coherent end-to-end. ?theme=<name> overrides
+// for panel demos. See src/theme.js for the implementation.
+applyTheme();
+
 const ORG_ID = import.meta.env.VITE_COVEO_ORG_ID;
 const SEARCH_TOKEN = import.meta.env.VITE_COVEO_SEARCH_TOKEN;
 
@@ -118,3 +127,84 @@ function watchSortForRgaGate() {
 }
 
 watchSortForRgaGate();
+
+// -----------------------------------------------------------------------------
+// Collapse empty <atomic-generated-answer> so the results toolbar aligns
+// flush with the Type facet card to its left.
+//
+// Why this exists: Atomic's <atomic-generated-answer> custom element is
+// :host { display: block } by default, so even before any query has been
+// run (or when RGA decides it cannot answer) the empty host element still
+// takes a flex slot inside .results — that slot + 1rem flex-gap above the
+// next visible child pushes the results toolbar (Results 1-N of Y / Sort
+// by) down by ~40-50px relative to the top of the Type facet card.
+//
+// Fix: subscribe to engine state, toggle body.has-rga-content based on
+// whether the RGA slice has any actual content (streaming, loading, or
+// non-empty answer text). CSS hides atomic-generated-answer when that
+// class isn't present, so the empty box is truly display:none and the
+// toolbar slides up to align with Type.
+//
+// The same gating pattern would apply to the PR panel if we ever found
+// the same alignment issue there — but PR is wrapped in <details hidden>
+// which already truly collapses when no passages exist, so no extra
+// handling is needed today.
+// -----------------------------------------------------------------------------
+function watchAnswerVisibility() {
+  const engine = searchInterface.engine;
+  if (!engine || typeof engine.subscribe !== "function") return;
+
+  const apply = () => {
+    const s = engine.state || {};
+    const ga = s.generatedAnswer || {};
+    const hasContent = Boolean(
+      ga.isLoading ||
+        ga.isStreaming ||
+        (typeof ga.answer === "string" && ga.answer.length > 0) ||
+        ga.cannotAnswer ||
+        ga.error,
+    );
+    document.body.classList.toggle("has-rga-content", hasContent);
+  };
+
+  engine.subscribe(apply);
+  apply();
+}
+
+watchAnswerVisibility();
+
+// -----------------------------------------------------------------------------
+// First/last skip buttons for the pager.
+//
+// Atomic's <atomic-pager> ships only prev/next + numbered pages. The
+// «/» buttons we added in index.html are vanilla <button>s wired to a
+// Coveo Headless pager controller — same engine, same pagination
+// state Atomic's pager component uses internally, just exposing
+// selectPage(n) directly. Subscription syncs the :disabled state on
+// every render so the « button greys out on page 1 and » greys on
+// the last page.
+// -----------------------------------------------------------------------------
+function wireSkipPagerButtons() {
+  const engine = searchInterface.engine;
+  if (!engine) return;
+  const pager = buildPager(engine);
+  const firstBtn = document.querySelector(".pager-first");
+  const lastBtn = document.querySelector(".pager-last");
+  if (!firstBtn || !lastBtn) return;
+
+  firstBtn.addEventListener("click", () => pager.selectPage(1));
+  lastBtn.addEventListener("click", () => {
+    const max = pager.state.maxPage;
+    if (max > 0) pager.selectPage(max);
+  });
+
+  const sync = () => {
+    const { currentPage, maxPage } = pager.state;
+    firstBtn.disabled = !currentPage || currentPage <= 1;
+    lastBtn.disabled = !maxPage || currentPage >= maxPage;
+  };
+  pager.subscribe(sync);
+  sync();
+}
+
+wireSkipPagerButtons();

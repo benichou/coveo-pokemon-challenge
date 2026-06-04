@@ -16,6 +16,13 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import { applyTheme } from "../theme.js";
+
+// Pick a random Pokémon-biome theme on every page load. Same module
+// the Atomic main page uses (atomic-search/src/theme.js) so a refresh
+// of either surface lands on one of the same five biomes — Grassland,
+// Beach, Cave, Volcano, Ice. Override via ?theme=<name>.
+applyTheme();
 
 const root = document.getElementById("pokemon-detail-root");
 if (!root) {

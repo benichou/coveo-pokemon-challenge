@@ -29,6 +29,69 @@ body {
   line-height: 1.55;
 }
 
+/* ============================================================
+ * Pokémon-biome theme rotation (applied to <body> on page load
+ * by atomic-search/src/theme.js — see that module for the
+ * rotation + ?theme= override mechanism). Patterns mirror the
+ * ones on the main page (atomic-search/src/style.css) so the
+ * two surfaces feel like one product when refreshed together.
+ * ============================================================ */
+
+body.theme-grassland {
+  background-color: #fafaf6;
+  background-image:
+    radial-gradient(circle 2px at 12% 18%, rgba(80, 128, 80, 0.22) 99%, transparent 100%),
+    radial-gradient(circle 1.5px at 38% 67%, rgba(40, 64, 40, 0.18) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at 75% 30%, rgba(80, 128, 80, 0.25) 99%, transparent 100%),
+    radial-gradient(circle 1px at 88% 80%, rgba(40, 64, 40, 0.22) 99%, transparent 100%);
+  background-size: 80px 80px;
+}
+
+body.theme-beach {
+  background-color: #fdf4e0;
+  background-image:
+    radial-gradient(circle 2px at 22% 45%, rgba(232, 200, 120, 0.3) 99%, transparent 100%),
+    radial-gradient(circle 1px at 70% 30%, rgba(232, 200, 120, 0.25) 99%, transparent 100%),
+    repeating-linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 26px,
+      rgba(136, 192, 224, 0.12) 26px,
+      rgba(136, 192, 224, 0.12) 28px
+    );
+  background-size: 80px 80px, 80px 80px, 100% 100%;
+}
+
+body.theme-cave {
+  background-color: #ece8f0;
+  background-image:
+    radial-gradient(circle 2px at 18% 32%, rgba(100, 80, 140, 0.25) 99%, transparent 100%),
+    radial-gradient(circle 3px at 60% 75%, rgba(80, 64, 120, 0.18) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at 85% 25%, rgba(120, 100, 160, 0.22) 99%, transparent 100%),
+    radial-gradient(circle 1.5px at 32% 88%, rgba(80, 64, 120, 0.2) 99%, transparent 100%);
+  background-size: 96px 96px;
+}
+
+body.theme-volcano {
+  background-color: #fdf0e8;
+  background-image:
+    radial-gradient(circle 1.5px at 22% 28%, rgba(240, 128, 48, 0.3) 99%, transparent 100%),
+    radial-gradient(circle 2px at 65% 72%, rgba(232, 96, 32, 0.25) 99%, transparent 100%),
+    radial-gradient(circle 1px at 82% 38%, rgba(192, 64, 32, 0.3) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at 48% 52%, rgba(240, 128, 48, 0.2) 99%, transparent 100%);
+  background-size: 88px 88px;
+}
+
+body.theme-ice {
+  background-color: #eef4f8;
+  background-image:
+    radial-gradient(circle 1.5px at 18% 28%, rgba(220, 235, 255, 0.9) 99%, transparent 100%),
+    radial-gradient(circle 2px at 62% 64%, rgba(255, 255, 255, 0.8) 99%, transparent 100%),
+    radial-gradient(circle 1px at 84% 22%, rgba(220, 235, 255, 0.95) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at 36% 78%, rgba(240, 248, 255, 0.7) 99%, transparent 100%);
+  background-size: 100px 100px;
+}
+
 a {
   color: var(--accent);
   text-decoration: none;

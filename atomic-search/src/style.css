@@ -30,31 +30,288 @@ body {
   line-height: 1.5;
 }
 
+/* ============================================================
+ * Pokémon-biome theme rotation (5 themes, applied via JS to
+ * <body> on page load). Each theme paints:
+ *   1. A subtle full-body pattern (so the look carries the
+ *      detail page too, which has no topbar)
+ *   2. A palette override on the .topbar's GBC variables so
+ *      the Route 1 landscape morphs into the active biome
+ *      (waves for beach, rocks for cave, lava for volcano,
+ *      snow drifts for ice)
+ *
+ * All patterns are CSS-only (radial-gradient + repeating-
+ * linear-gradient), low opacity, ~80–100px tile size. Content
+ * cards (white) pop against the themed bg.
+ * ============================================================ */
+
+/* ----- Grassland (Route 1) — the default vibe ----- */
+body.theme-grassland {
+  background-color: #fafaf6;
+  background-image:
+    radial-gradient(circle 2px at 12% 18%, rgba(80, 128, 80, 0.22) 99%, transparent 100%),
+    radial-gradient(circle 1.5px at 38% 67%, rgba(40, 64, 40, 0.18) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at 75% 30%, rgba(80, 128, 80, 0.25) 99%, transparent 100%),
+    radial-gradient(circle 1px at 88% 80%, rgba(40, 64, 40, 0.22) 99%, transparent 100%);
+  background-size: 80px 80px;
+}
+/* Grassland uses the topbar's default palette — no override needed. */
+
+/* ----- Beach (Cinnabar coastline) ----- */
+body.theme-beach {
+  background-color: #fdf4e0;
+  background-image:
+    radial-gradient(circle 2px at 22% 45%, rgba(232, 200, 120, 0.3) 99%, transparent 100%),
+    radial-gradient(circle 1px at 70% 30%, rgba(232, 200, 120, 0.25) 99%, transparent 100%),
+    repeating-linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 26px,
+      rgba(136, 192, 224, 0.12) 26px,
+      rgba(136, 192, 224, 0.12) 28px
+    );
+  background-size: 80px 80px, 80px 80px, 100% 100%;
+}
+body.theme-beach .topbar {
+  --gbc-sky-top: #88c8e8;
+  --gbc-sky-bottom: #c8e0ec;
+  --gbc-sand: #f5deb3;
+  --gbc-grass-dark: #2c5c80;       /* deep water */
+  --gbc-grass-mid: #4080a8;        /* mid water */
+  --gbc-grass-light: #88b8d8;      /* foam crest */
+}
+
+/* ----- Cave (Mt. Moon / Rock Tunnel) ----- */
+body.theme-cave {
+  background-color: #ece8f0;
+  background-image:
+    radial-gradient(circle 2px at 18% 32%, rgba(100, 80, 140, 0.25) 99%, transparent 100%),
+    radial-gradient(circle 3px at 60% 75%, rgba(80, 64, 120, 0.18) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at 85% 25%, rgba(120, 100, 160, 0.22) 99%, transparent 100%),
+    radial-gradient(circle 1.5px at 32% 88%, rgba(80, 64, 120, 0.2) 99%, transparent 100%);
+  background-size: 96px 96px;
+}
+body.theme-cave .topbar {
+  --gbc-sky-top: #6a4878;
+  --gbc-sky-bottom: #9c7cb0;
+  --gbc-sand: #80608c;
+  --gbc-grass-dark: #2a1f3a;
+  --gbc-grass-mid: #4a3a5a;
+  --gbc-grass-light: #6c5c80;
+  --gbc-cloud: #c8b0d8;            /* glowing crystal wisps in the cave ceiling */
+}
+
+/* ----- Volcano (Cinnabar interior) ----- */
+body.theme-volcano {
+  background-color: #fdf0e8;
+  background-image:
+    radial-gradient(circle 1.5px at 22% 28%, rgba(240, 128, 48, 0.3) 99%, transparent 100%),
+    radial-gradient(circle 2px at 65% 72%, rgba(232, 96, 32, 0.25) 99%, transparent 100%),
+    radial-gradient(circle 1px at 82% 38%, rgba(192, 64, 32, 0.3) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at 48% 52%, rgba(240, 128, 48, 0.2) 99%, transparent 100%);
+  background-size: 88px 88px;
+}
+body.theme-volcano .topbar {
+  --gbc-sky-top: #e89878;
+  --gbc-sky-bottom: #f0b89c;
+  --gbc-sand: #c86848;
+  --gbc-grass-dark: #4a1818;       /* charred basalt */
+  --gbc-grass-mid: #8a3030;
+  --gbc-grass-light: #d04830;      /* lava crest */
+  --gbc-cloud: #4a2828;            /* dark smoke plumes */
+}
+
+/* ----- Ice (Seafoam Islands) ----- */
+body.theme-ice {
+  background-color: #eef4f8;
+  background-image:
+    radial-gradient(circle 1.5px at 18% 28%, rgba(220, 235, 255, 0.9) 99%, transparent 100%),
+    radial-gradient(circle 2px at 62% 64%, rgba(255, 255, 255, 0.8) 99%, transparent 100%),
+    radial-gradient(circle 1px at 84% 22%, rgba(220, 235, 255, 0.95) 99%, transparent 100%),
+    radial-gradient(circle 2.5px at 36% 78%, rgba(240, 248, 255, 0.7) 99%, transparent 100%);
+  background-size: 100px 100px;
+}
+body.theme-ice .topbar {
+  --gbc-sky-top: #c8dcec;
+  --gbc-sky-bottom: #e0ecf4;
+  --gbc-sand: #d8e8ee;
+  --gbc-grass-dark: #708ca0;       /* dark frost */
+  --gbc-grass-mid: #a8c0d0;
+  --gbc-grass-light: #e8f0f4;      /* fresh snow */
+  --gbc-cloud: #ffffff;
+}
+
+/* ============================================================
+ * Topbar — Game Boy Color "Route 1" landscape theme.
+ *
+ * Three CSS-only layers stacked vertically inside .topbar:
+ *   1. Sky    — vertical gradient from cyan to cream to sand
+ *   2. Clouds — pixelated puffs via radial-gradient backgrounds
+ *                in a ::before pseudo-element
+ *   3. Tall grass strip — pixelated diagonal-stripe gradient at
+ *                the bottom via ::after, with a jagged clip-path
+ *                top edge to suggest individual grass blades
+ * No images, no copyrighted assets. The "Press Start 2P" font
+ * (loaded in index.html) gives the title an 8-bit feel.
+ *
+ * Palette tuned to the GBC-era Pokémon Red/Blue overworld:
+ *   sky      — light cyan / pale cream
+ *   sand     — sandy yellow path along the horizon
+ *   grass    — three-tone green (dark / mid / light) for depth
+ *   trim     — near-black pixelated outline (matches LCD trim)
+ *
+ * Scope: header only. Results list stays clean + scannable.
+ * ============================================================ */
+
 .topbar {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 2rem 2rem 1.5rem;
+  --gbc-sky-top: #a8d8f0;
+  --gbc-sky-bottom: #d8e8f0;
+  --gbc-sand: #e8c878;
+  --gbc-grass-light: #80c060;
+  --gbc-grass-mid: #508050;
+  --gbc-grass-dark: #284028;
+  --gbc-cloud: #ffffff;
+  --gbc-trim: #1c1d21;
+
+  position: relative;
+  padding: 3rem 2rem 4.5rem;
   text-align: center;
+  border-bottom: 4px solid var(--gbc-trim);
+  background: linear-gradient(
+    180deg,
+    var(--gbc-sky-top) 0%,
+    var(--gbc-sky-bottom) 60%,
+    var(--gbc-sand) 90%,
+    var(--gbc-sand) 100%
+  );
+  /* No overflow:hidden — Atomic's <atomic-search-box> renders its
+   * suggestion dropdown ("recent queries" + Query Suggest results)
+   * below the search input, which extends past the topbar's bottom
+   * edge. Clipping it would hide the suggestions. The cloud + grass
+   * pseudo-elements stay inside the topbar via their own
+   * positioning (top:1rem / bottom:0 with bounded heights), so we
+   * don't need the parent clip. */
+}
+
+/* Cloud layer — pixelated puffs scattered across the upper sky.
+ * Radial gradients with hard edges (99%→100%) read as crisp
+ * pixelated blobs rather than blurred circles. */
+.topbar::before {
+  content: "";
+  position: absolute;
+  inset: 1rem 0 auto 0;
+  height: 36px;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    radial-gradient(circle 14px at 8% 60%, var(--gbc-cloud) 99%, transparent 100%),
+    radial-gradient(circle 10px at 11% 40%, var(--gbc-cloud) 99%, transparent 100%),
+    radial-gradient(circle 18px at 28% 50%, var(--gbc-cloud) 99%, transparent 100%),
+    radial-gradient(circle 13px at 32% 30%, var(--gbc-cloud) 99%, transparent 100%),
+    radial-gradient(circle 11px at 52% 65%, var(--gbc-cloud) 99%, transparent 100%),
+    radial-gradient(circle 15px at 72% 45%, var(--gbc-cloud) 99%, transparent 100%),
+    radial-gradient(circle 10px at 76% 25%, var(--gbc-cloud) 99%, transparent 100%),
+    radial-gradient(circle 14px at 92% 55%, var(--gbc-cloud) 99%, transparent 100%);
+  opacity: 0.92;
+}
+
+/* Tall-grass strip at the bottom — diagonal-striped greens with a
+ * jagged clip-path top edge so it reads as individual blades. */
+.topbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  pointer-events: none;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--gbc-grass-dark) 0,
+    var(--gbc-grass-dark) 6px,
+    var(--gbc-grass-mid) 6px,
+    var(--gbc-grass-mid) 12px,
+    var(--gbc-grass-light) 12px,
+    var(--gbc-grass-light) 18px,
+    var(--gbc-grass-mid) 18px,
+    var(--gbc-grass-mid) 24px
+  );
+  clip-path: polygon(
+    0% 100%, 0% 35%,
+    2% 10%, 4% 35%, 6% 5%, 8% 35%,
+    10% 15%, 12% 35%, 14% 0%, 16% 35%,
+    18% 12%, 20% 35%, 22% 5%, 24% 35%,
+    26% 18%, 28% 35%, 30% 5%, 32% 35%,
+    34% 10%, 36% 35%, 38% 0%, 40% 35%,
+    42% 12%, 44% 35%, 46% 5%, 48% 35%,
+    50% 15%, 52% 35%, 54% 0%, 56% 35%,
+    58% 10%, 60% 35%, 62% 5%, 64% 35%,
+    66% 18%, 68% 35%, 70% 0%, 72% 35%,
+    74% 12%, 76% 35%, 78% 5%, 80% 35%,
+    82% 10%, 84% 35%, 86% 0%, 88% 35%,
+    90% 15%, 92% 35%, 94% 5%, 96% 35%,
+    98% 12%, 100% 35%, 100% 100%
+  );
 }
 
 .topbar h1 {
+  position: relative;
+  z-index: 2;
   margin: 0;
+  font-family: "Press Start 2P", ui-monospace, "SF Mono", Menlo, monospace;
   font-size: 2.25rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: normal;
+  letter-spacing: 0.05em;
   color: var(--accent);
+  text-shadow:
+    3px 3px 0 #ffffff,
+    6px 6px 0 var(--gbc-trim);
 }
 
 .topbar .subtitle {
-  margin: 0.25rem 0 1.5rem;
-  color: var(--ink-soft);
-  font-size: 0.95rem;
+  position: relative;
+  z-index: 2;
+  margin: 1.25rem auto 1.5rem;
+  display: inline-block;
+  max-width: 720px;
+  padding: 0.55rem 0.85rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.88);
+  border: 2px solid var(--gbc-trim);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 var(--gbc-trim);
+}
+
+/* Title heading sizing for smaller viewports — Press Start 2P doesn't
+ * scale gracefully on phones, so we trim it down + drop one layer of
+ * shadow so the text doesn't overflow. */
+@media (max-width: 640px) {
+  .topbar {
+    padding: 2rem 1rem 3.5rem;
+  }
+  .topbar h1 {
+    font-size: 1.25rem;
+    text-shadow: 2px 2px 0 #ffffff, 3px 3px 0 var(--gbc-trim);
+  }
+  .topbar .subtitle {
+    font-size: 0.7rem;
+  }
+  .topbar::after {
+    height: 28px;
+  }
 }
 
 atomic-search-box {
   display: block;
   max-width: 720px;
   margin: 0 auto;
+  /* Sit above the GBC topbar's cloud + grass pseudo-elements. */
+  position: relative;
+  z-index: 2;
 }
 
 .layout {
@@ -94,6 +351,54 @@ atomic-search-box {
   padding: 0.75rem 1rem;
 }
 
+/* Pager with first/last skip buttons.
+ *
+ * Atomic's <atomic-pager> renders its own prev/next + numbered-page
+ * buttons inside shadow DOM, styled by Coveo's theme.css. Our skip
+ * buttons need to look like siblings, not interlopers — so we match
+ * Atomic's button dimensions (2.25rem square), border treatment
+ * (1px var(--border)), and hover behavior (accent tint). Click
+ * handlers are wired in src/main.js via Coveo Headless's buildPager
+ * controller — same engine, same pagination state, just selectPage(1)
+ * and selectPage(maxPage). The :disabled state is synced by the same
+ * subscription on every state change.
+ */
+.pager-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.pager-skip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.pager-skip:hover:not(:disabled) {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pager-skip:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 /* RGA visibility gate.
  *
  * When the user picks a non-Relevance sort, the body gets `rga-disabled`
@@ -103,6 +408,22 @@ atomic-search-box {
  * with an inline hint pointing the user back to Relevance sort.
  */
 body.rga-disabled atomic-generated-answer {
+  display: none;
+}
+
+/* Collapse <atomic-generated-answer> when it has no streaming/loaded
+ * content (initial page load, or RGA returned cannotAnswer with no
+ * placeholder). Without this, the empty custom-element host takes a
+ * flex slot inside .results and adds 1rem of flex gap above the next
+ * visible child — which pushes the results toolbar (Results count +
+ * Sort by) down by ~40-50px relative to the top of the Type facet
+ * card to its left.
+ *
+ * body.has-rga-content is toggled by watchAnswerVisibility() in
+ * main.js; see the comment block there for the engine-subscription
+ * pattern.
+ */
+body:not(.has-rga-content) atomic-generated-answer {
   display: none;
 }
 body:not(.rga-disabled) .rga-disabled-note {
