@@ -51,6 +51,12 @@ repos:
       - id: check-merge-conflict
       - id: check-added-large-files
         args: [--maxkb=500]
+        # Slide-deck PDFs are deliberately committed as panel-day fallback
+        # artifacts (interview-portfolio context). Marp's Puppeteer-rendered
+        # PDFs embed screenshots + diagrams so they routinely exceed 500KB.
+        # The size guard still applies everywhere else in the repo, just not
+        # to these intentional artifacts.
+        exclude: '^presentation/slides/.*\.pdf$'
       - id: check-yaml
       - id: check-json
         # .vscode/ files are JSONC (JSON with comments) — VS Code's convention.
