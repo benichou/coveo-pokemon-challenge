@@ -1,0 +1,119 @@
+flowchart TB
+    %% ===========================================
+    %% Data sources
+    %% ===========================================
+    subgraph data["📚 Data sources"]
+        direction LR
+        PDB["pokemondb.net<br/>sitemap · 12,915 URLs"]
+        PKAPI["PokéAPI<br/>per-form variants"]
+    end
+
+    %% ===========================================
+    %% Ingestion (95% as-code)
+    %% ===========================================
+    subgraph ingest["🛠️ Ingestion · 95% as-code"]
+        direction LR
+        SRC_A["Source A<br/>Coveo Sitemap source<br/>1,028 docs"]
+        SRC_B["Source B<br/>Python Push pipeline<br/>+325 form variants"]
+    end
+
+    %% ===========================================
+    %% The Coveo brain
+    %% ===========================================
+    subgraph coveo["🧠 Coveo Cloud Org · benichou · 1,353 docs"]
+        IDX[("Unified index<br/>5 indexed fields")]
+        subgraph models["default pipeline + 4 ML models"]
+            direction LR
+            RGA["pokemon-rga<br/>RGA"]
+            SE["pokemon-se<br/>Semantic Encoder"]
+            QS["pokemon-qs<br/>Query Suggest"]
+            PR["pokemon-pr<br/>Passage Retrieval"]
+        end
+        IDX --- models
+    end
+
+    %% ===========================================
+    %% Three UI surfaces (one retrieval brain)
+    %% ===========================================
+    subgraph surfaces["🎯 Three UI surfaces · one retrieval brain"]
+        direction LR
+        ATOMIC["Atomic main page · /<br/>list · RGA · PR · type-ahead<br/>Phases 5 · 6A · 6B · 8"]
+        DETAIL["Pokémon Detail Page<br/>Headless + React<br/>/pokemon.html?name=X<br/>hero · passages · related<br/>Phase 6C"]
+        MCP_UI["Coveo Hosted MCP Server<br/>coveo-pokemon<br/>search · fetch · passages · answer<br/>Phase 8.5"]
+    end
+
+    %% ===========================================
+    %% Continuous AI quality + closed loop
+    %% ===========================================
+    subgraph quality["🔬 Continuous AI quality · Phases 6D · 6F · 6F.7"]
+        EVAL["rga-eval cron · 06:00 UTC<br/>100-Q golden + Sonnet 4.6 judge"]
+        RUNS[("eval-runs/<br/>*.json")]
+        DASH["pokemon-rga-dashboard<br/>.vercel.app"]
+        LOOP["rga-closed-loop cron · 06:30 UTC<br/>analyzer + guardrails + apply"]
+        PROMPT[("prompts/pokemon-rga.yaml<br/>versioned in git")]
+        EVAL --> RUNS
+        RUNS --> DASH
+        RUNS --> LOOP
+        LOOP --> PROMPT
+    end
+
+    %% ===========================================
+    %% Query-level observability
+    %% ===========================================
+    subgraph obs["📊 Query observability · Phase 6E"]
+        PROXY["Vercel serverless proxy<br/>/api/log-query"]
+        LOKI[("Grafana Cloud<br/>Loki")]
+        GRAF["Public Grafana<br/>dashboard"]
+        PROXY --> LOKI
+        LOKI --> GRAF
+    end
+
+    %% ===========================================
+    %% Claude Code skills (interactive drivers)
+    %% ===========================================
+    subgraph skills["🧩 Claude Code skills · interactive drivers"]
+        direction LR
+        SK_EVAL["/rga-eval"]
+        SK_LOOP["/rga-closed-loop"]
+        SK_MCP["/pokemon-mcp"]
+    end
+
+    %% ===========================================
+    %% Inter-zone connections
+    %% ===========================================
+    PDB --> SRC_A
+    PKAPI --> SRC_B
+    SRC_A --> IDX
+    SRC_B --> IDX
+
+    models --> ATOMIC
+    models --> DETAIL
+    models --> MCP_UI
+
+    ATOMIC -. log every search .-> PROXY
+
+    RGA --> EVAL
+    PROMPT -. PUT to ML Models API .-> RGA
+
+    SK_EVAL -. invokes .-> EVAL
+    SK_LOOP -. invokes .-> LOOP
+    SK_MCP -. demos .-> MCP_UI
+
+    %% ===========================================
+    %% Styling
+    %% ===========================================
+    classDef extNode fill:#fafaf6,stroke:#999,stroke-width:1px,color:#1c1d21
+    classDef coveoNode fill:#dbf2ff,stroke:#0078d4,stroke-width:2px,color:#0a1929
+    classDef uiNode fill:#fde7e7,stroke:#ee1515,stroke-width:2px,color:#1c1d21
+    classDef qualNode fill:#fff4d4,stroke:#d9a200,stroke-width:2px,color:#1c1d21
+    classDef obsNode fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1c1d21
+    classDef storeNode fill:#f3e8ff,stroke:#6a1b9a,stroke-width:2px,color:#1c1d21
+    classDef skillNode fill:#fff,stroke:#1c1d21,stroke-width:1px,stroke-dasharray: 4 2,color:#1c1d21
+
+    class PDB,PKAPI extNode
+    class SRC_A,SRC_B,IDX,RGA,SE,QS,PR coveoNode
+    class ATOMIC,DETAIL,MCP_UI uiNode
+    class EVAL,LOOP,DASH qualNode
+    class PROXY,GRAF obsNode
+    class RUNS,PROMPT storeNode
+    class SK_EVAL,SK_LOOP,SK_MCP skillNode

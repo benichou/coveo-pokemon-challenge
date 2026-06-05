@@ -1,0 +1,922 @@
+/* @theme pokedex
+ *
+ * Marp theme for the Pokémon Challenge presentations.
+ * Aligned to the live app's GBC color palette so panel members feel
+ * the deck and the live demo are one product:
+ *
+ *   - Accent red    #ee1515  (Pokémon red, the brand)
+ *   - Cyan sky      #88c8e8  (GBC topbar)
+ *   - Sand horizon  #e8c878
+ *   - Trim dark     #1c1d21
+ *   - Surface       #ffffff
+ *   - Background    #fafaf6
+ *
+ * Typography:
+ *   - Slide titles: Press Start 2P (same font as the live UI's Pokedex
+ *     Search title). Used sparingly so it doesn't fatigue.
+ *   - Body: Inter / system sans-serif stack.
+ *   - Code: SF Mono / ui-monospace.
+ *
+ * Layout patterns (use via class names in your slide):
+ *   ![bg](image)               — full-bleed background
+ *   <!-- _class: cover -->     — cover slide (large title, brand bg)
+ *   <!-- _class: lead -->      — section title slide
+ *   <!-- _class: split -->     — two-column layout
+ *   <!-- _class: emphasis -->  — large takeaway text, no body
+ *   <!-- _class: dark -->      — inverted (dark bg) for the demo intro
+ */
+
+/* Load Press Start 2P from Google Fonts. Same as the live UI. */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap");
+
+/* ====================================================
+ * Base slide — applies to every <section> unless overridden
+ * ==================================================== */
+section {
+  background: #fafaf6;
+  color: #1c1d21;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 26px;
+  line-height: 1.45;
+  padding: 60px 80px;
+  position: relative;
+}
+
+/* Headings */
+section h1,
+section h2,
+section h3 {
+  font-family: "Press Start 2P", ui-monospace, "SF Mono", Menlo, monospace;
+  color: #ee1515;
+  letter-spacing: 0.02em;
+  margin-top: 0;
+}
+
+section h1 {
+  font-size: 38px;
+  line-height: 1.2;
+  margin-bottom: 0.4em;
+  text-shadow:
+    2px 2px 0 #ffffff,
+    4px 4px 0 #1c1d21;
+}
+
+section h2 {
+  font-size: 26px;
+  color: #1c1d21;
+  margin-bottom: 0.6em;
+}
+
+section h3 {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: #1c1d21;
+}
+
+/* Body + lists */
+section p,
+section li {
+  margin: 0.5em 0;
+}
+
+section ul,
+section ol {
+  padding-left: 1.4em;
+}
+
+section li::marker {
+  color: #ee1515;
+}
+
+section strong {
+  color: #1c1d21;
+  font-weight: 700;
+}
+
+section em {
+  color: #5a5f6a;
+}
+
+/* Links */
+section a {
+  color: #ee1515;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(238, 21, 21, 0.3);
+}
+
+/* Code */
+section code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85em;
+  background: rgba(28, 29, 33, 0.06);
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+}
+
+section pre {
+  background: #1c1d21;
+  color: #fafaf6;
+  padding: 1em 1.2em;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 1.4;
+  border-left: 4px solid #ee1515;
+}
+
+section pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+/* Tables */
+section table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 20px;
+}
+
+section th,
+section td {
+  border: 1px solid #e3e4e8;
+  padding: 0.45em 0.7em;
+  text-align: left;
+}
+
+section th {
+  background: #fde7e7;
+  color: #1c1d21;
+  font-weight: 700;
+}
+
+section tr:nth-child(even) td {
+  background: rgba(232, 200, 120, 0.08);
+}
+
+/* Block quotes — useful for "why" pull-quotes */
+section blockquote {
+  border-left: 4px solid #ee1515;
+  background: rgba(238, 21, 21, 0.04);
+  padding: 0.6em 1em;
+  margin: 0.6em 0;
+  font-style: italic;
+}
+
+/* Images */
+section img {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Pagination — bottom-right, small, muted */
+section::after {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #999;
+  padding: 0.3em 0.6em;
+}
+
+/* Footer — applied if the deck specifies `footer:` in frontmatter */
+footer {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #999;
+  position: absolute;
+  bottom: 30px;
+  left: 80px;
+}
+
+header {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #999;
+  position: absolute;
+  top: 30px;
+  left: 80px;
+}
+
+/* ====================================================
+ * Cover slide — <!-- _class: cover -->
+ * Big brand moment, no pagination
+ * ==================================================== */
+section.cover {
+  background: linear-gradient(180deg, #a8d8f0 0%, #d8e8f0 60%, #e8c878 100%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* Reserve space at the bottom for the absolute-positioned .links
+   * block (4 lines × ~22px × 1.9 line-height + 50px bottom inset ≈
+   * 240px). Without this, the vertically-centered brand block overlaps
+   * the URLs as the title font grew. */
+  padding-bottom: 240px;
+}
+
+section.cover h1 {
+  font-size: 88px;
+  margin-bottom: 0.5em;
+  text-shadow:
+    4px 4px 0 #ffffff,
+    8px 8px 0 #1c1d21;
+}
+
+section.cover h2 {
+  font-family: "Inter", sans-serif;
+  color: #1c1d21;
+  font-size: 32px;
+  font-weight: 500;
+  border: 2px solid #1c1d21;
+  padding: 0.55em 1.1em;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 3px 3px 0 #1c1d21;
+  margin-bottom: 1.5em;
+  border-radius: 4px;
+}
+
+section.cover p {
+  font-size: 28px;
+  color: #1c1d21;
+  margin-bottom: 0;
+}
+
+section.cover p strong {
+  font-size: 32px;
+}
+
+/* Cover links block — positioned absolute at the bottom so the
+ * brand block (title + subtitle + name) stays vertically centered
+ * while the URLs anchor at the foot of the slide. */
+section.cover .links {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 22px;
+  line-height: 1.9;
+  color: #1c1d21;
+}
+
+section.cover .links a {
+  color: #ee1515;
+  border-bottom: 1px solid rgba(238, 21, 21, 0.3);
+}
+
+section.cover::after {
+  display: none;
+}
+
+/* ====================================================
+ * Lead / section-title slide — <!-- _class: lead -->
+ * Used for "demo time" or transitions
+ * ==================================================== */
+section.lead {
+  background: #ee1515;
+  color: #fafaf6;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+section.lead h1 {
+  color: #ffffff;
+  font-size: 72px;
+  text-shadow: 4px 4px 0 #1c1d21;
+  margin-bottom: 0.4em;
+}
+
+section.lead h2 {
+  font-family: "Inter", sans-serif;
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 500;
+  border: 2px solid #ffffff;
+  padding: 0.5em 1em;
+  background: rgba(255, 255, 255, 0.12);
+  margin-bottom: 1.5em;
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+}
+
+section.lead .lead-urls {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 28px;
+  margin: 0.5em 0;
+  color: #ffffff;
+}
+
+section.lead .lead-urls strong {
+  color: #ffeb3b;
+}
+
+section.lead .lead-subnotes {
+  margin-top: 2em;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.85);
+  font-style: italic;
+}
+
+section.lead p {
+  color: #ffe;
+}
+
+/* ====================================================
+ * Emphasis slide — <!-- _class: emphasis -->
+ * Single big takeaway sentence, nothing else
+ * ==================================================== */
+section.emphasis {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+section.emphasis h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 44px;
+  color: #1c1d21;
+  text-shadow: none;
+  line-height: 1.3;
+  max-width: 80%;
+}
+
+/* ====================================================
+ * Split / two-column slide — <!-- _class: split -->
+ * Use a markdown table with 2 cells in one row,
+ * OR put <div class="cols"> wrapping two children
+ * ==================================================== */
+section.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+  align-items: start;
+}
+
+/* ====================================================
+ * Dark slide — <!-- _class: dark -->
+ * Inverted background, used for the demo intro
+ * ==================================================== */
+section.dark {
+  background: #1c1d21;
+  color: #fafaf6;
+}
+
+section.dark h1,
+section.dark h2 {
+  color: #ee1515;
+}
+
+section.dark strong {
+  color: #fafaf6;
+}
+
+section.dark code {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fde7e7;
+}
+
+/* ====================================================
+ * Mermaid diagram container — embed via ![](path.svg)
+ * Center + size constraint so it doesn't overflow
+ * ==================================================== */
+section img[src$=".svg"],
+section img[alt*="diagram" i] {
+  display: block;
+  margin: 0 auto;
+  max-width: 90%;
+  max-height: 70vh;
+}
+
+/* ====================================================
+ * Live-demo slide — 3-up grid: large main app screenshot
+ * on top, two ops dashboards side-by-side below, GitHub
+ * URL footnote at the bottom.
+ *
+ * <!-- _class: demo -->
+ * ==================================================== */
+section.demo {
+  padding: 30px 40px 30px;
+}
+
+section.demo h1 {
+  font-size: 28px;
+  margin: 0 0 14px;
+  text-shadow: 2px 2px 0 #ffffff, 4px 4px 0 #1c1d21;
+  text-align: center;
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Middle row (UI sub-surfaces) is smaller than top + bottom so the
+   * visual hierarchy reads as: Atomic main (primary) > Detail+MCP
+   * (sub-surfaces of the same app) > Ops dashboards (independent
+   * supporting tools). */
+  grid-template-rows: 1.6fr 0.65fr 1fr;
+  grid-template-areas:
+    "main main"
+    "ui-1 ui-2"
+    "ops-1 ops-2";
+  gap: 12px;
+  height: calc(100vh - 170px);
+  max-height: calc(100vh - 170px);
+}
+
+.demo-grid > a {
+  text-decoration: none;
+  border-bottom: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #ffffff;
+  border: 2px solid #1c1d21;
+  border-radius: 10px;
+  padding: 8px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  overflow: hidden;
+}
+
+.demo-grid > a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.demo-grid > a img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 6px;
+  flex: 1;
+  min-height: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.demo-grid .demo-label {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1c1d21;
+  text-align: center;
+  margin: 4px 0 0;
+  flex-shrink: 0;
+}
+
+.demo-grid .demo-label code {
+  font-size: 13px;
+  background: rgba(238, 21, 21, 0.08);
+  padding: 1px 6px;
+  border-radius: 3px;
+  color: #ee1515;
+}
+
+/* Top main thumbnail — spans both columns; red border so it reads
+ * as the primary surface in the visual hierarchy. */
+.demo-main {
+  grid-area: main;
+  border: 2.5px solid #ee1515 !important;
+}
+
+.demo-main .demo-label {
+  font-size: 15px;
+}
+
+/* Middle row — the other two UI surfaces (Detail page + MCP).
+ * Outer edges (left of Detail, right of MCP) align flush with the
+ * Atomic main page above. Inner edges meet with NO gap by using
+ * negative margins to absorb the grid's 12px column gap; -7px on
+ * each side cancels the 12px gap and lets the 2px borders overlap
+ * cleanly into one shared seam. Visually reads as "these two surfaces
+ * are tucked under the main app's footprint." */
+.demo-ui-1 {
+  grid-area: ui-1;
+  margin-right: -7px;
+}
+
+.demo-ui-2 {
+  grid-area: ui-2;
+  margin-left: -7px;
+}
+
+/* Bottom row — the two ops dashboards. */
+.demo-ops-1 {
+  grid-area: ops-1;
+}
+
+.demo-ops-2 {
+  grid-area: ops-2;
+}
+
+/* Labels on the small cards are denser than the main one. */
+.demo-ui-1 .demo-label,
+.demo-ui-2 .demo-label,
+.demo-ops-1 .demo-label,
+.demo-ops-2 .demo-label {
+  font-size: 12px;
+}
+
+.demo-ui-1 .demo-label small,
+.demo-ui-2 .demo-label small {
+  font-weight: 400;
+  color: #5a5f6a;
+  font-size: 11px;
+  margin-left: 4px;
+}
+
+.demo-footnote {
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #5a5f6a;
+  margin: 14px 0 0;
+}
+
+.demo-footnote strong {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  color: #ee1515;
+  font-size: 17px;
+}
+
+/* ====================================================
+ * Architecture slide — custom hand-built layout instead
+ * of the dense mermaid SVG. Same color palette as the
+ * mermaid (gray data · blue Coveo · red UI · yellow
+ * quality · green observability) but rebuilt for slide
+ * proportions with big readable text.
+ *
+ * <!-- _class: architecture -->
+ * ==================================================== */
+section.architecture {
+  /* Extra bottom padding (60px) reserves clean space for the footer
+   * + pagination so the loops row can't bleed into them. */
+  padding: 24px 32px 60px;
+}
+
+section.architecture h1 {
+  font-size: 22px;
+  margin: 0 0 10px;
+  text-shadow: 1px 1px 0 #ffffff, 2px 2px 0 #1c1d21;
+}
+
+/* Vertical stack of architecture tiers. Fixed-pixel height (not vh)
+ * so the layout is deterministic across PDF/HTML/PPTX exports.
+ * Marp's default slide is 720px tall; we use 540px for .arch leaving
+ * generous room above for the title (~50px) and below for the footer
+ * (~130px including padding) so loops can't bleed into the URL bar. */
+.arch {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  height: 540px;
+  max-height: 540px;
+  overflow: hidden;
+}
+
+/* A horizontal row of zones — flex-grow:1 so each row stretches to
+ * fill the available vertical space evenly. */
+.arch-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Visual hierarchy across the three architecture tiers:
+ *
+ *   - top row (data → ingest → coveo brain)    flex: 1     full size
+ *   - surfaces row (.arch-row-surfaces)         flex: 0.85  slightly trimmed
+ *   - loops row (.arch-row-compact)             flex: 0.4   visibly subordinated
+ *
+ * This keeps the brain + surfaces tiers prominent while the
+ * observability + closed-loop tiers read as supporting infrastructure.
+ */
+.arch-row-surfaces {
+  flex: 0.85;
+}
+
+.arch-row-compact {
+  flex: 0.4;
+}
+
+.arch-row-compact .arch-zone {
+  padding: 7px 11px 8px;
+}
+
+.arch-row-compact .arch-zone-title {
+  font-size: 13px;
+}
+
+.arch-row-compact .arch-zone-body {
+  font-size: 11.5px;
+  gap: 3px;
+  justify-content: flex-start;
+}
+
+.arch-row-compact .arch-zone-body .arch-line {
+  padding: 4px 8px;
+}
+
+.arch-row-compact .arch-loop-label {
+  font-size: 10px;
+  margin-top: 1px;
+}
+
+/* One zone (data / ingest / coveo / surfaces / observability / quality) */
+.arch-zone {
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px 14px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+
+.arch-zone-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin: 0;
+  color: inherit;
+}
+
+.arch-zone-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.35;
+  flex: 1;
+  justify-content: center;
+}
+
+.arch-zone-body .arch-line {
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-weight: 500;
+}
+
+.arch-zone-body .arch-line small {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: #5a5f6a;
+  margin-top: 2px;
+}
+
+/* Color zones — same palette as the mermaid classDefs */
+.zone-data {
+  background: #fafaf6;
+  border: 1.5px solid #999;
+  color: #1c1d21;
+}
+
+.zone-ingest,
+.zone-coveo {
+  background: #dbf2ff;
+  border: 1.5px solid #0078d4;
+  color: #0a1929;
+}
+
+.zone-surfaces {
+  background: #fde7e7;
+  border: 2px solid #ee1515;
+  color: #1c1d21;
+}
+
+.zone-quality {
+  background: #fff4d4;
+  border: 1.5px solid #d9a200;
+  color: #1c1d21;
+}
+
+.zone-obs {
+  background: #e8f5e9;
+  border: 1.5px solid #2e7d32;
+  color: #1c1d21;
+}
+
+/* Three UI surfaces — sub-row inside the surfaces zone */
+.arch-three-surfaces {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.arch-three-surfaces .arch-surface {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.arch-three-surfaces .arch-surface strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 3px;
+  color: #ee1515;
+}
+
+.arch-three-surfaces .arch-surface code {
+  font-size: 11.5px;
+  background: rgba(238, 21, 21, 0.08);
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+.arch-three-surfaces .arch-surface small {
+  display: block;
+  font-size: 11.5px;
+  color: #1c1d21;
+  line-height: 1.35;
+  margin-top: 3px;
+}
+
+/* Tighter loop-label inside zones */
+.arch-loop-label {
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+/* Down arrows between tiers */
+.arch-down {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ee1515;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  margin: -4px 0;
+}
+
+/* Horizontal arrow between zones in the top tier */
+.arch-arrow {
+  display: flex;
+  align-items: center;
+  color: #ee1515;
+  font-size: 22px;
+  font-weight: 700;
+  padding: 0 4px;
+}
+
+/* Dotted return arrow (closed loop + observability) */
+.arch-loop-label {
+  font-size: 11px;
+  font-style: italic;
+  color: #5a5f6a;
+  margin-top: 4px;
+}
+
+/* ====================================================
+ * Three-up image row — used on Slide 1 to show the
+ * three UI surfaces side-by-side. Wrap with
+ * <div class="three-up"> containing three <div> children,
+ * each with an <img> + caption.
+ * ==================================================== */
+section .three-up {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5em;
+  align-items: start;
+  margin-top: 1.2em;
+}
+
+section .three-up > div,
+section .three-up > a {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/* Clickable thumbnail link — override the default <a> red-underline
+ * styling from `section a` so the wrapper looks like a card. Hover
+ * lifts (only visible in HTML preview; PDF just embeds the hyperlink
+ * via Puppeteer's print-to-PDF). */
+section .three-up > a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: none;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+section .three-up > a:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.03);
+}
+
+section .three-up > a:hover img {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+}
+
+section .three-up img,
+section .two-up img {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border: 2px solid #1c1d21;
+}
+
+/* Two-up image row — used on Slide 1's second row for the ops
+ * dashboards (RGA quality + Grafana query observability). Same
+ * styling as .three-up but with 2-column grid + slightly wider
+ * margins so it visually subordinates the 3-up row above it. */
+section .two-up {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5em;
+  align-items: start;
+  margin: 0.8em auto 0;
+  max-width: 70%;
+}
+
+section .two-up > div {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
+section .two-up .three-up-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #1c1d21;
+  margin: 0;
+}
+
+section .two-up .three-up-path {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 13px;
+  color: #5a5f6a;
+  background: rgba(28, 29, 33, 0.06);
+  padding: 0.15em 0.5em;
+  border-radius: 3px;
+  margin: 0;
+}
+
+/* Section heading between the two image rows */
+section .row-heading {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #5a5f6a;
+  text-align: center;
+  margin: 1em 0 0.2em;
+}
+
+section .three-up .three-up-label {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #1c1d21;
+  margin: 0;
+}
+
+section .three-up .three-up-path {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 14px;
+  color: #5a5f6a;
+  background: rgba(28, 29, 33, 0.06);
+  padding: 0.15em 0.5em;
+  border-radius: 3px;
+  margin: 0;
+}
+
+/* Tagline-style large sentence (e.g., Slide 1 "what I built") */
+section .tagline {
+  font-size: 32px;
+  line-height: 1.45;
+  text-align: center;
+  max-width: 85%;
+  margin: 0.6em auto 1em;
+  color: #1c1d21;
+}
+
+section .tagline strong {
+  color: #ee1515;
+}

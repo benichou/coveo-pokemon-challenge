@@ -62,3 +62,6 @@ Thumbs.db
 
 # Generated audit reports (recreated by scripts/audit_index.py on demand)
 audit_report.json
+presentation/slides/node_modules/
+presentation/slides/package-lock.json
+presentation/slides/*.pdf

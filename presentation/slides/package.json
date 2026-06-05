@@ -1,0 +1,10 @@
+{
+  "name": "presentation-slides-screenshot",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Local helper that uses Puppeteer to screenshot the live URLs into images/ for the Marp slide deck. Not shipped, not deployed.",
+  "dependencies": {
+    "puppeteer": "^23.0.0"
+  }
+}
