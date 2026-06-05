@@ -2,7 +2,7 @@
 
 **Audience**: Coveo experts. They know the platform. **Don't over-explain Coveo — explain your choices.**
 
-**Time budget**: ~25-27 min total — ~11.5 min slides (Slides 7+8 expanded with the WHY for MCP + skills + closed-loop + observability) + 3-5 min live demo (now at Slide 3, right after Architecture) + 10 min Q&A. If panel slot is hard-capped at 25 min, see "Trim levers" at the bottom to get back to ~10 min slides.
+**Time budget**: ~12-14 min within the shared Presentation #1 slot — ~9-10 min slides + 3-4 min live demo. Topic 2 (short customer pitch, `02-customer-pitch.md`) takes another ~5-7 min after this; ~5-7 min of Q&A at the end covers both topics. Total Presentation #1 slot ≈ 25 min. Earlier drafts of this header treated Topic 1 as its own 25-min presentation — that was wrong. If a dry-run runs long, see "Trim levers" at the bottom (current 11.5-min slide estimate is over budget against the 9-10 min target — trim is required).
 
 **Total slides**: 12 (excluding cover). Pace = ~55s per slide on average; Slides 2/7/8 carry more weight.
 

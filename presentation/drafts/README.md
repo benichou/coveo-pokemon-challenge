@@ -6,9 +6,11 @@ Working drafts for the two panel presentations the Coveo FDE technical challenge
 
 | File | What it is | Audience | Time | Phase |
 |---|---|---|---|---|
-| [`01-tech-deep-dive.md`](01-tech-deep-dive.md) | **Presentation #1, Topic 1** — Pokémon Challenge technical deep dive | Coveo experts | ~25 min total (10 talk + 5 demo + 10 Q&A) | 9A |
-| [`02-customer-pitch.md`](02-customer-pitch.md) | **Presentation #1, Topic 2** — How Coveo transforms `<enterprise customer>`'s search | Coveo experts (framed as customer decision-makers) | ~25 min total (10 talk + 5 demo + 10 Q&A) | 9B |
-| [`03-escalation-recovery.md`](03-escalation-recovery.md) | **Presentation #2** — Operational incident response & recovery | Coveo experts + your own executives | ~25 min total (10 talk + 15 Q&A) | 10 |
+| [`01-tech-deep-dive.md`](01-tech-deep-dive.md) | **Presentation #1, Topic 1** — Pokémon Challenge technical deep dive | Coveo experts | ~12-14 min within the shared Presentation #1 slot (~10 min slides + 3-4 min live demo) | 9A |
+| [`02-customer-pitch.md`](02-customer-pitch.md) | **Presentation #1, Topic 2** — *short* customer pitch on how Coveo transforms `<enterprise customer>`'s search | Coveo experts (framed as customer decision-makers) | ~5-7 min within the shared Presentation #1 slot (no separate demo — Topic 1's demo serves as proof) | 9B |
+| [`03-escalation-recovery.md`](03-escalation-recovery.md) | **Presentation #2** — Operational incident response & recovery | Coveo experts + your own executives | ~25 min separate slot (10 talk + 15 Q&A) | 10 |
+
+> **⚠️ Time-budget correction (2026-06-05)**: Doc 2 specifies *"a short presentation"* for Topic 2, meaning Topics 1 + 2 share the same ~25-min Presentation #1 slot — not 25 minutes each. The corrected breakdown is **Topic 1 (12-14 min) + Topic 2 (5-7 min) + shared Q&A (5-7 min) = ~25 min total**. Q&A covers both topics together. An earlier version of this README treated each topic as its own 25-min presentation; that was wrong.
 
 ## Doc-overlay rules (from the project plan)
 

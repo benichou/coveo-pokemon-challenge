@@ -8,9 +8,11 @@ The companion **`presentation/drafts/`** directory holds the long-form speaker-n
 
 | Deck | What it is | Audience | Time | Driven from |
 |---|---|---|---|---|
-| [`01-tech-deep-dive.md`](01-tech-deep-dive.md) | **Presentation #1 · Topic 1** — Pokémon Challenge technical deep dive | Coveo experts (technical) | ~25 min: 10 talk + 5 demo + 10 Q&A | [`../drafts/01-tech-deep-dive.md`](../drafts/01-tech-deep-dive.md) |
-| `02-customer-pitch.md` *(not yet built)* | **Presentation #1 · Topic 2** — How Coveo transforms `ESDC EI`'s search | Coveo experts (framed as ESDC CIO/DG Digital) | ~25 min: 10 talk + 5 demo + 10 Q&A | [`../drafts/02-customer-pitch.md`](../drafts/02-customer-pitch.md) |
-| `03-escalation-recovery.md` *(not yet built)* | **Presentation #2** — Operational incident response & recovery playbook | Coveo experts + your own executives | ~25 min: 10 talk + 15 Q&A | [`../drafts/03-escalation-recovery.md`](../drafts/03-escalation-recovery.md) |
+| [`01-tech-deep-dive.md`](01-tech-deep-dive.md) | **Presentation #1 · Topic 1** — Pokémon Challenge technical deep dive | Coveo experts (technical) | ~12-14 min within the shared Presentation #1 slot (~10 min slides + 3-4 min live demo) | [`../drafts/01-tech-deep-dive.md`](../drafts/01-tech-deep-dive.md) |
+| `02-customer-pitch.md` *(not yet built)* | **Presentation #1 · Topic 2** — *short* customer pitch on how Coveo transforms `ESDC EI`'s search | Coveo experts (framed as ESDC CIO/DG Digital) | ~5-7 min within the shared Presentation #1 slot (no separate demo — Topic 1's demo serves as proof) | [`../drafts/02-customer-pitch.md`](../drafts/02-customer-pitch.md) |
+| `03-escalation-recovery.md` *(not yet built)* | **Presentation #2** — Operational incident response & recovery playbook | Coveo experts + your own executives | ~25 min separate slot (10 talk + 15 Q&A) | [`../drafts/03-escalation-recovery.md`](../drafts/03-escalation-recovery.md) |
+
+> **Presentation #1 time split**: ~25-min single panel slot — **Topic 1 (~12-14 min) + Topic 2 (~5-7 min) + shared Q&A (~5-7 min)**. Topic 2 is a short pitch piggy-backing on Topic 1's demo; Q&A at the end covers both. Presentation #2 (escalation & recovery) is a separate ~25-min slot with its own Q&A.
 
 **Doc-overlay rule** (from the project plan): Doc 1's mention of "Senior Director, Technical Customer Success" is a typo — the role is FDE everywhere. Doc 1's Topic 2 = Presentation #2 in this directory. Doc 2 defines Presentation #1's two sub-topics.
 
