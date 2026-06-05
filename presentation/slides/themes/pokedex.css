@@ -117,11 +117,13 @@ section code {
 section pre {
   background: #1c1d21;
   color: #fafaf6;
-  padding: 1em 1.2em;
+  padding: 1em 1.4em;
   border-radius: 8px;
-  font-size: 18px;
-  line-height: 1.4;
+  font-size: 16px;
+  line-height: 1.5;
   border-left: 4px solid #ee1515;
+  margin: 0.8em auto;
+  max-width: 90%;
 }
 
 section pre code {
@@ -907,6 +909,851 @@ section .three-up .three-up-path {
   margin: 0;
 }
 
+/* ====================================================
+ * Four-up card grid — used on the "4 ML models on
+ * default pipeline" slide. 2×2 grid; each card has a
+ * top accent stripe + model name + WHAT + HOW + DETAIL.
+ * ==================================================== */
+section .four-up {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.8em;
+  margin: 0.2em 0;
+}
+
+/* Slide-specific tightening when the four-up grid is on a slide */
+section:has(.four-up) h1 {
+  margin-bottom: 0.2em;
+}
+
+section:has(.four-up) .callback {
+  margin-bottom: 0.4em;
+  padding: 0.3em 1em;
+}
+
+section .model-card {
+  background: #ffffff;
+  border: 1px solid #d8d9dd;
+  border-top: 4px solid #888;
+  border-radius: 8px;
+  padding: 0.7em 1em 0.8em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+}
+
+section .model-card.model-rga      { border-top-color: #ee1515; }
+section .model-card.model-se       { border-top-color: #5a4cc8; }
+section .model-card.model-qs       { border-top-color: #2e7d32; }
+section .model-card.model-pr       { border-top-color: #d9a200; }
+
+section .model-card .model-badge {
+  font-family: "Press Start 2P", monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  margin: 0;
+  padding: 0;
+  color: #5a5f6a;
+}
+
+section .model-card.model-rga .model-badge { color: #ee1515; }
+section .model-card.model-se  .model-badge { color: #5a4cc8; }
+section .model-card.model-qs  .model-badge { color: #2e7d32; }
+section .model-card.model-pr  .model-badge { color: #c08400; }
+
+section .model-card h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  color: #1c1d21;
+  margin: 0;
+  text-shadow: none;
+}
+
+section .model-card .model-what {
+  font-size: 14px;
+  color: #1c1d21;
+  margin: 0;
+  line-height: 1.35;
+}
+
+section .model-card .model-how {
+  font-size: 13px;
+  color: #3a3d44;
+  margin: 0;
+  line-height: 1.4;
+}
+
+section .model-card .model-how code {
+  font-size: 12px;
+  background: rgba(28, 29, 33, 0.06);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+section .model-card .model-detail {
+  font-size: 12px;
+  color: #5a5f6a;
+  font-style: italic;
+  margin: 0.15em 0 0;
+  line-height: 1.35;
+}
+
+/* ====================================================
+ * surface-row — three UI-surface cards on slide 8.
+ * Same vibe as .model-card but a different grid + a
+ * top "audience" pill (browser vs AI agents).
+ * ==================================================== */
+section .surface-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1em;
+  margin: 0.2em 0 0.5em;
+}
+
+section .surface-card {
+  background: #ffffff;
+  border: 1px solid #d8d9dd;
+  border-top: 4px solid #888;
+  border-radius: 8px;
+  padding: 0.7em 0.95em 0.8em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+}
+
+section .surface-card.surface-atomic   { border-top-color: #ee1515; }
+section .surface-card.surface-detail   { border-top-color: #88c8e8; }
+section .surface-card.surface-mcp      { border-top-color: #5a4cc8; }
+
+section .surface-audience {
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  margin: 0;
+  padding: 0.2em 0.6em;
+  border-radius: 999px;
+  align-self: flex-start;
+  color: #5a5f6a;
+  background: rgba(28, 29, 33, 0.06);
+}
+
+section .surface-card.surface-mcp .surface-audience {
+  color: #5a4cc8;
+  background: rgba(90, 76, 200, 0.10);
+}
+
+section .surface-card h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  color: #1c1d21;
+  margin: 0.1em 0 0;
+  text-shadow: none;
+}
+
+section .surface-card .surface-what {
+  font-size: 13px;
+  color: #1c1d21;
+  margin: 0;
+  line-height: 1.4;
+}
+
+section .surface-card .surface-stack {
+  font-size: 12px;
+  color: #5a5f6a;
+  margin: 0;
+  line-height: 1.4;
+}
+
+section .surface-card .surface-stack code {
+  font-size: 11px;
+  background: rgba(28, 29, 33, 0.06);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+section .surface-card .surface-drive {
+  font-size: 12px;
+  color: #1c1d21;
+  background: #f7f4ec;
+  padding: 0.4em 0.6em;
+  border-radius: 5px;
+  border-left: 3px solid #888;
+  margin: 0.2em 0 0;
+  line-height: 1.4;
+}
+
+section .surface-card.surface-atomic .surface-drive { border-left-color: #ee1515; }
+section .surface-card.surface-detail .surface-drive { border-left-color: #88c8e8; }
+section .surface-card.surface-mcp    .surface-drive { border-left-color: #5a4cc8; }
+
+section .surface-card .surface-drive code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  color: #1c1d21;
+  background: transparent;
+  padding: 0;
+}
+
+/* Cross-cutting skills row — deliberately NOT column-aligned
+ * to the surface cards above. Centered, narrower, with an
+ * explicit "operates across all surfaces" label. */
+section .cross-cutting {
+  margin: 1em 0 0;
+  padding: 0.6em 0.9em 0.7em;
+  border: 1px dashed #888;
+  border-radius: 8px;
+  background: rgba(28, 29, 33, 0.03);
+}
+
+section .cross-cutting-label {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #5a5f6a;
+  margin: 0 0 0.5em;
+  text-align: center;
+}
+
+section .cross-cutting-label strong {
+  color: #1c1d21;
+}
+
+section .cross-cutting-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7em;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+section .skill-pill {
+  background: #1c1d21;
+  color: #f3f4f6;
+  border-radius: 6px;
+  padding: 0.5em 0.85em 0.6em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+
+section .skill-pill .skill-name {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f8d442;
+  margin: 0;
+}
+
+section .skill-pill .skill-what {
+  font-size: 12px;
+  color: #d8d9dd;
+  margin: 0;
+  line-height: 1.35;
+}
+
+/* ====================================================
+ * eval-flow / closed-loop pipeline cards — used on
+ * slides 9 (rga-eval) and 10 (closed loop sequence).
+ * ==================================================== */
+section .eval-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1em;
+  margin: 0.3em 0 0.5em;
+}
+
+section .eval-row {
+  display: grid;
+  grid-template-columns: 1fr 32px 1fr 32px 1fr 32px 1fr;
+  gap: 0.7em;
+  align-items: stretch;
+}
+
+section .eval-row.eval-row-2 {
+  grid-template-columns: 1fr 32px 1fr;
+  max-width: 70%;
+  margin: 0 auto;
+}
+
+section .eval-card {
+  background: #ffffff;
+  border: 1px solid #d8d9dd;
+  border-top: 3px solid #5a4cc8;
+  border-radius: 6px;
+  padding: 0.6em 0.85em 0.65em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+section .eval-card.eval-card-output {
+  border-top-color: #2e7d32;
+}
+
+section .eval-card-label {
+  font-family: "Press Start 2P", monospace;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  color: #5a4cc8;
+  margin: 0;
+}
+
+section .eval-card.eval-card-output .eval-card-label {
+  color: #2e7d32;
+}
+
+section .eval-card h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1c1d21;
+  margin: 0;
+}
+
+section .eval-card p {
+  font-size: 11.5px;
+  color: #3a3d44;
+  margin: 0;
+  line-height: 1.35;
+}
+
+section .eval-card code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10.5px;
+  background: rgba(28, 29, 33, 0.06);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+}
+
+section .eval-arrow {
+  font-size: 22px;
+  color: #888;
+  font-weight: bold;
+  text-align: center;
+  align-self: center;
+}
+
+/* Single skill-callout (one skill, centered) used at the
+ * bottom of slides 9 and 10. */
+section .skill-callout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3em;
+  margin: 0.4em 0 0;
+}
+
+section .skill-callout-label {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #5a5f6a;
+  margin: 0;
+}
+
+section .skill-callout .skill-pill {
+  max-width: 60%;
+  width: 60%;
+}
+
+section:has(.eval-flow) h1 {
+  margin-bottom: 0.2em;
+}
+
+section:has(.eval-flow) .callback {
+  margin-bottom: 0.4em;
+  padding: 0.3em 1em;
+}
+
+/* Slide 10 has the most vertical content (callback + bridge + pipeline
+ * + loop-back + guardrails + skill). Tighten just that slide via the
+ * presence of .guardrails-panel which is unique to it. */
+section:has(.guardrails-panel) .eval-flow {
+  gap: 0.6em;
+  margin: 0.2em 0 0.3em;
+}
+
+section:has(.guardrails-panel) .slide-bridge {
+  font-size: 11.5px;
+  padding: 0.25em 0.7em;
+  margin: 0.2em 0 0.4em;
+}
+
+section:has(.guardrails-panel) .skill-callout {
+  margin-top: 0.3em;
+}
+
+section:has(.guardrails-panel) .skill-callout-label {
+  font-size: 10px;
+}
+
+section:has(.guardrails-panel) .skill-callout .skill-pill {
+  padding: 0.4em 0.85em 0.5em;
+}
+
+/* Slide-to-slide bridge — used to make the eval ↔ closed-loop
+ * handoff explicit when a panelist sees both slides back-to-back. */
+section .slide-bridge {
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  color: #5a4cc8;
+  text-align: center;
+  margin: 0.4em 0 0;
+  padding: 0.35em 0.8em;
+  background: rgba(90, 76, 200, 0.06);
+  border: 1px dashed #5a4cc8;
+  border-radius: 6px;
+  font-style: italic;
+}
+
+section .slide-bridge strong {
+  font-style: normal;
+  color: #3d2eaa;
+}
+
+/* Loop-back indicator under the pipeline on slide 10 */
+section .loop-back {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #5a4cc8;
+  text-align: center;
+  margin: 0.1em 0 0;
+  padding: 0.4em;
+  border-top: 1px dashed #5a4cc8;
+  border-bottom: 1px dashed #5a4cc8;
+}
+
+/* Guardrails panel — 5 chips listing the safety gates */
+section .guardrails-panel {
+  margin: 0.7em 0 0;
+  padding: 0.5em 0.85em 0.6em;
+  border: 1px solid #d9a200;
+  border-left: 4px solid #d9a200;
+  background: rgba(217, 162, 0, 0.05);
+  border-radius: 6px;
+}
+
+section .guardrails-label {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #c08400;
+  margin: 0 0 0.4em;
+}
+
+section .guardrails-label strong {
+  color: #8a5d00;
+}
+
+section .guardrail-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+}
+
+section .guardrail-chip {
+  font-family: "Inter", sans-serif;
+  font-size: 11.5px;
+  background: #ffffff;
+  border: 1px solid #d9a200;
+  color: #1c1d21;
+  padding: 0.25em 0.7em;
+  border-radius: 999px;
+}
+
+section .guardrail-chip code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 10.5px;
+  background: transparent;
+  padding: 0;
+}
+
+/* ====================================================
+ * lessons-row — 3 columns of lesson cards on slide 11
+ * (What I learned). Each card: label · headline lesson ·
+ * supporting evidence · italic so-what footer.
+ * ==================================================== */
+section .lessons-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1em;
+  margin: 0.4em 0;
+}
+
+section .lesson-card {
+  background: #ffffff;
+  border: 1px solid #d8d9dd;
+  border-top: 4px solid #888;
+  border-radius: 8px;
+  padding: 0.75em 0.95em 0.85em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+section .lesson-card.lesson-1 { border-top-color: #ee1515; }
+section .lesson-card.lesson-2 { border-top-color: #5a4cc8; }
+section .lesson-card.lesson-3 { border-top-color: #2e7d32; }
+
+section .lesson-label {
+  font-family: "Press Start 2P", monospace;
+  font-size: 10px;
+  color: #5a5f6a;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+section .lesson-card.lesson-1 .lesson-label { color: #ee1515; }
+section .lesson-card.lesson-2 .lesson-label { color: #5a4cc8; }
+section .lesson-card.lesson-3 .lesson-label { color: #2e7d32; }
+
+section .lesson-card h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1c1d21;
+  margin: 0;
+  line-height: 1.35;
+  text-shadow: none;
+}
+
+section .lesson-card .lesson-evidence {
+  font-size: 13px;
+  color: #3a3d44;
+  margin: 0;
+  line-height: 1.45;
+}
+
+section .lesson-card .lesson-evidence code {
+  font-size: 11.5px;
+  background: rgba(28, 29, 33, 0.06);
+  padding: 0.05em 0.35em;
+  border-radius: 3px;
+}
+
+section .lesson-card .lesson-so-what {
+  font-size: 12px;
+  color: #5a5f6a;
+  font-style: italic;
+  margin: auto 0 0;
+  padding-top: 0.5em;
+  border-top: 1px dashed #d8d9dd;
+  line-height: 1.4;
+}
+
+/* ====================================================
+ * gaps-row — 2×2 grid of production-gap cards on slide 12.
+ * Each card: category label · headline · TODAY · GAP · NEXT.
+ * ==================================================== */
+section .gaps-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.7em;
+  margin: 0.3em 0;
+}
+
+section .gap-card {
+  background: #ffffff;
+  border: 1px solid #d8d9dd;
+  border-top: 4px solid #888;
+  border-radius: 7px;
+  padding: 0.55em 0.85em 0.65em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+section .gap-card.gap-host { border-top-color: #ee1515; }
+section .gap-card.gap-sec  { border-top-color: #5a4cc8; }
+section .gap-card.gap-obs  { border-top-color: #2e7d32; }
+section .gap-card.gap-loop { border-top-color: #d9a200; }
+
+section .gap-card .gap-label {
+  font-family: "Press Start 2P", monospace;
+  font-size: 9px;
+  color: #5a5f6a;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+section .gap-card.gap-host .gap-label { color: #ee1515; }
+section .gap-card.gap-sec  .gap-label { color: #5a4cc8; }
+section .gap-card.gap-obs  .gap-label { color: #2e7d32; }
+section .gap-card.gap-loop .gap-label { color: #c08400; }
+
+section .gap-card h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1c1d21;
+  margin: 0;
+  line-height: 1.3;
+  text-shadow: none;
+}
+
+section .gap-card .gap-line {
+  font-size: 11px;
+  color: #3a3d44;
+  margin: 0;
+  line-height: 1.4;
+}
+
+section .gap-card .gap-line code {
+  font-size: 10px;
+  background: rgba(28, 29, 33, 0.06);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+}
+
+section .gap-card .gap-line strong {
+  color: #1c1d21;
+}
+
+section .gap-card .gap-line-next {
+  font-style: italic;
+  color: #5a5f6a;
+  margin: auto 0 0;
+  padding-top: 0.35em;
+  border-top: 1px dashed #d8d9dd;
+}
+
+/* Coveo platform depth strip — dark-bordered horizontal chip
+ * row below the 2x2 gaps grid on slide 12. Lists Coveo native
+ * features I'd activate at production scale. */
+section .coveo-depth-strip {
+  margin: 0.4em 0 0;
+  padding: 0.35em 0.75em 0.45em;
+  border: 1px solid #1c1d21;
+  border-left: 4px solid #1c1d21;
+  background: rgba(28, 29, 33, 0.04);
+  border-radius: 6px;
+}
+
+section .coveo-depth-label {
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #1c1d21;
+  margin: 0 0 0.3em;
+}
+
+section .coveo-depth-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+}
+
+section .coveo-depth-chip {
+  font-family: "Inter", sans-serif;
+  font-size: 10.5px;
+  background: #ffffff;
+  border: 1px solid #1c1d21;
+  color: #1c1d21;
+  padding: 0.2em 0.55em;
+  border-radius: 999px;
+  line-height: 1.4;
+}
+
+section .coveo-depth-chip strong {
+  color: #ee1515;
+  font-weight: 700;
+}
+
+/* ====================================================
+ * Appendix slides — A1 (references) + A2 (repo map)
+ * ==================================================== */
+section .appendix-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3em;
+  margin: 0.3em 0;
+}
+
+section .appendix-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+}
+
+section .appendix-col-header {
+  font-family: "Press Start 2P", monospace;
+  font-size: 11px;
+  color: #ee1515;
+  margin: 0;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid #ee1515;
+}
+
+section .appendix-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+}
+
+section .appendix-section-title {
+  font-family: "Inter", sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1c1d21;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.15em;
+}
+
+section .appendix-section ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+section .appendix-section li {
+  font-size: 11px;
+  line-height: 1.45;
+  color: #3a3d44;
+  margin: 0.1em 0;
+}
+
+section .appendix-section li::before {
+  content: "▸ ";
+  color: #888;
+  margin-right: 0.15em;
+}
+
+section .appendix-section li a {
+  color: #ee1515;
+  border-bottom: 1px dotted rgba(238, 21, 21, 0.4);
+}
+
+/* Repo map — 2x3 grid of left-bordered file-tree cards on A2 */
+section .repo-map {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7em;
+  margin: 0.3em 0;
+}
+
+section .repo-section {
+  background: #ffffff;
+  border: 1px solid #d8d9dd;
+  border-left: 4px solid #888;
+  border-radius: 6px;
+  padding: 0.5em 0.8em 0.55em;
+}
+
+section .repo-section.repo-eval  { border-left-color: #5a4cc8; }
+section .repo-section.repo-loop  { border-left-color: #d9a200; }
+section .repo-section.repo-app   { border-left-color: #ee1515; }
+section .repo-section.repo-mcp   { border-left-color: #5a4cc8; }
+section .repo-section.repo-docs  { border-left-color: #2e7d32; }
+section .repo-section.repo-infra { border-left-color: #5a5f6a; }
+
+section .repo-section h4 {
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1c1d21;
+  margin: 0 0 0.25em;
+  text-shadow: none;
+}
+
+section .repo-section ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+section .repo-section li {
+  font-size: 10px;
+  line-height: 1.45;
+  color: #3a3d44;
+  margin: 0.08em 0;
+}
+
+section .repo-section li code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 9.5px;
+  background: rgba(28, 29, 33, 0.06);
+  padding: 0.04em 0.3em;
+  border-radius: 3px;
+  color: #1c1d21;
+}
+
+section:has(.appendix-row) h1,
+section:has(.repo-map) h1 {
+  margin-bottom: 0.2em;
+}
+
+section:has(.appendix-row) .callback,
+section:has(.repo-map) .callback {
+  margin-bottom: 0.4em;
+  padding: 0.25em 1em;
+}
+
+/* Slide 12 (with the coveo-depth-strip) — tighten cards to leave
+ * room for the strip below the 2x2 grid. */
+section:has(.coveo-depth-strip) .gaps-row {
+  gap: 0.4em;
+  margin: 0.15em 0 0;
+}
+
+section:has(.coveo-depth-strip) .gap-card {
+  padding: 0.4em 0.75em 0.5em;
+  gap: 0.18em;
+}
+
+section:has(.coveo-depth-strip) .gap-card h3 {
+  font-size: 12.5px;
+}
+
+section:has(.coveo-depth-strip) .gap-card .gap-label {
+  font-size: 8.5px;
+}
+
+section:has(.coveo-depth-strip) .gap-card .gap-line {
+  font-size: 9.8px;
+  line-height: 1.32;
+}
+
+section:has(.coveo-depth-strip) .gap-card .gap-line code {
+  font-size: 9px;
+}
+
+section:has(.coveo-depth-strip) .gap-card .gap-line-next {
+  padding-top: 0.25em;
+}
+
+section:has(.coveo-depth-strip) .callback {
+  margin-bottom: 0.25em;
+  padding: 0.22em 1em;
+  font-size: 16px;
+}
+
+section:has(.coveo-depth-strip) h1 {
+  margin-bottom: 0.15em;
+}
+
+section:has(.surface-row) h1 {
+  margin-bottom: 0.2em;
+}
+
+section:has(.surface-row) .callback {
+  margin-bottom: 0.4em;
+  padding: 0.3em 1em;
+}
+
 /* Tagline-style large sentence (e.g., Slide 1 "what I built") */
 section .tagline {
   font-size: 32px;
@@ -919,4 +1766,129 @@ section .tagline {
 
 section .tagline strong {
   color: #ee1515;
+}
+
+/* "Callback" line — small italic note connecting the slide to a moment
+ * in the live demo, e.g. "The 1,353 docs you saw mixing..." */
+section .callback {
+  font-size: 18px;
+  font-style: italic;
+  color: #5a5f6a;
+  text-align: center;
+  margin: 0 0 1.2em;
+  padding: 0.4em 1em;
+  background: rgba(238, 21, 21, 0.04);
+  border-left: 3px solid #ee1515;
+  border-radius: 4px;
+}
+
+section .callback strong {
+  color: #ee1515;
+  font-style: normal;
+}
+
+/* Slide-takeaway — bottom-of-slide one-liner that frames the key
+ * message. Distinct from the global Key message in speaker notes. */
+section .slide-takeaway {
+  text-align: center;
+  font-size: 20px;
+  color: #1c1d21;
+  margin: 1.5em auto 0;
+  padding: 0.6em 1em;
+  max-width: 85%;
+  background: #fafaf6;
+  border: 2px solid #1c1d21;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+section .slide-takeaway em {
+  color: #5a5f6a;
+}
+
+/* ====================================================
+ * split-compare — two-column "code vs Console" layout
+ * used on the Coveo-config slide. Green-bordered left
+ * column for what's in code, yellow-bordered right for
+ * what Coveo gates to the Console.
+ * ==================================================== */
+section .split-compare {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1em;
+  margin: 0.2em 0 0.4em;
+}
+
+/* Slide-specific tightening — only when the split-compare layout is used */
+section:has(.split-compare) h1 {
+  margin-bottom: 0.2em;
+}
+
+section:has(.split-compare) .callback {
+  margin-bottom: 0.5em;
+  padding: 0.3em 1em;
+}
+
+section .split-compare > div {
+  border-radius: 8px;
+  padding: 0.7em 1em 0.8em;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+section .compare-code {
+  border: 2px solid #2e7d32;
+}
+
+section .compare-console {
+  border: 2px solid #d9a200;
+}
+
+section .split-compare h3 {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  margin: 0 0 0.2em;
+}
+
+section .compare-code h3 {
+  color: #2e7d32;
+}
+
+section .compare-console h3 {
+  color: #c08400;
+}
+
+/* Code block inside the left column — smaller font so the file tree
+ * fits in the narrower column. Override the global pre styling. */
+section .split-compare pre {
+  font-size: 9px;
+  line-height: 1.25;
+  padding: 0.5em 0.7em;
+  margin: 0;
+  max-width: 100%;
+  border-radius: 6px;
+  border-left-width: 3px;
+}
+
+section .split-compare pre code {
+  font-size: 9px;
+  line-height: 1.25;
+}
+
+/* Bullet list inside the right column */
+section .split-compare ul {
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+section .split-compare li {
+  margin: 0.3em 0;
+}
+
+section .split-compare li strong {
+  color: #1c1d21;
 }
