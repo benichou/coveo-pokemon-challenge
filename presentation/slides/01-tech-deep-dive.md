@@ -895,7 +895,7 @@ a KG would clear.
 
 # Production hardening · what I'd ship next
 
-<p class="callback">The build runs and behaves. <strong>It's not production-grade yet.</strong> Four honest gaps below — each one is a 2-week sprint, not a research project.</p>
+<p class="callback">The build runs and behaves. <strong>It's not production-grade yet.</strong> Four honest gaps below — each one is well-known engineering work, not invention.</p>
 
 <div class="gaps-row">
 
@@ -949,8 +949,8 @@ Speaker notes:
 
 "I want to be direct here: the build runs and behaves, but it's not
 production-grade yet. Let me show you exactly what's missing — and
-how I'd close each gap. None of this is research; all of it is a
-2-week sprint."
+how I'd close each gap. None of this is research; all of it is
+well-known engineering work."
 
 (point at HOSTING) "Vercel was the right call for a demo — serverless,
 fast deploy, zero ops. For an enterprise customer it isn't enough.
