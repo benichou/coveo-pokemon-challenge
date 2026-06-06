@@ -27,6 +27,117 @@ The deck answers four questions in order:
 
 ---
 
+## Research foundation · Coveo's official playbook + industry SRE patterns
+
+> *Added 2026-06-05. Researched Coveo's documented escalation process + 2026 industry best practices for production AI / search platform incident response. The slides below should ground their claims in this section.*
+
+### A. Coveo's formal escalation process (docs.coveo.com/en/1489)
+
+Coveo has a **publicly documented case escalation process** under the Coveo Care framework. Key mechanics (cite when describing how the FDE plugs into Coveo's machinery):
+
+- **Severity Levels 1-4** classify all cases. **Severity 4 is NOT eligible for escalation** — only S1-S3 qualify.
+- **Severity 1 incidents require phone-call submission** (not just web form) to trigger the Initial Response Time SLA.
+- **Escalation request channels**: customer calls the Coveo Support hotline (region-specific) OR logs into Coveo Connect, opens the case, clicks "Request an escalation," fills justification form.
+- **Standard process gets time first** — escalations only granted after the regular resolution process has had a reasonable window to produce a fix or workaround.
+- **Once accepted**, a **Coveo Support Manager** is assigned as **"customer advocate within Coveo"**. Their job: understand business impact, document scope, establish a resolution path with the customer, set expectations, involve management as needed.
+- **Customer obligations**: customer commits internal resources to assist with resolution. Failure to provide resources can trigger **de-escalation**.
+- **Status visibility**: backend statuses track escalation progression; Support Manager communicates updates at customer-agreed cadence.
+- **Case auto-close**: 2 follow-up attempts over 4 business days; no response → automatic closure. **Reopen window: 30 days.**
+
+**Source**: [Case management process · docs.coveo.com/en/1489](https://docs.coveo.com/en/1489/) · [Coveo Care · Customer Support and Success Guide · docs.coveo.com/en/1352](https://docs.coveo.com/en/1352/)
+
+### B. Coveo's own AI-augmented support operations (worth referencing)
+
+Coveo partnered with **SupportLogic** for AI-driven case routing + escalation prediction. Documented outcomes within 6 months:
+- **−53% MTTR** (Mean Time To Resolution)
+- **+31% First Day Resolution rate**
+- **−56% escalation requests**
+
+SupportLogic monitors live cases for "pre-escalation" signals via **sentiment score · attention score · inactivity**, flagging cases that need proactive intervention before the customer asks for a manager. Worth namedropping: Coveo applies ML to its own support ops at the same rigor it sells.
+
+**Source**: [SupportLogic Coveo case study](https://www.supportlogic.com/resources/case-studies/coveo-slashes-case-resolution-time-with-intelligent-routing/)
+
+### C. The Coveo Care framework (the support contract surface)
+
+Coveo Care is the umbrella covering everything Coveo provides post-sale:
+- **Coveo Support** — case management, severity-tiered SLAs, escalation path
+- **Customer Success Manager (CSM)** — strategic relationship owner. **CSM hours are PLANNED, not committed; unused hours don't roll over month-to-month** (an important contract detail for the customer-facing conversation)
+- **Delivery Assurance services** — proactive guidance; the FDE typically operates under this banner
+- **Coveo Connect Community** — the customer-facing portal for case management + escalation
+
+**Source**: [Coveo Care · docs.coveo.com/en/1352](https://docs.coveo.com/en/1352/)
+
+### D. Industry SRE best practices for production AI / search platforms (2025-2026)
+
+Synthesized from InfoQ, Pylon, Sygnia, Microsoft Azure Well-Architected, Rootly, and incident.io's playbook guidance:
+
+| # | Best practice | What it means for our scenario |
+|---|---|---|
+| 1 | **Severity classification (P1-P5 standard)** | Map P1 = customer-facing outage + revenue impact (this scenario); P2 = degraded performance; P3 = minor regression; P4 = cosmetic |
+| 2 | **Communication cadence by severity** | P1: every 30 min · P2: hourly · P3: every 4h. This is the basis for Slide 7's exec-comms cadence. |
+| 3 | **Role assignment** | Incident Commander · Technical Lead · Customer Comms · Scribe — separate roles, separate people |
+| 4 | **Common governed data platform** | Avoid each engineer fetching telemetry from their own laptop; centralize. Maps to Coveo's Admin Console + Activity Browser as the single source of truth |
+| 5 | **Staged autonomy model** | Read-only → Advised → Approved → Autonomous. **Don't go from zero to autonomous remediation.** Apply to any auto-rollback / auto-throttle changes |
+| 6 | **Correlation layer** | Tie signals together — logs + deploys + config drift + traces. Maps to Slide 2's six-check playbook |
+| 7 | **Eliminate data silos** | Customer's APM + Coveo's Admin Console + GitHub deploys + customer's own deploy log — all need to be reachable in <5 min |
+| 8 | **Reduce 3 on-call burnout vectors** | Alert noise · missing context · manual postmortem. AI tools (PagerDuty AIOps, incident.io, Rootly) address all three |
+| 9 | **Centralize incident context** | One channel · one war room · one timeline. Don't fragment across Slack threads + Zoom calls + status pages |
+| 10 | **Business-context awareness** | A latency spike during a maintenance window ≠ a latency spike at peak hours. Build context into severity classification |
+| 11 | **Causal/deterministic analysis** over probabilistic guessing | Dynatrace Davis AI pattern: real-time topology maps + data lakehouses → deterministic root-cause identification incl. blast radius + dependency chain |
+| 12 | **Match automation tolerance to domain** | Regulated industries (gov, finance, healthcare) want lower autonomy than B2C SaaS |
+
+**Sources**:
+- [Microsoft Azure Well-Architected — SaaS Incident Management](https://learn.microsoft.com/en-us/azure/well-architected/saas/incident-management)
+- [Pylon · Incident Response Playbooks: Build trust with customers](https://www.usepylon.com/blog/incident-response-playbook)
+- [Sygnia · SaaS Incident Response strategies](https://www.sygnia.co/blog/saas-incident-response/)
+- [InfoQ · AI-Powered SRE for Autonomous Incident Response](https://www.infoq.com/presentations/ai-sre-incident-response/)
+- [Rootly · AI SRE Guide 2026](https://rootly.com/ai-sre-guide)
+- [Reco · Incident Management in SaaS](https://www.reco.ai/learn/incident-management-saas)
+
+### E. Notable AI SRE platforms (for "what we'd add to be world-class" framing)
+
+If the prevention slide (Slide 10) wants to point at "world-class," these are the names to drop:
+
+| Platform | Differentiator |
+|---|---|
+| **PagerDuty AIOps + AI Agent Suite** | Enterprise incident management with ML-based noise reduction; MCP server integration |
+| **incident.io · AI SRE** | Slack-native; AI alert triage, AI postmortems, Scribe transcription |
+| **Rootly** | AI-native incident management with LLM-powered investigation across the observability stack |
+| **Dynatrace Davis AI** | Hypermodal (predictive + causal + generative); production since 2017; default for large enterprises |
+| **Resolve AI** | Autonomous SRE by OpenTelemetry co-creators; targets 80% autonomous resolution |
+
+**Worth noting**: PagerDuty + incident.io both ship MCP servers, meaning a Coveo MCP integration could expose Coveo incident telemetry to these tools — a natural cross-product story.
+
+### F. How the FDE role fits into Coveo's escalation machinery
+
+Reading Coveo's documented process + the FDE role description, the FDE sits in this position when an incident hits:
+
+```
+Customer's CTO  ────► Coveo Support hotline (S1: phone) ────► Support Manager
+                                                                   │ (customer advocate)
+                                                                   ▼
+                                                              Engages FDE
+                                                              + Engineering
+                                                              + Product Specialists
+                                                              + Management (when needed)
+                                                                   │
+                                                                   ▼
+                                                              FDE on the front line ─► customer + internal
+```
+
+The FDE is the **technical face** of Coveo to the customer during the incident — pre-positioned by Delivery Assurance, activated by the Support Manager. Slide 1's timeline (T+0 through T+24hr) is from the FDE's perspective inside this machinery.
+
+### G. Honest framing for the deck
+
+The deck should NOT pretend to invent incident response. Frame it as:
+- **"This is how I'd plug into Coveo's existing escalation machinery"** — not "I'm building one from scratch"
+- **"My playbook draws from the documented Coveo case management process + 2026 industry SRE patterns"** — credible, sourced, defensible
+- **"What I'd add specifically as an FDE: the technical depth in the Coveo platform that the Support Manager doesn't have time to dive into"** — that's the FDE differentiator
+
+---
+
+
+
 ## Slide 0 — Cover (≈10s)
 
 **Visual**:

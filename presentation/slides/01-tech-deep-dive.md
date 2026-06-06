@@ -895,40 +895,40 @@ a KG would clear.
 
 # Production hardening · what I'd ship next
 
-<p class="callback">The build runs and behaves. <strong>It's not production-grade yet.</strong> Four honest gaps below — each one is well-known engineering work, not invention.</p>
+<p class="callback">The build runs and behaves · <strong>not production-grade yet</strong> · four honest gaps below.</p>
 
 <div class="gaps-row">
 
 <div class="gap-card gap-host">
   <p class="gap-label">▸ HOSTING · SCALE · CONCURRENCY</p>
   <h3>Vercel → private cloud network</h3>
-  <p class="gap-line"><strong>Today:</strong> Vercel auto-scales when requests arrive · Coveo handles their side · single region · first request after idle is slow ("cold start").</p>
-  <p class="gap-line"><strong>Gap:</strong> <strong>Never tested with simulated heavy traffic</strong> — simultaneous-user ceiling unknown · no fallback if our region goes down · no private network isolation.</p>
-  <p class="gap-line gap-line-next">↳ Next: simulated-traffic tests to find the limit · AWS managed functions + load balancer + CDN in a private network · multiple regions at once · explicit uptime + speed targets.</p>
+  <p class="gap-line"><strong>Today:</strong> Vercel auto-scales · single region · cold-start on idle requests.</p>
+  <p class="gap-line"><strong>Gap:</strong> <strong>Never load-tested · concurrency ceiling unknown</strong> · no multi-region · no VPC isolation.</p>
+  <p class="gap-line gap-line-next">↳ Next: load tests · AWS managed fns + load balancer + CDN in VPC · multi-region · explicit SLOs.</p>
 </div>
 
 <div class="gap-card gap-sec">
   <p class="gap-label">▸ AUTH · DATA ACCESS · SECURITY</p>
   <h3>API keys → short-lived per-user tokens</h3>
-  <p class="gap-line"><strong>Today:</strong> 6 narrowly-scoped API keys in <code>.env</code> / Vercel / GitHub · public site, no login · MCP uses a shared key.</p>
-  <p class="gap-line"><strong>Gap:</strong> Frontend uses <strong>API key directly</strong> instead of a per-user token · no login (Okta/Azure AD) · no <strong>per-user document filtering</strong> from source systems (Salesforce/SharePoint/Confluence) · keys in env files, not a vault · no rotation.</p>
-  <p class="gap-line gap-line-next">↳ Next: backend mints a fresh token per user · Okta/Azure AD single sign-on · <strong>Coveo Security Identities</strong> — pull each user's source permissions at index time, enforce at search · vault for keys · quarterly rotation.</p>
+  <p class="gap-line"><strong>Today:</strong> 6 API keys in env / Vercel / GitHub · public site, no login.</p>
+  <p class="gap-line"><strong>Gap:</strong> <strong>No per-user tokens · no SSO · no per-user document filtering</strong> · keys not in a vault · no rotation.</p>
+  <p class="gap-line gap-line-next">↳ Next: backend mints per-user tokens · Okta SSO · <strong>Coveo Security Identities</strong> (source ACLs at index time) · vault + quarterly rotation.</p>
 </div>
 
 <div class="gap-card gap-obs">
   <p class="gap-label">▸ MONITORING BEYOND AI QUALITY</p>
   <h3>2 dashboards → full app monitoring + targets</h3>
-  <p class="gap-line"><strong>Today:</strong> AI-answer-quality dashboard + Grafana query logs · rest is Vercel defaults.</p>
-  <p class="gap-line"><strong>Gap:</strong> No app-performance tracing (where time goes in each request) · no error tracking that pings me when something breaks · no scheduled bots that fake-visit to detect downtime · <strong>no documented uptime targets</strong> · no automated paging.</p>
-  <p class="gap-line gap-line-next">↳ Next: app-performance monitoring (Datadog or Tempo+Grafana) · error tracking (Sentry) · scheduled uptime checks · written uptime + quality targets · automated paging when targets break.</p>
+  <p class="gap-line"><strong>Today:</strong> AI-quality dashboard + Grafana query logs · rest = Vercel defaults.</p>
+  <p class="gap-line"><strong>Gap:</strong> <strong>No APM · no error tracking · no uptime checks · no SLOs · no automated paging</strong>.</p>
+  <p class="gap-line gap-line-next">↳ Next: APM (Datadog or Tempo+Grafana) · Sentry · uptime checks · SLO doc · automated paging.</p>
 </div>
 
 <div class="gap-card gap-loop">
   <p class="gap-label">▸ AUTONOMOUS LOOP · OPERATIONAL TRUST</p>
   <h3>Can we trust the loop to run unattended?</h3>
-  <p class="gap-line"><strong>Today:</strong> 5 safety checks · automatic rollback if next-day quality drops · new prompts go live to <em>100% of users immediately</em> when checks pass.</p>
-  <p class="gap-line"><strong>Gap:</strong> <strong>Safety checks never triggered by a real bad prompt</strong> — we don't know they actually fire · daily eval scores 100 questions <em>we wrote</em>, doesn't measure if real users <em>click</em> the answers · no alert per apply (silent commit).</p>
-  <p class="gap-line gap-line-next">↳ Next: deliberately push a bad prompt to <em>prove</em> rollback works · roll out new prompts <strong>10% → 50% → 100%</strong> via Coveo's A/B framework (real user clicks decide the winner) · Slack/PagerDuty alert per apply.</p>
+  <p class="gap-line"><strong>Today:</strong> 5 safety checks · auto-rollback on next-day drop · <em>full apply at 100%</em> when checks pass.</p>
+  <p class="gap-line"><strong>Gap:</strong> <strong>Safety checks never tested by a real bad prompt</strong> · eval scores OUR 100 Qs, not real-user clicks · silent commit (no alert).</p>
+  <p class="gap-line gap-line-next">↳ Next: fault-inject a bad prompt to <em>prove</em> rollback · roll out <strong>10% → 50% → 100%</strong> via Coveo A/B · Slack/PagerDuty alert per apply.</p>
 </div>
 
 </div>
