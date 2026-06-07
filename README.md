@@ -30,7 +30,7 @@ Beyond a working Pokémon search UI, this build is a panel-defining demonstratio
 6. **Two Coveo client libraries, one project.** The Atomic main page (`/`) ships the list view; the [Pokémon Detail Page](docs/detail-page.md) (`/pokemon.html?name=<slug>`) ships a Headless + React deep dive composing **three parallel Coveo queries** — Search API for the hero, Passage Retrieval for verifiable insights (with a noise-score ranker + flattened-table reconstructor to keep PR chunks readable), and a second Headless engine for a same-generation related grid. Multi-entry Vite build, shared `.env`, one Vercel deploy. Picking the right Coveo SDK per surface — the FDE narrative compressed into one repo.
 7. **The same Coveo org is also an AI-agent surface.** The [Coveo Hosted MCP Server](docs/mcp-integration.md) (Phase 8.5) exposes our pokemon index as four MCP tools — `search`, `fetch`, `get_passages`, `answer` — to any MCP-compatible client (Claude Code, Claude Desktop, ChatGPT Enterprise, ...). The Atomic UI, the Headless+React detail page, AND now Claude Code itself all query the **same org, same pipeline, same models, same index** — three UI surfaces, one retrieval brain. Customer-pitch slide: *"your Coveo investment is your AI-agent investment, zero new integrations."*
 
-## Status (2026-06-03, end of day)
+## Status (2026-06-07) — **all phases complete · panel-ready**
 
 ```
 ✅ Phase 0  — repo, dev env, API keys, org acceptance
@@ -49,10 +49,11 @@ Beyond a working Pokémon search UI, this build is a panel-defining demonstratio
 ✅ Phase 8  — Passage Retrieval API — panel below RGA, markdown-it rendering, observability extended
 ✅ Phase 6C — Pokémon Detail Page (Headless + React) — multi-entry Vite, three composed Coveo surfaces
 ✅ Phase 8.5 — Coveo MCP Server integration — pokemon-mcp server live; 4 tools (search / fetch / get_passages / answer) wired into Claude Code via .claude/mcp.json
-
-⏳ Phase 9  — Presentation #1: Pokémon Challenge (Topic 1 + Topic 2)
-⏳ Phase 10 — Presentation #2: Escalation & Recovery
+✅ Phase 9  — Presentation #1 (Pokémon Challenge) · Topic 1 deep dive (15 slides, theme: pokedex) + Topic 2 ESDC EI customer pitch (8 slides, theme: coveo-esdc) · both rendered to PDF in presentation/slides/
+✅ Phase 10 — Presentation #2 (Escalation & Recovery) · 13 slides covering Doc 1's four-question arc (RCA → remediation → comms → prevention) · Cyber Monday at Nespresso hypothetical · theme: incident-amber · rendered to PDF in presentation/slides/
 ```
+
+**Build + content phases are all done.** Both presentation decks are committed under `presentation/slides/` with custom Marp themes (`pokedex.css`, `coveo-esdc.css`, `incident-amber.css`), Coveo × Customer logo strips on every slide, panel-shareable PDFs, and inline speaker notes. Remaining work before submission is non-code: dry-run timing, optional revisions after self-review, and uploading via Talent Partner's submission link.
 
 ## Architecture
 
