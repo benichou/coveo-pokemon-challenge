@@ -9,8 +9,8 @@ The companion **`presentation/drafts/`** directory holds the long-form speaker-n
 | Deck | What it is | Audience | Time | Driven from |
 |---|---|---|---|---|
 | [`01-tech-deep-dive.md`](01-tech-deep-dive.md) | **Presentation #1 · Topic 1** — Pokémon Challenge technical deep dive | Coveo experts (technical) | ~12-14 min within the shared Presentation #1 slot (~10 min slides + 3-4 min live demo) | [`../drafts/01-tech-deep-dive.md`](../drafts/01-tech-deep-dive.md) |
-| `02-customer-pitch.md` *(not yet built)* | **Presentation #1 · Topic 2** — *short* customer pitch on how Coveo transforms `ESDC EI`'s search | Coveo experts (framed as ESDC CIO/DG Digital) | ~5-7 min within the shared Presentation #1 slot (no separate demo — Topic 1's demo serves as proof) | [`../drafts/02-customer-pitch.md`](../drafts/02-customer-pitch.md) |
-| `03-escalation-recovery.md` *(not yet built)* | **Presentation #2** — Operational incident response & recovery playbook | Coveo experts + your own executives | ~25 min separate slot (10 talk + 15 Q&A) | [`../drafts/03-escalation-recovery.md`](../drafts/03-escalation-recovery.md) |
+| [`02-customer-pitch.md`](02-customer-pitch.md) | **Presentation #1 · Topic 2** — *short* customer pitch on how Coveo transforms `ESDC EI`'s search | Coveo experts (framed as ESDC CIO/DG Digital) | ~5-7 min within the shared Presentation #1 slot (no separate demo — Topic 1's demo serves as proof) | [`../drafts/02-customer-pitch.md`](../drafts/02-customer-pitch.md) |
+| [`03-escalation-recovery.md`](03-escalation-recovery.md) | **Presentation #2** — Operational incident response & recovery playbook (Cyber Monday at Nespresso) | Coveo experts + your own executives | ~25 min separate slot (10 talk + 15 Q&A) | [`../drafts/03-escalation-recovery.md`](../drafts/03-escalation-recovery.md) |
 
 > **Presentation #1 time split**: ~25-min single panel slot — **Topic 1 (~12-14 min) + Topic 2 (~5-7 min) + shared Q&A (~5-7 min)**. Topic 2 is a short pitch piggy-backing on Topic 1's demo; Q&A at the end covers both. Presentation #2 (escalation & recovery) is a separate ~25-min slot with its own Q&A.
 
@@ -25,7 +25,9 @@ presentation/slides/
 ├── 02-customer-pitch.md   ← (not yet built) Marp markdown (Presentation #1, Topic 2)
 ├── 03-escalation-recovery.md   ← (not yet built) Marp markdown (Presentation #2)
 ├── themes/
-│   └── pokedex.css        ← custom Marp theme: GBC palette + Press Start 2P
+│   ├── pokedex.css        ← custom Marp theme: GBC palette + Press Start 2P (Topic 1)
+│   ├── coveo-esdc.css     ← Coveo navy + Canadian red + Inter + maple leaf (Topic 2)
+│   └── incident-amber.css ← dark war-room base + amber/red accents + JetBrains Mono (Presentation #2)
 ├── diagrams/              ← pre-rendered SVGs of the README mermaid diagrams
 └── images/                ← screenshots of the live UI, etc.
 ```
@@ -157,6 +159,25 @@ The leading underscore makes the directive apply **only to this slide**. Without
 | `emphasis` | Single big takeaway sentence, nothing else |
 | `split` | Two-column layouts |
 | `dark` | Inverted (dark bg) — used for the demo intro |
+
+### Layout classes (from `themes/incident-amber.css`)
+
+Presentation #2 (escalation & recovery) uses these slide-specific classes alongside the shared `cover` / `wrap` / `appendix`:
+
+| Class | Use for |
+|---|---|
+| `cover` | Hazard-striped dark cover with red hypothetical-incident stamp |
+| `scenario` | Two-pane symptoms/impact split with bottom timeline strip (Slide 1) |
+| `rca` | Six-row diagnostic table + toolkit callout (Slide 2) |
+| `hypo` | 2×2 likelihood × verification-cost quadrant grid (Slide 3) |
+| `tracks` | Parallel stabilization tracks with Jira-ticket bands (Slide 4) |
+| `verify` | Three-step verification checklist with timezone handoff note (Slide 5) |
+| `comms` | Five-audience comms matrix with advantage + anti-patterns callouts (Slide 6) |
+| `exec-note` | Email frame + side-annotation panel (Slide 7) |
+| `actions` | Six-card grid of post-incident deliverables (Slide 8) |
+| `prevention` | Jira-style ticket table with priority colors + bridge callout (Slide 9) |
+| `wrap` | Closing slide with three-anchor title + "Questions?" frame |
+| `appendix` | Four-column source reference grid (last two slides) |
 
 ### Speaker notes
 

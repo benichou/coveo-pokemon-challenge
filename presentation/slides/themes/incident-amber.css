@@ -1,0 +1,1745 @@
+/* @theme incident-amber
+ *
+ * Marp theme for Presentation #2 — Escalation & Recovery
+ * "When the platform breaks · an FDE's playbook · Cyber Monday at Nespresso"
+ *
+ * Aesthetic: war-room ops. Dark navy base (incident calm),
+ * amber severity accents, Canadian-red for hot zones, Coveo blue
+ * where Coveo platform tooling is named.
+ *
+ * Palette:
+ *   - Base dark              #27365A  (slide background)
+ *   - Panel dark             #33446B  (cards, surfaces)
+ *   - Panel deep             #1C2A48  (cover gradient deep)
+ *   - Coveo blue             #1FA0E1  (Coveo platform refs)
+ *   - Coveo navy             #0F2D52  (secondary structure)
+ *   - Amber primary          #FFA726  (severity accent · in-progress)
+ *   - Amber deep             #C77800  (amber on light surfaces)
+ *   - Red incident           #E53935  (hot · critical · symptoms)
+ *   - Red deep               #B71C1C
+ *   - Green stable           #43A047  (verified · stable · resolved)
+ *   - Mono ink               #E6EAF2  (primary text on dark)
+ *   - Mono mid               #9AA3B5  (secondary text on dark)
+ *   - Mono dim               #5E6679  (tertiary · timestamps)
+ *
+ * Typography:
+ *   - Body: Inter (Google Fonts), 400/500/600/700/800
+ *   - Mono: JetBrains Mono for timelines, tickets, log output
+ *
+ * Layout classes mirror earlier decks (.cover, .wrap, .appendix)
+ * plus slide-specific classes for this deck:
+ *   .scenario-split   — symptoms/impact two-pane (Slide 1)
+ *   .timeline-strip   — bottom timeline on Slide 1
+ *   .rca-checklist    — 6-row diagnostic table (Slide 2)
+ *   .hypo-grid        — 2x2 likelihood × cost quadrant (Slide 3)
+ *   .tracks           — parallel-track stabilization (Slide 4)
+ *   .verify-steps     — 3-step verification checklist (Slide 5)
+ *   .comms-matrix     — 5-row audience × channel × cadence (Slide 6)
+ *   .exec-note        — email-style frame with side annotations (Slide 7)
+ *   .actions-row      — 6 post-incident action cards (Slide 8)
+ *   .prevention-tix   — Jira-style ticket cards (Slide 9)
+ */
+
+@import "default";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+/* ============================================================
+ * Base
+ * Force color-scheme: dark so Marp's GitHub-flavored
+ * --fgColor-*, --bgColor-*, --borderColor-* variables resolve
+ * to their dark-mode values (otherwise plain table text picks
+ * up the light-mode muted gray and appears dim).
+ * ============================================================ */
+
+section {
+  color-scheme: dark;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: #27365A;
+  color: #E6EAF2;
+  padding: 78px 56px 52px;
+  font-size: 18px;
+  line-height: 1.5;
+
+  /* Override Marp default theme variables for dark slides */
+  --fgColor-default: #E6EAF2;
+  --fgColor-muted: #9AA3B5;
+  --fgColor-accent: #1FA0E1;
+  --bgColor-default: transparent;
+  --bgColor-muted: rgba(255, 255, 255, 0.02);
+  --borderColor-default: rgba(154, 163, 181, 0.18);
+  --borderColor-muted: rgba(154, 163, 181, 0.12);
+  --header-footer-color: #5E6679;
+  --paginate-color: #5E6679;
+}
+
+section a {
+  color: #1FA0E1;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(31, 160, 225, 0.35);
+}
+
+section a:hover {
+  border-bottom-color: #1FA0E1;
+}
+
+section strong {
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+section em {
+  color: #FFA726;
+  font-style: italic;
+}
+
+section code {
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.84em;
+  background: rgba(31, 160, 225, 0.12);
+  color: #1FA0E1;
+  padding: 0.08em 0.4em;
+  border-radius: 3px;
+}
+
+section pre {
+  background: #1C2A48;
+  color: #E6EAF2;
+  border-radius: 6px;
+  padding: 0.85em 1.05em;
+  font-size: 12.5px;
+  border-left: 3px solid #FFA726;
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  line-height: 1.45;
+  overflow: hidden;
+}
+
+section pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* ============================================================
+ * Header strip (applied to every slide via Marp's `header:` frontmatter)
+ * The cover slide hides this header and uses its own bigger
+ * `<div class="logo-strip">` instead. See `section.cover > header`.
+ * ============================================================ */
+
+section > header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: #ffffff;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  margin: 0;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.18);
+  z-index: 10;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #5a5f6a;
+  letter-spacing: 0;
+  bottom: auto;
+  width: auto;
+}
+
+section > header img {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+section > header img[alt^="Coveo"] {
+  height: 26px;
+  width: auto;
+}
+
+section > header img[alt^="Nespresso"] {
+  height: 16px;
+  width: auto;
+}
+
+section > header .hdr-cross {
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 300;
+  color: #9aa3b5;
+  letter-spacing: 0.05em;
+}
+
+/* Cover slide gets its own bigger logo strip — hide the auto-header */
+section.cover > header {
+  display: none !important;
+}
+
+/* ============================================================
+ * Headings
+ * ============================================================ */
+
+section h1,
+section h2,
+section h3,
+section h4 {
+  font-family: "Inter", system-ui, sans-serif;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+  margin-top: 0;
+}
+
+section h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 0.45em;
+  line-height: 1.15;
+  display: flex;
+  align-items: baseline;
+}
+
+section h1::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 26px;
+  background: #FFA726;
+  margin-right: 14px;
+  transform: translateY(3px);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+section h2 {
+  font-size: 21px;
+  font-weight: 500;
+  color: #9AA3B5;
+  margin-bottom: 0.6em;
+  letter-spacing: 0;
+}
+
+section h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #FFA726;
+  margin-bottom: 0.3em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+section h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9AA3B5;
+  margin-bottom: 0.25em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ============================================================
+ * Tables
+ * ============================================================ */
+
+section table {
+  border-collapse: collapse;
+  margin: 0.4em 0;
+  font-size: 13.5px;
+  width: 100%;
+  background: #33446B;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+section th {
+  background: #0F2D52;
+  color: #FFFFFF;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.5em 0.75em;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #FFA726;
+}
+
+section td {
+  padding: 0.45em 0.75em;
+  border-bottom: 1px solid rgba(154, 163, 181, 0.12);
+  vertical-align: top;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #E6EAF2;
+}
+
+section tr:last-child td {
+  border-bottom: none;
+}
+
+section tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+section table strong {
+  color: #FFA726;
+}
+
+section table code {
+  font-size: 0.9em;
+  background: rgba(255, 167, 38, 0.1);
+  color: #FFA726;
+}
+
+/* ============================================================
+ * Lists
+ * ============================================================ */
+
+section ul,
+section ol {
+  margin: 0.3em 0;
+  padding-left: 1.2em;
+}
+
+section li {
+  margin: 0.18em 0;
+  line-height: 1.5;
+}
+
+section ul li::marker {
+  color: #FFA726;
+}
+
+section ol li::marker {
+  color: #FFA726;
+  font-weight: 600;
+}
+
+/* ============================================================
+ * Footer + pagination
+ * ============================================================ */
+
+section footer {
+  color: #5E6679;
+  font-size: 10.5px;
+  bottom: 14px;
+  left: 56px;
+  letter-spacing: 0.04em;
+}
+
+section footer a {
+  color: #5E6679;
+  border-bottom: none;
+}
+
+section::after {
+  color: #5E6679;
+  font-size: 10.5px;
+  bottom: 14px;
+  right: 24px;
+}
+
+/* ============================================================
+ * Cover slide
+ * Used via: <!-- _class: cover -->
+ * ============================================================ */
+
+section.cover {
+  background: linear-gradient(135deg, #1C2A48 0%, #27365A 40%, #33446B 100%);
+  color: #FFFFFF;
+  text-align: left;
+  padding: 150px 80px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Logo header strip — white bar across the top of the cover
+ * (mirrors customer-pitch deck's Coveo × ESDC pattern)
+ */
+section.cover .logo-strip {
+  position: absolute;
+  top: 8px; /* sits just below the hazard bar */
+  left: 0;
+  right: 0;
+  height: 84px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.25);
+  z-index: 4;
+}
+
+section.cover .logo-strip img.logo-coveo {
+  height: 42px;
+  width: auto;
+}
+
+section.cover .logo-strip img.logo-nespresso {
+  height: 28px;
+  width: auto;
+}
+
+section.cover .logo-strip .logo-cross {
+  font-family: "Inter", sans-serif;
+  font-size: 22px;
+  font-weight: 300;
+  color: #5a5f6a;
+  letter-spacing: 0.05em;
+}
+
+/* Diagonal amber slash decoration on cover */
+section.cover::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -100px;
+  width: 480px;
+  height: 480px;
+  background: linear-gradient(135deg, rgba(255, 167, 38, 0.06) 0%, rgba(229, 57, 53, 0.04) 100%);
+  transform: rotate(35deg);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Subtle scanlines for war-room aesthetic */
+section.cover::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0,
+    transparent 3px,
+    rgba(255, 255, 255, 0.012) 3px,
+    rgba(255, 255, 255, 0.012) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Top hazard stripe */
+section.cover .hazard-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(
+    135deg,
+    #FFA726 0,
+    #FFA726 14px,
+    #27365A 14px,
+    #27365A 28px
+  );
+  z-index: 5;
+}
+
+/* Hypothetical stamp — sits below the logo strip on the right */
+section.cover .hypo-stamp {
+  position: absolute;
+  top: 112px;
+  right: 64px;
+  border: 2px solid #E53935;
+  color: #E53935;
+  padding: 0.45em 1em;
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(229, 57, 53, 0.12);
+  z-index: 6;
+  border-radius: 2px;
+  transform: rotate(-2deg);
+}
+
+section.cover h1 {
+  font-size: 82px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-top: 40px;
+  margin-bottom: 0.25em;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  position: relative;
+  z-index: 3;
+}
+
+section.cover h1::before {
+  display: none;
+}
+
+section.cover h2 {
+  font-size: 30px;
+  font-weight: 400;
+  color: #FFA726;
+  margin-bottom: 1.1em;
+  letter-spacing: 0;
+  line-height: 1.3;
+  position: relative;
+  z-index: 3;
+}
+
+section.cover h2 em {
+  color: #E6EAF2;
+  font-style: italic;
+  font-weight: 300;
+}
+
+section.cover p {
+  font-size: 19px;
+  color: #E6EAF2;
+  margin: 0.5em 0;
+  position: relative;
+  z-index: 3;
+}
+
+section.cover strong {
+  color: #FFA726;
+  font-weight: 700;
+}
+
+section.cover .speaker {
+  margin-top: 1.4em;
+  padding-top: 1.2em;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 17px;
+  color: #9AA3B5;
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 3;
+}
+
+section.cover .speaker strong {
+  color: #FFFFFF;
+}
+
+section.cover .wordmark {
+  position: absolute;
+  bottom: 28px;
+  right: 56px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  z-index: 5;
+}
+
+/* ============================================================
+ * Wrap / closing slide
+ * Used via: <!-- _class: wrap -->
+ * ============================================================ */
+
+section.wrap {
+  background: linear-gradient(135deg, #1C2A48 0%, #33446B 100%);
+  color: #FFFFFF;
+  text-align: center;
+  padding: 90px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+section.wrap::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: repeating-linear-gradient(
+    135deg,
+    #FFA726 0,
+    #FFA726 12px,
+    #27365A 12px,
+    #27365A 24px
+  );
+  z-index: 5;
+}
+
+section.wrap h1 {
+  font-size: 56px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-top: 0.3em;
+  margin-bottom: 0.9em;
+  text-align: center;
+  display: block;
+  max-width: 88%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section.wrap h1::before {
+  display: none;
+}
+
+section.wrap h2 {
+  font-size: 26px;
+  font-weight: 400;
+  color: #FFA726;
+  font-style: italic;
+  margin-bottom: 2.5em;
+}
+
+section.wrap .qa {
+  display: inline-block;
+  margin-top: 1em;
+  padding: 0.75em 2.4em;
+  font-size: 30px;
+  font-weight: 700;
+  border: 2px solid #FFA726;
+  color: #FFA726;
+  letter-spacing: 0.04em;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+section.wrap .footnote {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px;
+  color: #5E6679;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+ * Callout / callback boxes
+ * ============================================================ */
+
+section .callback {
+  font-size: 14px;
+  font-style: italic;
+  color: #E6EAF2;
+  margin: 0.6em 0 0.8em;
+  padding: 0.55em 1em;
+  background: rgba(255, 167, 38, 0.06);
+  border-left: 3px solid #FFA726;
+  border-radius: 0 4px 4px 0;
+}
+
+section .callback strong {
+  color: #FFA726;
+  font-style: normal;
+}
+
+section .callout-red {
+  background: rgba(229, 57, 53, 0.08);
+  border-left: 3px solid #E53935;
+  padding: 0.6em 1em;
+  margin: 0.6em 0;
+  font-size: 13.5px;
+  color: #E6EAF2;
+  border-radius: 0 4px 4px 0;
+}
+
+section .callout-red strong {
+  color: #E53935;
+}
+
+section .callout-amber {
+  background: rgba(255, 167, 38, 0.07);
+  border-left: 3px solid #FFA726;
+  padding: 0.55em 1em;
+  margin: 0.5em 0;
+  font-size: 13.5px;
+  color: #E6EAF2;
+  border-radius: 0 4px 4px 0;
+}
+
+section .callout-amber strong {
+  color: #FFA726;
+}
+
+section .callout-blue {
+  background: rgba(31, 160, 225, 0.08);
+  border-left: 3px solid #1FA0E1;
+  padding: 0.55em 1em;
+  margin: 0.5em 0;
+  font-size: 13.5px;
+  color: #E6EAF2;
+  border-radius: 0 4px 4px 0;
+}
+
+section .callout-blue strong {
+  color: #1FA0E1;
+}
+
+/* ============================================================
+ * Lead-style emphasis slide (centred big quote)
+ * ============================================================ */
+
+section.lead {
+  text-align: center;
+  padding: 110px 100px;
+}
+
+section.lead h1 {
+  font-size: 38px;
+  font-weight: 700;
+  color: #FFFFFF;
+  display: block;
+  text-align: center;
+}
+
+section.lead h1::before {
+  display: none;
+}
+
+section.lead .tagline {
+  font-size: 26px;
+  line-height: 1.45;
+  color: #E6EAF2;
+  font-weight: 400;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+/* ============================================================
+ * Slide 1 — scenario split (symptoms / impact)
+ * Used via: <!-- _class: scenario -->
+ * ============================================================ */
+
+section.scenario {
+  padding: 74px 48px 44px;
+}
+
+section.scenario h1 {
+  font-size: 32px;
+  margin-bottom: 0.3em;
+}
+
+section.scenario h2 {
+  font-size: 17px;
+  color: #9AA3B5;
+  font-weight: 500;
+  margin-bottom: 0.8em;
+}
+
+section.scenario .moment {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14.5px;
+  color: #FFA726;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.7em;
+}
+
+section.scenario .scenario-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 20px;
+}
+
+section.scenario .scenario-pane {
+  background: #33446B;
+  border-radius: 5px;
+  padding: 1em 1.25em 1.1em;
+}
+
+section.scenario .scenario-pane.symptoms {
+  border-left: 3px solid #E53935;
+}
+
+section.scenario .scenario-pane.impact {
+  border-left: 3px solid #FFA726;
+}
+
+section.scenario .pane-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.7em;
+}
+
+section.scenario .scenario-pane.symptoms .pane-label {
+  color: #E53935;
+}
+
+section.scenario .scenario-pane.impact .pane-label {
+  color: #FFA726;
+}
+
+section.scenario .scenario-pane ul {
+  padding-left: 1em;
+  margin: 0;
+}
+
+section.scenario .scenario-pane li {
+  font-size: 16px;
+  line-height: 1.45;
+  margin: 0.4em 0;
+  color: #E6EAF2;
+}
+
+section.scenario .scenario-pane li::marker {
+  font-size: 0.85em;
+}
+
+section.scenario .scenario-pane.symptoms li::marker {
+  color: #E53935;
+}
+
+section.scenario .scenario-pane.impact li::marker {
+  color: #FFA726;
+}
+
+section.scenario .scenario-pane strong {
+  color: #FFA726;
+  font-weight: 600;
+}
+
+section.scenario .scenario-pane.symptoms strong {
+  color: #E53935;
+}
+
+section.scenario .timeline-strip {
+  margin-top: 14px;
+  padding: 0.85em 1.15em 0.95em;
+  background: #1C2A48;
+  border-radius: 5px;
+  border-top: 2px solid #FFA726;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #E6EAF2;
+  overflow: hidden;
+}
+
+section.scenario .timeline-strip .tl-header {
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #FFA726;
+  margin-bottom: 0.6em;
+}
+
+section.scenario .timeline-strip .tl-row {
+  display: flex;
+  gap: 20px;
+  white-space: nowrap;
+}
+
+section.scenario .timeline-strip .tl-row .ts {
+  color: #1FA0E1;
+  font-weight: 500;
+  min-width: 78px;
+}
+
+section.scenario .timeline-strip .tl-row .ev {
+  color: #E6EAF2;
+}
+
+section.scenario .timeline-strip .tl-row.peak .ts,
+section.scenario .timeline-strip .tl-row.peak .ev {
+  color: #FFA726;
+  font-weight: 700;
+}
+
+/* ============================================================
+ * Slide 2 — RCA playbook (6-row diagnostic table)
+ * Used via: <!-- _class: rca -->
+ * ============================================================ */
+
+section.rca h1 {
+  font-size: 32px;
+  margin-bottom: 0.25em;
+}
+
+section.rca h2 {
+  font-size: 17px;
+  margin-bottom: 0.9em;
+}
+
+section.rca table {
+  font-size: 15px;
+  margin: 0.3em 0;
+}
+
+section.rca th {
+  font-size: 12.5px;
+  padding: 0.55em 0.75em;
+}
+
+section.rca th:first-child {
+  width: 38px;
+}
+
+section.rca th:nth-child(2) {
+  width: 18%;
+}
+
+section.rca th:nth-child(5) {
+  width: 90px;
+}
+
+section.rca td {
+  padding: 0.6em 0.8em;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+section.rca td:first-child {
+  color: #FFA726;
+  font-weight: 700;
+  font-family: "JetBrains Mono", monospace;
+  text-align: center;
+}
+
+section.rca td:nth-child(2) {
+  font-weight: 700;
+  color: #FFA726;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+section.rca td:nth-child(5) {
+  font-family: "JetBrains Mono", monospace;
+  color: #1FA0E1;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+section.rca .toolkit {
+  margin-top: 14px;
+  background: #33446B;
+  border-left: 3px solid #1FA0E1;
+  padding: 0.8em 1.1em;
+  border-radius: 0 4px 4px 0;
+  font-size: 13px;
+  color: #E6EAF2;
+  line-height: 1.6;
+}
+
+section.rca .toolkit .toolkit-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1FA0E1;
+  margin-bottom: 0.4em;
+}
+
+section.rca .toolkit code {
+  font-size: 0.92em;
+  background: rgba(31, 160, 225, 0.12);
+  color: #1FA0E1;
+}
+
+/* ============================================================
+ * Slide 3 — Hypothesis grid (2x2 quadrant)
+ * Used via: <!-- _class: hypo -->
+ * ============================================================ */
+
+section.hypo h1 {
+  font-size: 32px;
+  margin-bottom: 0.25em;
+}
+
+section.hypo h2 {
+  font-size: 17px;
+  margin-bottom: 0.9em;
+}
+
+section.hypo .hypo-grid {
+  display: grid;
+  grid-template-columns: 130px 1fr 1fr;
+  grid-template-rows: 32px minmax(160px, auto) minmax(160px, auto);
+  gap: 10px;
+  margin-top: 4px;
+}
+
+section.hypo .axis-corner { }
+
+section.hypo .axis-top {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9AA3B5;
+  text-align: center;
+  padding-top: 10px;
+}
+
+section.hypo .axis-left {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9AA3B5;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+  padding: 12px 0;
+}
+
+section.hypo .hypo-cell {
+  background: #33446B;
+  border-radius: 5px;
+  padding: 0.9em 1.1em 1em;
+  font-size: 14px;
+  line-height: 1.45;
+  border-top: 3px solid transparent;
+}
+
+section.hypo .hypo-cell.starred {
+  border-top-color: #FFA726;
+  background: rgba(255, 167, 38, 0.07);
+}
+
+section.hypo .hypo-cell .h-title {
+  font-weight: 700;
+  color: #FFFFFF;
+  font-size: 15.5px;
+  margin-bottom: 0.3em;
+}
+
+section.hypo .hypo-cell.starred .h-title::before {
+  content: "★ ";
+  color: #FFA726;
+}
+
+section.hypo .hypo-cell .h-meta {
+  color: #C8CED9;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0.25em 0;
+}
+
+section.hypo .hypo-cell .h-action {
+  font-family: "JetBrains Mono", monospace;
+  color: #1FA0E1;
+  font-size: 12.5px;
+  margin-top: 0.5em;
+  line-height: 1.45;
+}
+
+section.hypo .hypo-cell.starred .h-action {
+  color: #FFA726;
+}
+
+/* Stacked-pair container — two starred hypotheses living in the
+ * same top-left quadrant (high likelihood + low cost) */
+section.hypo .hypo-cell-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Compact variant for cells inside the stack — slightly tighter so
+ * two cells fit in the vertical space of one */
+section.hypo .hypo-cell.compact {
+  padding: 0.7em 1em 0.8em;
+  flex: 1;
+}
+
+section.hypo .hypo-cell.compact .h-title {
+  font-size: 14.5px;
+  margin-bottom: 0.2em;
+}
+
+section.hypo .hypo-cell.compact .h-meta {
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0.2em 0;
+}
+
+section.hypo .hypo-cell.compact .h-action {
+  font-size: 11.5px;
+  margin-top: 0.35em;
+}
+
+/* Empty-quadrant placeholder — "no candidates here" intentional
+ * negative space, signals the grid is a real filter not decorative */
+section.hypo .hypo-cell-empty {
+  background: rgba(154, 163, 181, 0.04);
+  border: 1px dashed rgba(154, 163, 181, 0.18);
+  border-radius: 5px;
+  padding: 0.7em 0.85em;
+  font-size: 10.5px;
+  color: #5E6679;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================================
+ * Slide 4 — Parallel tracks (stabilization)
+ * Used via: <!-- _class: tracks -->
+ * ============================================================ */
+
+section.tracks h1 {
+  font-size: 30px;
+  margin-bottom: 0.15em;
+}
+
+section.tracks h2 {
+  font-size: 16px;
+  margin-bottom: 0.55em;
+}
+
+section.tracks .clock-strip {
+  display: flex;
+  justify-content: space-between;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #9AA3B5;
+  padding: 0.2em 0.6em;
+  margin-bottom: 4px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+section.tracks .track {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  margin: 5px 0;
+}
+
+section.tracks .track-bar {
+  border-radius: 3px;
+}
+
+section.tracks .track.red .track-bar { background: #E53935; }
+section.tracks .track.amber .track-bar { background: #FFA726; }
+section.tracks .track.blue .track-bar { background: #1FA0E1; }
+section.tracks .track.green .track-bar { background: #43A047; }
+
+section.tracks .track-body {
+  background: #33446B;
+  border-radius: 5px;
+  padding: 0.65em 1.1em 0.75em;
+}
+
+section.tracks .track-title {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 0.2em;
+}
+
+section.tracks .track.red .track-title { color: #E53935; }
+section.tracks .track.amber .track-title { color: #FFA726; }
+section.tracks .track.blue .track-title { color: #1FA0E1; }
+section.tracks .track.green .track-title { color: #43A047; }
+
+section.tracks .track-jira {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: #9AA3B5;
+  margin-bottom: 0.25em;
+  letter-spacing: 0.02em;
+}
+
+section.tracks .track-jira strong {
+  color: #FFFFFF;
+}
+
+section.tracks .track-steps {
+  font-size: 13px;
+  color: #E6EAF2;
+  line-height: 1.45;
+}
+
+section.tracks .track-steps strong {
+  color: #FFA726;
+}
+
+section.tracks .track-steps code {
+  font-size: 0.92em;
+}
+
+section.tracks .principle {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #E6EAF2;
+  background: rgba(31, 160, 225, 0.08);
+  border-left: 3px solid #1FA0E1;
+  padding: 0.6em 1em;
+  border-radius: 0 4px 4px 0;
+  line-height: 1.45;
+}
+
+section.tracks .principle strong {
+  color: #1FA0E1;
+}
+
+/* ============================================================
+ * Slide 5 — Verification & handback
+ * Used via: <!-- _class: verify -->
+ * ============================================================ */
+
+section.verify h1 {
+  font-size: 32px;
+  margin-bottom: 0.25em;
+}
+
+section.verify h2 {
+  font-size: 17px;
+  margin-bottom: 0.9em;
+}
+
+section.verify .verify-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+}
+
+section.verify .v-step {
+  background: #33446B;
+  border-radius: 6px;
+  padding: 1.15em 1.3em 1.25em;
+  border-top: 4px solid #FFA726;
+}
+
+section.verify .v-step.amber { border-top-color: #FFA726; }
+section.verify .v-step.green { border-top-color: #43A047; }
+section.verify .v-step.blue  { border-top-color: #1FA0E1; }
+
+section.verify .v-step .v-header {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #FFA726;
+  margin-bottom: 0.2em;
+}
+
+section.verify .v-step.green .v-header { color: #43A047; }
+section.verify .v-step.blue  .v-header { color: #1FA0E1; }
+
+section.verify .v-step .v-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 0.6em;
+}
+
+section.verify .v-step .v-clock {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  color: #9AA3B5;
+  margin-bottom: 0.85em;
+}
+
+section.verify .v-step ul {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+
+section.verify .v-step li {
+  font-size: 14.5px;
+  line-height: 1.5;
+  padding: 0.3em 0 0.3em 1.5em;
+  position: relative;
+  color: #E6EAF2;
+}
+
+section.verify .v-step li::before {
+  content: "☐";
+  position: absolute;
+  left: 0;
+  color: #5E6679;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+section.verify .handoff-note {
+  margin-top: 18px;
+  padding: 0.85em 1.15em;
+  font-size: 14px;
+  background: rgba(229, 57, 53, 0.06);
+  border-left: 3px solid #E53935;
+  border-radius: 0 4px 4px 0;
+  color: #E6EAF2;
+  line-height: 1.55;
+}
+
+section.verify .handoff-note strong {
+  color: #E53935;
+}
+
+/* ============================================================
+ * Slide 6 — Comms matrix (audience × channel × cadence)
+ * Used via: <!-- _class: comms -->
+ * ============================================================ */
+
+section.comms h1 {
+  font-size: 30px;
+  margin-bottom: 0.15em;
+}
+
+section.comms h2 {
+  font-size: 16px;
+  margin-bottom: 0.55em;
+}
+
+section.comms table {
+  font-size: 13.5px;
+}
+
+section.comms th {
+  padding: 0.5em 0.75em;
+  font-size: 12px;
+}
+
+section.comms td {
+  padding: 0.55em 0.75em;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+section.comms td:first-child {
+  color: #FFA726;
+  font-weight: 700;
+  width: 24%;
+}
+
+section.comms td:nth-child(3) {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #1FA0E1;
+  width: 18%;
+}
+
+section.comms td code {
+  font-size: 0.95em;
+}
+
+section.comms .anti-patterns {
+  margin-top: 10px;
+  padding: 0.65em 1em 0.75em;
+  background: rgba(229, 57, 53, 0.06);
+  border-left: 3px solid #E53935;
+  border-radius: 0 4px 4px 0;
+  font-size: 13px;
+  color: #E6EAF2;
+  line-height: 1.5;
+}
+
+section.comms .anti-patterns .ap-label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #E53935;
+  margin-bottom: 0.3em;
+}
+
+section.comms .anti-patterns ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+section.comms .anti-patterns li {
+  margin: 0.1em 0;
+}
+
+/* ============================================================
+ * Slide 7 — Exec note (email frame + side annotations)
+ * Used via: <!-- _class: exec-note -->
+ * ============================================================ */
+
+section.exec-note h1 {
+  font-size: 30px;
+  margin-bottom: 0.15em;
+}
+
+section.exec-note h2 {
+  font-size: 16px;
+  margin-bottom: 0.6em;
+}
+
+section.exec-note .note-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+section.exec-note .email-frame {
+  background: #F7F8FA;
+  color: #1a1d24;
+  border-radius: 6px;
+  padding: 1.1em 1.3em 1.15em;
+  font-size: 13.5px;
+  line-height: 1.55;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  font-family: "Inter", sans-serif;
+}
+
+section.exec-note .email-header {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #5a5f6a;
+  border-bottom: 1px solid #e2e5eb;
+  padding-bottom: 0.5em;
+  margin-bottom: 0.7em;
+  line-height: 1.55;
+}
+
+section.exec-note .email-header .h-label {
+  display: inline-block;
+  width: 64px;
+  color: #9AA3B5;
+}
+
+section.exec-note .email-header .h-subject {
+  color: #0F2D52;
+  font-weight: 700;
+}
+
+section.exec-note .email-body p {
+  margin: 0.55em 0;
+  font-size: 13.5px;
+  color: #1a1d24;
+  line-height: 1.55;
+}
+
+section.exec-note .email-body strong {
+  color: #C77800;
+  background: rgba(255, 167, 38, 0.16);
+  padding: 0 0.18em;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+section.exec-note .email-body .signoff {
+  margin-top: 0.85em;
+  font-size: 12.5px;
+  color: #5a5f6a;
+}
+
+section.exec-note .annotations {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+section.exec-note .anno {
+  background: #33446B;
+  border-left: 3px solid #FFA726;
+  border-radius: 0 4px 4px 0;
+  padding: 0.6em 0.95em;
+  font-size: 13px;
+  color: #E6EAF2;
+  line-height: 1.45;
+}
+
+section.exec-note .anno .anno-quote {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #FFA726;
+  margin-bottom: 0.2em;
+}
+
+section.exec-note .anno .anno-text {
+  font-size: 12.5px;
+  color: #9AA3B5;
+  font-style: italic;
+}
+
+section.exec-note .anno .anno-text strong {
+  color: #FFFFFF;
+  font-style: normal;
+}
+
+/* ============================================================
+ * Slide 8 — Post-incident action cards
+ * Used via: <!-- _class: actions -->
+ * ============================================================ */
+
+section.actions h1 {
+  font-size: 30px;
+  margin-bottom: 0.15em;
+}
+
+section.actions h2 {
+  font-size: 16px;
+  margin-bottom: 0.7em;
+}
+
+section.actions .actions-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px 16px;
+}
+
+section.actions .action-card {
+  background: #33446B;
+  border-radius: 5px;
+  padding: 0.95em 1.1em 1em;
+  border-left: 3px solid #FFA726;
+  position: relative;
+}
+
+section.actions .action-card .num {
+  position: absolute;
+  top: 0.55em;
+  right: 0.7em;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: rgba(255, 167, 38, 0.25);
+  line-height: 1;
+}
+
+section.actions .action-card .title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 0.35em;
+  line-height: 1.3;
+  padding-right: 1.8em;
+}
+
+section.actions .action-card .produces {
+  font-size: 13px;
+  color: #E6EAF2;
+  line-height: 1.45;
+  margin-bottom: 0.55em;
+}
+
+section.actions .action-card .produces strong {
+  color: #FFA726;
+}
+
+section.actions .action-card .owner {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: #1FA0E1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+ * Slide 9 — Prevention tickets (Jira-style)
+ * Used via: <!-- _class: prevention -->
+ * ============================================================ */
+
+section.prevention h1 {
+  font-size: 30px;
+  margin-bottom: 0.1em;
+}
+
+section.prevention h2 {
+  font-size: 16px;
+  margin-bottom: 0.5em;
+}
+
+section.prevention table {
+  font-size: 12.5px;
+}
+
+section.prevention th {
+  padding: 0.45em 0.55em;
+  font-size: 11px;
+}
+
+section.prevention td {
+  padding: 0.32em 0.55em;
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+
+section.prevention td:first-child {
+  font-family: "JetBrains Mono", monospace;
+  color: #1FA0E1;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  width: 13%;
+}
+
+/* Root cause / issue column — italic muted to distinguish from the
+ * white "Change" column body */
+section.prevention td:nth-child(2) {
+  font-size: 12px;
+  color: #C8CED9;
+  font-style: italic;
+  width: 19%;
+  border-right: 1px dashed rgba(154, 163, 181, 0.18);
+  line-height: 1.4;
+}
+
+section.prevention td:nth-child(4) {
+  font-size: 12px;
+  color: #9AA3B5;
+  width: 12%;
+}
+
+section.prevention td:nth-child(5) {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  width: 9%;
+}
+
+section.prevention td:nth-child(6) {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11.5px;
+  color: #FFA726;
+  width: 8%;
+}
+
+section.prevention td strong {
+  color: #FFFFFF;
+}
+
+/* Priority colors in column 4 — use inline class on cells */
+section.prevention .p1 {
+  color: #E53935;
+  font-weight: 700;
+}
+
+section.prevention .p2 {
+  color: #FFA726;
+  font-weight: 700;
+}
+
+section.prevention .bridge {
+  margin-top: 6px;
+  padding: 0.55em 0.95em;
+  background: rgba(31, 160, 225, 0.07);
+  border-left: 3px solid #1FA0E1;
+  border-radius: 0 4px 4px 0;
+  font-size: 12.5px;
+  color: #E6EAF2;
+  line-height: 1.45;
+}
+
+section.prevention .bridge strong {
+  color: #1FA0E1;
+}
+
+/* ============================================================
+ * Appendix slides
+ * Used via: <!-- _class: appendix -->
+ * ============================================================ */
+
+section.appendix h1 {
+  font-size: 30px;
+  margin-bottom: 0.15em;
+}
+
+section.appendix h2 {
+  font-size: 16px;
+  margin-bottom: 0.8em;
+}
+
+section.appendix h3 {
+  font-size: 13.5px;
+  color: #FFA726;
+  margin-top: 0.6em;
+  margin-bottom: 0.3em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+section.appendix .src-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+}
+
+section.appendix .src-col {
+  background: #33446B;
+  border-left: 3px solid #1FA0E1;
+  padding: 0.95em 1.2em 1em;
+  border-radius: 0 4px 4px 0;
+}
+
+section.appendix .src-col h3 {
+  margin-top: 0;
+  color: #1FA0E1;
+  font-size: 13px;
+}
+
+section.appendix .src-col ul {
+  margin: 0.3em 0;
+  padding-left: 1.1em;
+  list-style: none;
+}
+
+section.appendix .src-col li {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0.35em 0;
+  padding-left: 0.2em;
+  color: #E6EAF2;
+}
+
+section.appendix .src-col li::before {
+  content: "→ ";
+  color: #1FA0E1;
+}
+
+section.appendix .src-col a {
+  color: #1FA0E1;
+  font-size: 13px;
+  border-bottom: none;
+}
+
+section.appendix .src-col a:hover {
+  border-bottom: 1px solid #1FA0E1;
+}
+
+/* ============================================================
+ * Cover hazard wordmark for all slides except cover/wrap
+ * Subtle Nespresso × Coveo wordmark in corner
+ * ============================================================ */
+
+section .deck-mark {
+  position: absolute;
+  bottom: 14px;
+  right: 130px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  color: rgba(94, 102, 121, 0.55);
+  text-transform: uppercase;
+}
+
+/* ============================================================
+ * Utility classes
+ * ============================================================ */
+
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+}
+
+.amber  { color: #FFA726 !important; }
+.red    { color: #E53935 !important; }
+.blue   { color: #1FA0E1 !important; }
+.green  { color: #43A047 !important; }
+.mid    { color: #9AA3B5 !important; }
+.dim    { color: #5E6679 !important; }
+
+.tiny   { font-size: 11px !important; }
+.smaller { font-size: 12px !important; }
+
+.center { text-align: center; }
+
+hr {
+  border: none;
+  border-top: 1px solid rgba(154, 163, 181, 0.18);
+  margin: 0.7em 0;
+}

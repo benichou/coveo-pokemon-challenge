@@ -37,9 +37,66 @@ section {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   background: #f7f8fa;
   color: #1a1d24;
-  padding: 48px 56px;
+  padding: 78px 56px 48px;
   font-size: 18px;
   line-height: 1.5;
+}
+
+/* ============================================================
+ * Header strip (applied to every slide via Marp's `header:` frontmatter)
+ * The cover slide hides this header and uses its own bigger
+ * `<div class="logo-strip">` instead.
+ * ============================================================ */
+
+section > header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: #ffffff;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  margin: 0;
+  border-bottom: 1px solid #e2e5eb;
+  box-shadow: 0 1px 6px rgba(15, 45, 82, 0.06);
+  z-index: 10;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #5a5f6a;
+  letter-spacing: 0;
+  bottom: auto;
+  width: auto;
+}
+
+section > header img {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+section > header img[alt^="Coveo"] {
+  height: 26px;
+  width: auto;
+}
+
+section > header img[alt^="ESDC"] {
+  height: 22px;
+  width: auto;
+}
+
+section > header .hdr-cross {
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 300;
+  color: #9aa3b5;
+  letter-spacing: 0.05em;
+}
+
+/* Cover slide gets its own bigger logo strip — hide the auto-header */
+section.cover > header {
+  display: none !important;
 }
 
 section a {

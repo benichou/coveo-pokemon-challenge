@@ -2,11 +2,14 @@
 marp: true
 theme: coveo-esdc
 paginate: true
+html: true
+header: '<img src="images/logos/coveo-blue.svg" alt="Coveo"><span class="hdr-cross">×</span><img src="images/logos/esdc.svg" alt="ESDC">'
 footer: "[github.com/benichou/coveo-pokemon-challenge](https://github.com/benichou/coveo-pokemon-challenge)"
 ---
 
 <!-- _class: cover -->
 <!-- _paginate: false -->
+<!-- _header: "" -->
 <!-- _footer: "" -->
 
 <div class="logo-strip">
