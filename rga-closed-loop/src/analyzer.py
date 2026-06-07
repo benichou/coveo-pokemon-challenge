@@ -396,7 +396,9 @@ metadata and into the PR body / chat output for human review.
   - `expected_lift` should include per-category predictions for the \
 categories you targeted, plus an overall_accuracy entry. `from` is the \
 baseline (the latest run's value); `target` is your honest hypothesis \
-after the change.
+after the change. \
+**Both `from` and `target` are FRACTIONS in [0.0, 1.0], NOT percentages.** \
+For example, write 0.76 (NOT 76) to represent "76% accuracy".
   - `sample_answers` is optional but helpful: 1-3 entries showing how the \
 new prompt would change the answer to the worst failing questions. \
 Format: list of {"question": ..., "before_answer": ..., \

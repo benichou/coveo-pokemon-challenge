@@ -16,7 +16,7 @@ so the apply script + analyzer stay in sync.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class CoveoModelRef(BaseModel):
@@ -38,21 +38,52 @@ class CoveoModelRef(BaseModel):
 
 
 class ExpectedLift(BaseModel):
-    """Predicted before/after numbers for a single metric (e.g., accuracy)."""
+    """Predicted before/after numbers for a single metric (e.g., accuracy).
+
+    Values are FRACTIONS in [0.0, 1.0] — e.g., 0.76 for 76% accuracy.
+    """
 
     from_: float = Field(
         alias="from",
         ge=0.0,
         le=1.0,
-        description="Baseline value measured before the prompt change.",
+        description=(
+            "Baseline value measured before the prompt change. "
+            "Express as a fraction in [0.0, 1.0] — e.g., 0.76 for 76%, "
+            "NOT 76."
+        ),
     )
     target: float = Field(
         ge=0.0,
         le=1.0,
-        description="Hypothesis: the value after the prompt change.",
+        description=(
+            "Hypothesis: the value after the prompt change. "
+            "Express as a fraction in [0.0, 1.0] — e.g., 0.79 for 79%, "
+            "NOT 79."
+        ),
     )
 
     model_config = ConfigDict(populate_by_name=True)
+
+    @field_validator("from_", "target", mode="before")
+    @classmethod
+    def coerce_percentage_to_fraction(cls, v):
+        """Defensive coercion: LLMs occasionally return percentages (76.0)
+        instead of fractions (0.76) despite the schema's `le=1.0` bound.
+
+        Any value > 1.0 is interpreted as a percentage in [0, 100] and
+        divided by 100. Values already in [0, 1] pass through unchanged,
+        so YAML on disk (which uses fractions) keeps working.
+        """
+        if v is None:
+            return v
+        try:
+            num = float(v)
+        except (TypeError, ValueError):
+            return v
+        if num > 1.0:
+            return num / 100.0
+        return num
 
 
 class PromptMetadata(BaseModel):
