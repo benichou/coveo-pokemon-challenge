@@ -1,0 +1,76 @@
+{
+  "started_at": "2026-06-10T10:16:57.881027+00:00",
+  "args": {
+    "dry_run": false,
+    "skip_analyzer": false,
+    "no_rollback_check": false
+  },
+  "exit_code": 0,
+  "window_runs": [
+    "2026-06-06-full.json",
+    "2026-06-07-full.json",
+    "2026-06-08-full.json",
+    "2026-06-09-full.json",
+    "2026-06-10-full.json"
+  ],
+  "latest_run": "2026-06-10-full.json",
+  "prior_run": "2026-06-09-full.json",
+  "latest_overall_accuracy": 0.76,
+  "current_yaml_version": "1.1.0",
+  "rollback_decision": {
+    "should_rollback": false,
+    "reason": "last apply was 9d 4h ago (> 36h rollback window). Today's regression has a different cause; no rollback.",
+    "accuracy_drop_pts": 0.0
+  },
+  "analyzer_window_size": 5,
+  "analyzer_worst_categories": [
+    {
+      "key": "L2:cross-pokemon-compare",
+      "latest_accuracy": 0.5,
+      "persistence": 5,
+      "drift": 0.06666666666666665
+    },
+    {
+      "key": "L2:ability-across-pokemon",
+      "latest_accuracy": 0.0,
+      "persistence": 5,
+      "drift": 0.05555555555555555
+    },
+    {
+      "key": "L2:form-comparison",
+      "latest_accuracy": 0.375,
+      "persistence": 5,
+      "drift": 0.020833333333333315
+    }
+  ],
+  "proposal_confidence": 0.75,
+  "proposal_new_prompt_chars": 3735,
+  "proposal_rationale_first200": "## Analysis of Persistent Failures\n\nAll three worst-performing categories\u2014**cross-pokemon-compare** (50% accuracy, 5/5 runs below 70%, +6.7% drift), **ability-across-pokemon** (0% accuracy, 5/5 runs b",
+  "guardrails": [
+    {
+      "name": "no_op",
+      "passed": true,
+      "reason": "proposed prompt differs from current"
+    },
+    {
+      "name": "confidence",
+      "passed": false,
+      "reason": "analyzer confidence 0.75 < threshold 0.80"
+    },
+    {
+      "name": "lift_threshold",
+      "passed": false,
+      "reason": "predicted overall_accuracy lift +4.0% below threshold +5.0%"
+    },
+    {
+      "name": "sanity",
+      "passed": true,
+      "reason": "length 3735 chars; all anchors present"
+    },
+    {
+      "name": "rate_limit",
+      "passed": true,
+      "reason": "last apply was 9d 4h ago (\u2265 3d threshold)"
+    }
+  ]
+}
