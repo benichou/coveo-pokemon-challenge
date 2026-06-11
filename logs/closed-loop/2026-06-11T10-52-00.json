@@ -1,0 +1,76 @@
+{
+  "started_at": "2026-06-11T10:51:10.193681+00:00",
+  "args": {
+    "dry_run": false,
+    "skip_analyzer": false,
+    "no_rollback_check": false
+  },
+  "exit_code": 0,
+  "window_runs": [
+    "2026-06-07-full.json",
+    "2026-06-08-full.json",
+    "2026-06-09-full.json",
+    "2026-06-10-full.json",
+    "2026-06-11-full.json"
+  ],
+  "latest_run": "2026-06-11-full.json",
+  "prior_run": "2026-06-10-full.json",
+  "latest_overall_accuracy": 0.78,
+  "current_yaml_version": "1.1.0",
+  "rollback_decision": {
+    "should_rollback": false,
+    "reason": "last apply was 10d 5h ago (> 36h rollback window). Today's regression has a different cause; no rollback.",
+    "accuracy_drop_pts": -0.020000000000000018
+  },
+  "analyzer_window_size": 5,
+  "analyzer_worst_categories": [
+    {
+      "key": "L2:ability-across-pokemon",
+      "latest_accuracy": 0.0,
+      "persistence": 5,
+      "drift": 0.3333333333333333
+    },
+    {
+      "key": "L2:form-comparison",
+      "latest_accuracy": 0.375,
+      "persistence": 5,
+      "drift": 0.0625
+    },
+    {
+      "key": "L2:list-by-criterion",
+      "latest_accuracy": 0.6,
+      "persistence": 5,
+      "drift": 0.0
+    }
+  ],
+  "proposal_confidence": 0.78,
+  "proposal_new_prompt_chars": 3558,
+  "proposal_rationale_first200": "## Analysis of Chronic Failures\n\nThree categories show persistent failures across all 5 evaluation runs, indicating systematic prompt issues rather than LLM variance:\n\n### 1. **ability-across-pokemon ",
+  "guardrails": [
+    {
+      "name": "no_op",
+      "passed": true,
+      "reason": "proposed prompt differs from current"
+    },
+    {
+      "name": "confidence",
+      "passed": false,
+      "reason": "analyzer confidence 0.78 < threshold 0.80"
+    },
+    {
+      "name": "lift_threshold",
+      "passed": true,
+      "reason": "predicted overall_accuracy lift +6.0% \u2265 threshold +5.0%"
+    },
+    {
+      "name": "sanity",
+      "passed": true,
+      "reason": "length 3558 chars; all anchors present"
+    },
+    {
+      "name": "rate_limit",
+      "passed": true,
+      "reason": "last apply was 10d 5h ago (\u2265 3d threshold)"
+    }
+  ]
+}
