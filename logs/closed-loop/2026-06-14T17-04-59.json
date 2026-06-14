@@ -1,0 +1,76 @@
+{
+  "started_at": "2026-06-14T17:04:10.260308+00:00",
+  "args": {
+    "dry_run": false,
+    "skip_analyzer": false,
+    "no_rollback_check": false
+  },
+  "exit_code": 0,
+  "window_runs": [
+    "2026-06-10-full.json",
+    "2026-06-11-full.json",
+    "2026-06-12-full.json",
+    "2026-06-13-full.json",
+    "2026-06-14-full.json"
+  ],
+  "latest_run": "2026-06-14-full.json",
+  "prior_run": "2026-06-13-full.json",
+  "latest_overall_accuracy": 0.78,
+  "current_yaml_version": "1.1.0",
+  "rollback_decision": {
+    "should_rollback": false,
+    "reason": "last apply was 13d 11h ago (> 36h rollback window). Today's regression has a different cause; no rollback.",
+    "accuracy_drop_pts": 0.0
+  },
+  "analyzer_window_size": 5,
+  "analyzer_worst_categories": [
+    {
+      "key": "L2:cross-source-synthesis",
+      "latest_accuracy": 0.0,
+      "persistence": 5,
+      "drift": 0.08333333333333334
+    },
+    {
+      "key": "L2:list-by-criterion",
+      "latest_accuracy": 0.6,
+      "persistence": 5,
+      "drift": 0.0
+    },
+    {
+      "key": "L2:form-comparison",
+      "latest_accuracy": 0.5,
+      "persistence": 5,
+      "drift": -0.041666666666666685
+    }
+  ],
+  "proposal_confidence": 0.75,
+  "proposal_new_prompt_chars": 2976,
+  "proposal_rationale_first200": "## Analysis of Persistent Failures\n\nThe eval window shows three categories with **perfect persistence** (5/5 runs below 70% accuracy), indicating chronic failure modes rather than LLM-judge variance:\n",
+  "guardrails": [
+    {
+      "name": "no_op",
+      "passed": true,
+      "reason": "proposed prompt differs from current"
+    },
+    {
+      "name": "confidence",
+      "passed": false,
+      "reason": "analyzer confidence 0.75 < threshold 0.80"
+    },
+    {
+      "name": "lift_threshold",
+      "passed": false,
+      "reason": "predicted overall_accuracy lift +5.0% below threshold +5.0%"
+    },
+    {
+      "name": "sanity",
+      "passed": true,
+      "reason": "length 2976 chars; all anchors present"
+    },
+    {
+      "name": "rate_limit",
+      "passed": true,
+      "reason": "last apply was 13d 11h ago (\u2265 3d threshold)"
+    }
+  ]
+}
