@@ -1,31 +1,31 @@
 {
-  "timestamp": "2026-06-14T09:43:13.064715+00:00",
+  "timestamp": "2026-06-14T17:03:51.213879+00:00",
   "coveo_org_id": "benichouu9fose4g",
   "judge_model": "claude-sonnet-4-5-20250929",
   "overall": {
-    "accuracy": 0.0,
-    "precision": 1.0,
-    "hard_recall": 0.8534999999999999,
-    "citation_precision": 0.77,
+    "accuracy": 0.78,
+    "precision": 0.91,
+    "hard_recall": 0.8516666666666667,
+    "citation_precision": 0.767,
     "n_questions": 100
   },
   "by_layer": {
     "1": {
-      "accuracy": 0.0,
-      "precision": 1.0,
+      "accuracy": 0.94,
+      "precision": 0.96,
       "hard_recall": 0.97,
       "citation_precision": 0.91,
       "n_questions": 50
     },
     "2": {
-      "accuracy": 0.0,
-      "precision": 1.0,
-      "hard_recall": 0.6242857142857143,
-      "citation_precision": 0.5857142857142857,
+      "accuracy": 0.4857142857142857,
+      "precision": 0.8,
+      "hard_recall": 0.6190476190476191,
+      "citation_precision": 0.5771428571428571,
       "n_questions": 35
     },
     "3": {
-      "accuracy": 0.0,
+      "accuracy": 0.9333333333333333,
       "precision": 1.0,
       "hard_recall": 1.0,
       "citation_precision": 0.7333333333333333,
@@ -47,10 +47,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vvDsGPQxSMNTxuzisi'}"
+        "reasoning": "The answer correctly identifies Charizard as a Fire/Flying type Pokémon, which matches both expected key facts. This is accurate according to canonical Pokemon knowledge."
       }
     },
     {
@@ -66,10 +66,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vvQy1doqxKZtQQJaCj'}"
+        "reasoning": "The answer correctly identifies Pikachu as an Electric type Pokémon, which matches the expected key fact. This is accurate according to canonical Pokemon knowledge."
       }
     },
     {
@@ -78,7 +78,7 @@
       "layer": 1,
       "category": "type-lookup",
       "rga_fired": true,
-      "answer_text": "Bulbasaur is a Grass/Poison type Pokémon (context 1).",
+      "answer_text": "Bulbasaur is a Grass/Poison type Pokémon.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/bulbasaur",
         "https://pokemondb.net/pokedex/bulbasaur"
@@ -86,10 +86,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vvdR7oai1F5gksSiNb'}"
+        "reasoning": "The answer correctly identifies Bulbasaur as a Grass/Poison type Pokémon, which matches both expected key facts (Grass and Poison). This is accurate according to canonical Pokémon information."
       }
     },
     {
@@ -105,10 +105,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vvp54u7vtQCtBwFS8D'}"
+        "reasoning": "The answer correctly identifies Gyarados as a Water/Flying type Pokémon, which matches both expected key facts. This is accurate according to canonical Pokemon information."
       }
     },
     {
@@ -126,10 +126,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vvzFVbDV25roZbWdpL'}"
+        "reasoning": "The answer correctly identifies Alakazam as a Psychic type Pokémon, which matches the expected key fact. This is canonically accurate as Alakazam has been a pure Psychic type since Generation I."
       }
     },
     {
@@ -145,10 +145,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vwADXTDt3Esti62xew'}"
+        "reasoning": "The answer correctly identifies Dragonite as a Dragon/Flying type Pokémon, which includes both expected key facts (Dragon and Flying). This is accurate according to canonical Pokémon information."
       }
     },
     {
@@ -164,10 +164,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vwLknQpPtnAPgzXu2Z'}"
+        "reasoning": "The answer correctly identifies Mewtwo as a Psychic type Pokémon, which matches the expected key fact. This is accurate according to canonical Pokemon information."
       }
     },
     {
@@ -184,10 +184,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.5,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vwXAc8uGqeUb7VzSCU'}"
+        "reasoning": "The answer correctly identifies Mew as a Psychic type Pokémon, which matches the expected key fact. This is accurate according to canonical Pokemon information."
       }
     },
     {
@@ -204,10 +204,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vwhYwEAn6UmTqLrKna'}"
+        "reasoning": "The answer correctly identifies Gengar as a Ghost/Poison type Pokémon, which matches both expected key facts (Ghost and Poison). There are no factual errors or hallucinations in the response."
       }
     },
     {
@@ -224,10 +224,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vwrxEAPzT3xQo7rFxT'}"
+        "reasoning": "The answer correctly identifies Lucario as a Fighting/Steel type Pokémon, which matches both expected key facts. No factual errors are present."
       }
     },
     {
@@ -244,10 +244,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vx2v1WZhcPPQavrZ8Q'}"
+        "reasoning": "The answer correctly identifies Garchomp as a Dragon/Ground type Pokémon, which matches both expected key facts (Dragon and Ground). This is accurate according to canonical Pokemon information."
       }
     },
     {
@@ -264,10 +264,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vxD2y1uEiiVbu2DZzs'}"
+        "reasoning": "The answer correctly identifies Greninja as a Water/Dark type Pokémon, which matches both expected key facts. There are no factual errors or contradictions with Pokemon canon."
       }
     },
     {
@@ -284,10 +284,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vxNj8TwD1V7zpMKRJq'}"
+        "reasoning": "The answer correctly identifies Decidueye as a Grass/Ghost type Pokémon, which matches both expected key facts (Grass and Ghost). No false claims are present."
       }
     },
     {
@@ -304,10 +304,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vxYaTwHWd4JhiW5LdV'}"
+        "reasoning": "The answer correctly identifies Incineroar as a Fire/Dark type Pokémon, which matches both expected key facts (Fire and Dark). This is accurate according to canonical Pokémon information."
       }
     },
     {
@@ -325,10 +325,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vxiZjBb7QTp9nPvnQj'}"
+        "reasoning": "The answer correctly states that Sylveon is a Fairy type Pokémon, which matches the expected key fact. There are no factual errors or hallucinations present."
       }
     },
     {
@@ -345,10 +345,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vxtNqLcF9FoRJnsecy'}"
+        "reasoning": "The answer correctly states that Bulbasaur is from Generation 1, which matches the expected key fact. This is canonically accurate as Bulbasaur is one of the original Pokémon from Generation 1 (Pokémon Red/Blue/Green)."
       }
     },
     {
@@ -365,10 +365,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.5,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vy4bVPoy1GdJi9ZfzX'}"
+        "reasoning": "The answer correctly identifies Mewtwo as a Generation 1 Pokemon, which matches the expected key fact. This is factually accurate as Mewtwo first appeared in Pokemon Red and Blue (Generation 1 games)."
       }
     },
     {
@@ -385,10 +385,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vyDyoTQy3ptMiDW6rx'}"
+        "reasoning": "The answer correctly states that Rayquaza is from Generation 3, which matches the expected key fact. Rayquaza is indeed a legendary Pokémon introduced in Pokémon Ruby and Sapphire (Generation III), and there are no factual errors in the response."
       }
     },
     {
@@ -405,10 +405,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vyPss1UAs49G5acAyw'}"
+        "reasoning": "The answer correctly identifies Dialga as a Generation 4 Pokémon, which matches the expected key fact. This is accurate according to canonical Pokémon knowledge, as Dialga debuted in Pokémon Diamond and Pearl (Generation IV)."
       }
     },
     {
@@ -426,10 +426,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vyZrPQXBZHhx2JMnBM'}"
+        "reasoning": "The answer correctly states that Reshiram is from Generation 5, which matches the expected key fact. Reshiram is indeed a legendary Pokémon introduced in Generation 5 (Pokémon Black and White)."
       }
     },
     {
@@ -448,10 +448,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vyk3orSbu7YdvTnbk9'}"
+        "reasoning": "The answer correctly identifies Xerneas as being from Generation 6, which matches the expected key fact. This is factually accurate as Xerneas is a Legendary Pokémon introduced in Pokémon X and Y, the Generation 6 games."
       }
     },
     {
@@ -468,10 +468,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vyvFEAJ1q2QKGbDNBK'}"
+        "reasoning": "The answer correctly states that Solgaleo is from Generation 7, which matches the expected key fact. This is accurate as Solgaleo is a Legendary Pokémon introduced in Pokémon Sun and Moon, which are Generation 7 games."
       }
     },
     {
@@ -490,10 +490,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vz5tfCuikRuemiQus1'}"
+        "reasoning": "The answer correctly identifies Zacian as a Generation 8 Pokémon, which matches the expected key fact. Zacian is indeed a Legendary Pokémon introduced in Pokémon Sword and Shield (Generation 8), so there are no factual errors."
       }
     },
     {
@@ -511,10 +511,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vzGWdRXK3DDW472n32'}"
+        "reasoning": "The answer correctly states that Miraidon is from Generation 9, which matches the expected key fact. Miraidon is indeed a legendary Pokémon introduced in Generation 9 (Pokémon Scarlet and Violet)."
       }
     },
     {
@@ -532,10 +532,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vzS3retLGfK32vYPZN'}"
+        "reasoning": "The answer correctly states that Incineroar is from Generation 7, which matches the expected key fact. Incineroar is indeed a Generation 7 Pokémon, debuting in Pokémon Sun and Moon."
       }
     },
     {
@@ -553,10 +553,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.6666666666666666,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vzbMxBowYLXRzMRZ2Q'}"
+        "reasoning": "The answer correctly identifies both evolution stages (Charmeleon and Charizard) and accurately provides the evolution levels (16 and 36). All facts align with canonical Pokemon information."
       }
     },
     {
@@ -574,10 +574,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.6666666666666666,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vzmLyKsbQuEcEN5S4h'}"
+        "reasoning": "The answer correctly identifies both evolutions (Ivysaur and Venusaur) and accurately provides the evolution levels (16 and 32 respectively), which are consistent with canonical Pokemon facts across the main series games."
       }
     },
     {
@@ -586,7 +586,7 @@
       "layer": 1,
       "category": "evolution-lookup",
       "rga_fired": true,
-      "answer_text": "Squirtle evolves into Wartortle at level 16, and Wartortle evolves into Blastoise at level 36.",
+      "answer_text": "Squirtle evolves into Wartortle at level 16, and then into Blastoise at level 36.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/squirtle",
         "https://pokemondb.net/pokedex/squirtle"
@@ -594,10 +594,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2vzw7bUr33ZmNvRF4ic'}"
+        "reasoning": "The answer correctly identifies both Wartortle and Blastoise as Squirtle's evolutions, covering the expected key facts. The evolution levels provided (16 for Wartortle, 36 for Blastoise) are also accurate according to canonical Pokemon games."
       }
     },
     {
@@ -606,17 +606,17 @@
       "layer": 1,
       "category": "evolution-lookup",
       "rga_fired": true,
-      "answer_text": "Pikachu evolves into Raichu. (Context 4)",
+      "answer_text": "Pikachu evolves into Raichu. (context 4)",
       "cited_uris": [
         "https://pokemondb.net/pokedex/raichu"
       ],
       "hard_recall": 1.0,
       "citation_precision": 0.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w16X8kVEp4xVMoWpoo'}"
+        "reasoning": "The answer correctly states that Pikachu evolves into Raichu, which matches the expected key fact. This is accurate according to Pokemon canon and contains no false claims."
       }
     },
     {
@@ -633,10 +633,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w1GVAngriVxi8vxn2f'}"
+        "reasoning": "The answer correctly identifies that Dratini evolves into Dragonair and then Dragonite, mentioning both expected key facts. The evolution levels (30 and 55) are also accurate according to Pokemon canon."
       }
     },
     {
@@ -653,10 +653,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w1SrkYVnUawn3si8wP'}"
+        "reasoning": "The answer correctly states that Ralts evolves into Kirlia (at level 20) and that Kirlia can evolve into Gardevoir or Gallade. Both expected key facts (Kirlia and Gardevoir) are mentioned, and all additional information provided is factually accurate according to Pokemon canon."
       }
     },
     {
@@ -677,7 +677,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w1cJHFGNQ9nhbL3Vt2'}"
+        "reasoning": "The answer correctly states that Abra evolves into Kadabra, but it's incomplete because it omits Alakazam, which is Kadabra's evolution and part of the full evolutionary line that the question implicitly asks about. While not technically wrong, the answer fails to mention both expected key facts (Kadabra and Alakazam)."
       }
     },
     {
@@ -694,10 +694,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.5,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w1mdrhvw4WjaA2KmPe'}"
+        "reasoning": "The answer correctly identifies Machop's evolution line: Machop evolves into Machoke, which then evolves into Machamp. Both expected key facts (Machoke and Machamp) are mentioned and the information is factually accurate according to Pokemon canon."
       }
     },
     {
@@ -715,10 +715,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w1viJrXUvheXrURbWE'}"
+        "reasoning": "The answer correctly identifies that Magikarp evolves into Gyarados, which is the expected key fact. The additional information about level 20 is also accurate, as Magikarp evolves into Gyarados at level 20 in the Pokemon games."
       }
     },
     {
@@ -735,10 +735,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w27m5dsPmeQi38EbyC'}"
+        "reasoning": "The answer correctly identifies that Gible evolves into Gabite and then Garchomp, which are the expected key facts. The evolution levels (24 and 48) are also accurate according to Pokemon canon, providing helpful additional detail beyond what was strictly required."
       }
     },
     {
@@ -754,10 +754,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w2HNmnmDwZtWHXT6Yr'}"
+        "reasoning": "The answer correctly identifies Rotom's ability as Levitate, which matches the expected key fact. The response is accurate and complete for this straightforward question."
       }
     },
     {
@@ -775,9 +775,12 @@
       "citation_precision": 1.0,
       "verdict": {
         "is_correct": false,
-        "has_hallucination": false,
-        "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w2TTFUKAic582D7Xr9'}"
+        "has_hallucination": true,
+        "false_claims": [
+          "Gengar did not have Cursed Body in Generation 1 - abilities were not introduced until Generation 3",
+          "Gengar's ability in Generations 3-6 was Levitate, not Cursed Body - Cursed Body became its standard ability starting in Generation 7"
+        ],
+        "reasoning": "The answer contains multiple factual errors. Abilities didn't exist in Generation 1, and Gengar had Levitate (not Cursed Body) from Gen 3-6. Cursed Body became Gengar's primary ability only from Generation 7 onward."
       }
     },
     {
@@ -786,17 +789,17 @@
       "layer": 1,
       "category": "ability-lookup",
       "rga_fired": true,
-      "answer_text": "Alakazam has three abilities: Synchronize, Inner Focus, and Magic Guard (hidden ability).",
+      "answer_text": "Alakazam has the abilities Synchronize, Inner Focus, and Magic Guard (hidden ability) (context 1).",
       "cited_uris": [
         "https://pokemondb.net/pokedex/alakazam"
       ],
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w2d2UBDoaVj1HH8iKH'}"
+        "reasoning": "The answer correctly identifies Alakazam's abilities: Synchronize and Inner Focus (both expected key facts), and also accurately includes Magic Guard as its hidden ability. All three abilities are canonically correct for Alakazam."
       }
     },
     {
@@ -805,17 +808,17 @@
       "layer": 1,
       "category": "ability-lookup",
       "rga_fired": true,
-      "answer_text": "Gyarados has the abilities Intimidate and Moxie (hidden ability) (context).",
+      "answer_text": "Gyarados has the abilities Intimidate and Moxie (hidden ability) (context 1).",
       "cited_uris": [
         "https://pokemondb.net/pokedex/gyarados"
       ],
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w2otKie1dHxDPDRs9g'}"
+        "reasoning": "The answer correctly identifies Gyarados's abilities: Intimidate (standard ability) and Moxie (hidden ability). Both facts are accurate according to Pokemon canon, and the expected key fact (Intimidate) is present."
       }
     },
     {
@@ -831,10 +834,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w2yRZ47UMvECk3EeiT'}"
+        "reasoning": "The answer correctly identifies Dragonite's two abilities: Inner Focus (regular ability) and Multiscale (hidden ability). Both expected key facts are present and the information is factually accurate according to Pokemon canon."
       }
     },
     {
@@ -850,10 +853,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w39ei6nn7aD2eDeNN6'}"
+        "reasoning": "The answer correctly identifies Gardevoir's two abilities: Synchronize and Trace. However, there is a minor inaccuracy - Trace is Gardevoir's regular ability (not hidden ability); the hidden ability is Telepathy. Despite this classification error, the two abilities mentioned (Synchronize and Trace) are factually correct as Gardevoir's standard abilities."
       }
     },
     {
@@ -862,17 +865,17 @@
       "layer": 1,
       "category": "ability-lookup",
       "rga_fired": true,
-      "answer_text": "Salamence has two abilities: Intimidate and Moxie (hidden ability) (context 1).",
+      "answer_text": "Salamence has the abilities Intimidate and Moxie (hidden ability) (context 1).",
       "cited_uris": [
         "https://pokemondb.net/pokedex/salamence"
       ],
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w3LKf57UPqW6DFMtJP'}"
+        "reasoning": "The answer correctly identifies Salamence's two abilities: Intimidate (standard ability) and Moxie (hidden ability). Both expected key facts are present and the information is factually accurate."
       }
     },
     {
@@ -889,10 +892,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w3XGxww4mwZuW6MW7L'}"
+        "reasoning": "The answer correctly identifies Lucario's two standard abilities (Steadfast and Inner Focus) as expected, and additionally mentions its hidden ability (Justified), which is also accurate. All information provided is factually correct."
       }
     },
     {
@@ -908,10 +911,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w3gS8Ne7CtTmoTnnaV'}"
+        "reasoning": "The answer correctly identifies both of Talonflame's abilities: Flame Body (regular ability) and Gale Wings (hidden ability). These match the expected key facts and are canonically accurate."
       }
     },
     {
@@ -927,10 +930,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w3rRefFgNr1BcPrmzc'}"
+        "reasoning": "The answer correctly identifies Metagross's ability as Clear Body, which is the expected key fact. It also accurately mentions Light Metal as its hidden ability, which is a correct additional detail from the Pokemon games."
       }
     },
     {
@@ -948,10 +951,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w422brXfs2ojaX8GUu'}"
+        "reasoning": "The answer correctly states that Mewtwo's base HP is 106, which matches the expected key fact. There are no factual errors or hallucinations present."
       }
     },
     {
@@ -968,9 +971,11 @@
       "citation_precision": 1.0,
       "verdict": {
         "is_correct": false,
-        "has_hallucination": false,
-        "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w4BcJqR5mEkT27v33N'}"
+        "has_hallucination": true,
+        "false_claims": [
+          "Blissey's base HP is stated as 100, but the correct base HP is 255. Blissey has the highest base HP of any Pokémon."
+        ],
+        "reasoning": "The answer incorrectly states Blissey's base HP as 100 when the correct value is 255, which is a significant factual error about one of Blissey's most defining characteristics."
       }
     },
     {
@@ -986,10 +991,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w4MT9hBh2rs4L2YguB'}"
+        "reasoning": "The answer correctly states that Shuckle's base Defense is 230, which matches the expected key fact. This is accurate according to canonical Pokemon data where Shuckle has the highest base Defense stat in the game."
       }
     },
     {
@@ -1005,10 +1010,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w4XTQa8hkeaSbozKcj'}"
+        "reasoning": "The answer correctly states that Regigigas's base Attack stat is 160, which matches the expected fact. This is accurate according to canonical Pokemon data across generations."
       }
     },
     {
@@ -1017,19 +1022,17 @@
       "layer": 1,
       "category": "stat-lookup",
       "rga_fired": true,
-      "answer_text": "Deoxys's Speed Form has a base Speed stat of 180. This is based on the retrieved sources.",
+      "answer_text": "Deoxys's Speed Form has a base speed of 180. This is based on the source stating, \"Base stats HP 50 210 304 Attack 95 175 317 Defense 90 166 306 Sp. Atk 95 175 317 Sp. Def 90 166 306 Speed 180 328 504 Total 600 Min Max\" (Context 5).",
       "cited_uris": [
-        "https://pokemondb.net/pokedex/deoxys",
-        "https://pokemondb.net/pokedex/deoxys",
         "https://pokemondb.net/pokedex/deoxys"
       ],
       "hard_recall": 1.0,
       "citation_precision": 0.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w4hTfqYfKoDikFY6Gv'}"
+        "reasoning": "The answer correctly states that Deoxys Speed Form has a base speed stat of 180, which matches the expected key fact. The additional context about stat calculations is accurate and adds helpful detail without introducing any factual errors."
       }
     },
     {
@@ -1038,7 +1041,7 @@
       "layer": 2,
       "category": "cross-pokemon-compare",
       "rga_fired": true,
-      "answer_text": "Bulbasaur is a Grass/Poison type Pokémon, while Charmander is a Fire type Pokémon. Both are starter Pokémon in Generation 1. Bulbasaur is based on a frog/toad with a plant bulb, while Charmander is based on a lizard with a flame on its tail. Bulbasaur's base stats are HP 45, Attack 49, Defense 49, Sp. Atk 65, Sp. Def 65, and Speed 45. Charmander's base stats are HP 39, Attack 52, Defense 43, Sp. Atk 60, Sp. Def 50, and Speed 65.",
+      "answer_text": "Bulbasaur is a Grass/Poison type Pokémon, while Charmander is a Fire type Pokémon. Both are starter Pokémon in Generation 1. Bulbasaur is based on a frog/toad with a plant bulb, while Charmander is based on a lizard or salamander with a flame on its tail. Bulbasaur's base stats are HP 45, Attack 49, Defense 49, Sp. Atk 65, Sp. Def 65, and Speed 45. Charmander's base stats are HP 39, Attack 52, Defense 43, Sp. Atk 60, Sp. Def 50, and Speed 65.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/charmander",
         "https://pokemondb.net/pokedex/bulbasaur",
@@ -1048,10 +1051,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w4v2xrfyX6nWceeunc'}"
+        "reasoning": "The answer correctly identifies all three expected key facts: Bulbasaur is Grass/Poison type and Charmander is Fire type. The additional information about their appearance, generation, and base stats is also factually accurate according to Pokemon canon."
       }
     },
     {
@@ -1060,7 +1063,7 @@
       "layer": 2,
       "category": "cross-pokemon-compare",
       "rga_fired": true,
-      "answer_text": "Raichu evolves from Pikachu using a Thunder Stone. Raichu has higher base stats in Attack, Special Attack, and Speed compared to Pikachu. Raichu's base Defense is 103, while Pikachu's is 55. Raichu's base Special Defense is 148, while Pikachu's is 80. Raichu's base HP is 60, while Pikachu's is 35. Raichu has a higher base total stat sum of 585 compared to Pikachu's 485.",
+      "answer_text": "Raichu evolves from Pikachu using a Thunder Stone. Raichu has higher base stats in Attack, Special Attack, and Speed compared to Pikachu. Raichu's base stats are: HP 60, Attack 90, Defense 55, Sp. Atk 90, Sp. Def 80, Speed 110. Pikachu's base stats are: HP 60, Attack 90, Defense 55, Sp. Atk 90, Sp. Def 55, Speed 90. Raichu's Alolan Form has a base experience yield of 218, while Pikachu's base experience yield is 122.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/raichu",
         "https://pokemondb.net/pokedex/raichu",
@@ -1070,9 +1073,14 @@
       "citation_precision": 1.0,
       "verdict": {
         "is_correct": false,
-        "has_hallucination": false,
-        "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w597GuoG1nA7Jz9B9G'}"
+        "has_hallucination": true,
+        "false_claims": [
+          "Pikachu's Attack stat is listed as 90, but it is actually 55",
+          "Pikachu's Special Attack is listed as 90, but it is actually 50",
+          "Pikachu's Defense is listed as 55, but it is actually 40",
+          "Pikachu's HP is listed as 60, but it is actually 35"
+        ],
+        "reasoning": "The answer correctly states that Raichu evolves from Pikachu using a Thunder Stone and mentions the Electric-type relationship, but contains multiple significant errors in Pikachu's base stats. Pikachu's actual base stats are HP 35, Attack 55, Defense 40, Sp. Atk 50, Sp. Def 50, Speed 90, not the values given which appear to be closer to Raichu's stats."
       }
     },
     {
@@ -1081,7 +1089,7 @@
       "layer": 2,
       "category": "cross-pokemon-compare",
       "rga_fired": true,
-      "answer_text": "Mewtwo and Mew are both Psychic-type Pokémon, but they differ in several key aspects. Mewtwo is a Genetic Pokémon created through genetic manipulation, while Mew is a New Species Pokémon. Mewtwo is larger, with a height of 2.0 m (6'07\") and a weight of 122.0 kg (269.0 lbs), compared to Mew's 0.4 m (1'04\") and 4.0 kg (8.8 lbs). Mewtwo has a base Special Attack of 154, while Mew's base Special Attack is 100. Mewtwo's abilities are Pressure and Unnerve (hidden), while Mew's ability is Synchronize. Mewtwo has a higher base experience yield of 340, compared to Mew's 300.",
+      "answer_text": "Mewtwo and Mew are both Psychic-type Pokémon, but they differ in several aspects. Mewtwo is a Genetic Pokémon created through genetic manipulation, while Mew is a New Species Pokémon. Mewtwo is larger, with a height of 2.0 m (6'07\") and a weight of 122.0 kg (269.0 lbs), compared to Mew's 0.4 m (1'04\") and 4.0 kg (8.8 lbs). Mewtwo has a base Special Attack stat of 154, while Mew's base stat for all stats is 100. Mewtwo has abilities Pressure and Unnerve, while Mew has the ability Synchronize. Mewtwo's base experience yield is 340, while Mew's is 300.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/mewtwo",
         "https://pokemondb.net/pokedex/mewtwo",
@@ -1090,10 +1098,10 @@
       "hard_recall": 0.5,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w5NnJJd3aHYk8BofVb'}"
+        "reasoning": "The answer correctly identifies both Mewtwo and Mew as Psychic-type Pokémon (covering the expected key fact) and provides accurate additional details about their sizes, stats, and abilities. All factual claims align with canonical Pokémon information from Generation 1 and beyond."
       }
     },
     {
@@ -1102,7 +1110,7 @@
       "layer": 2,
       "category": "cross-pokemon-compare",
       "rga_fired": true,
-      "answer_text": "Dialga and Palkia are both Legendary Pokémon introduced in Generation 4. Dialga is a Steel/Dragon type, while Palkia is a Normal/Dragon type. Dialga's base stats are HP 100, Attack 120, Defense 120, Sp. Atk 150, Sp. Def 100, and Speed 90, totaling 680. Palkia's base stats are HP 150, Attack 90, Defense 156, Sp. Atk 120, Sp. Def 100, and Speed 130, totaling 746. The retrieved sources do not provide a direct comparison of their strengths.",
+      "answer_text": "Dialga and Palkia are both Legendary Pokémon introduced in Generation 4. Dialga is a Steel/Dragon type, while Palkia is a Normal/Dragon type. Dialga's base stats are HP 100, Attack 120, Defense 120, Sp. Atk 150, Sp. Def 100, and Speed 90. Palkia's base stats are HP 150, Attack 90, Defense 156, Sp. Atk 120, Sp. Def 100, and Speed 70. Both Pokémon have unique abilities: Dialga has Pressure and Telepathy (hidden ability), while Palkia has Pressure and Telepathy (hidden ability). The retrieved sources do not provide a direct comparison of their strengths.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/dialga",
         "https://pokemondb.net/pokedex/dialga",
@@ -1112,9 +1120,12 @@
       "citation_precision": 1.0,
       "verdict": {
         "is_correct": false,
-        "has_hallucination": false,
-        "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w5dMtV6ZwZE2nCfsN6'}"
+        "has_hallucination": true,
+        "false_claims": [
+          "Palkia is listed as Normal/Dragon type when it is actually Water/Dragon type",
+          "Palkia's base stats are completely incorrect - listed as HP 150, Attack 90, Defense 156, Sp. Atk 120, Sp. Def 100, Speed 70, when Palkia's actual stats are HP 90, Attack 120, Defense 100, Sp. Atk 150, Sp. Def 120, Speed 100"
+        ],
+        "reasoning": "The answer correctly identifies that both are Generation 4 Legendary Pokémon and that Dialga is Steel/Dragon, but it contains major factual errors. Palkia's type is incorrectly stated as Normal/Dragon instead of Water/Dragon, and Palkia's base stats are completely wrong (the listed stats don't even match Palkia's actual stat distribution)."
       }
     },
     {
@@ -1123,21 +1134,19 @@
       "layer": 2,
       "category": "cross-pokemon-compare",
       "rga_fired": true,
-      "answer_text": "Reshiram and Zekrom are both Dragon-type Pokémon introduced in Generation 5. Reshiram is Dragon/Fire type, while Zekrom is Dragon/Electric type. Reshiram is 3.2 meters tall and weighs 330.0 kg, while Zekrom is 2.9 meters tall and weighs 345.0 kg. Reshiram has an ability called Turboblaze, while Zekrom has Teravolt. Both have a base stat total of 680.",
+      "answer_text": "Reshiram and Zekrom are both Dragon-type Pokémon introduced in Generation 5. Reshiram is Dragon/Fire type, while Zekrom is Dragon/Electric type. Reshiram has a base stat total of 680, with 100 HP, 120 Attack, 100 Defense, 150 Special Attack, 120 Special Defense, and 90 Speed. Zekrom has the same base stat total of 680, with 100 HP, 150 Attack, 120 Defense, 120 Special Attack, 120 Special Defense, and 90 Speed. Both Pokémon have the ability to change their catch rates from 3 to 45 in later generations.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/zekrom",
-        "https://pokemondb.net/pokedex/zekrom",
-        "https://pokemondb.net/pokedex/reshiram",
         "https://pokemondb.net/pokedex/zekrom",
         "https://pokemondb.net/pokedex/reshiram"
       ],
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w5p8YXGkoNqDx1WYjX'}"
+        "reasoning": "The answer correctly identifies that both are Dragon-type Pokémon, Reshiram is Dragon/Fire, and Zekrom is Dragon/Electric, covering all expected key facts. The base stats provided are accurate, and while the catch rate detail is a minor point, it is factually correct (their catch rates changed from 3 in B/W to 45 in B2/W2)."
       }
     },
     {
@@ -1146,7 +1155,7 @@
       "layer": 2,
       "category": "cross-pokemon-compare",
       "rga_fired": true,
-      "answer_text": "Xerneas and Yveltal are both legendary Pokémon introduced in Generation 6. Xerneas is a Fairy type, while Yveltal is Dark/Flying type. Xerneas has a Fairy Aura ability, while Yveltal has Dark Aura. Both have base stats of 680 at level 100. Xerneas is exclusive to Pokémon X, and Yveltal is exclusive to Pokémon Y.",
+      "answer_text": "Xerneas and Yveltal are both legendary Pokémon introduced in Generation 6. Xerneas is a Fairy type, while Yveltal is Dark/Flying type. Xerneas has a Fairy Aura ability, while Yveltal has Dark Aura. Both Pokémon have similar base stats, with Xerneas having slightly higher HP and Yveltal having slightly higher Attack and Speed. Xerneas is exclusive to Pokémon X, and Yveltal is exclusive to Pokémon Y.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/xerneas",
         "https://pokemondb.net/pokedex/xerneas",
@@ -1155,10 +1164,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w5zthG7KKN9MxVw8uV'}"
+        "reasoning": "The answer correctly identifies all three expected key facts: Xerneas is Fairy-type, and Yveltal is Dark/Flying type. The additional information about their signature abilities (Fairy Aura and Dark Aura), generation, version exclusivity, and base stat differences are all accurate canonical facts."
       }
     },
     {
@@ -1167,7 +1176,7 @@
       "layer": 2,
       "category": "cross-pokemon-compare",
       "rga_fired": true,
-      "answer_text": "Lucario is a Fighting/Steel type Pokémon, while Machamp is a Fighting type Pokémon. Lucario has a base Attack stat of 110, while Machamp has a base Attack stat of 130. Lucario has a base Defense stat of 70, while Machamp has a base Defense stat of 80. Both Pokémon have a base Speed stat of 55. Lucario's abilities are Steadfast and Inner Focus, with Justified as a hidden ability. Machamp's abilities are Guts, No Guard, and the hidden ability Steadfast.",
+      "answer_text": "Lucario is a Fighting/Steel type Pokémon, while Machamp is a Fighting type Pokémon. Lucario has a base HP of 70, while Machamp has a base HP of 90. Lucario's base Attack is 110, whereas Machamp's base Attack is 130. Lucario's base Defense is 80, while Machamp's base Defense is 80. Lucario's base Special Attack is 110, and Machamp's base Special Attack is 65. Lucario's base Special Defense is 85, and Machamp's base Special Defense is 85. Lucario's base Speed is 90, while Machamp's base Speed is 55.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/machamp",
         "https://pokemondb.net/pokedex/lucario"
@@ -1175,10 +1184,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w6Cp3sBpnU5tKer6YQ'}"
+        "reasoning": "The answer correctly identifies Lucario as Fighting/Steel type and Machamp as Fighting type, covering the expected key facts. The base stat comparisons provided are accurate according to canonical Pokemon data, with no factual errors."
       }
     },
     {
@@ -1195,7 +1204,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w6GCguDdovgM5HGhM5'}"
+        "reasoning": "The question asks for a comparison between Snorlax and Chansey, which is a legitimate Pokemon question that should be answered (rga_should_fire=True). The AI produced no answer at all, failing to address the question. While there are no false claims, the absence of any response when one was expected makes this incorrect."
       }
     },
     {
@@ -1204,7 +1213,7 @@
       "layer": 2,
       "category": "cross-pokemon-compare",
       "rga_fired": true,
-      "answer_text": "Gengar and Alakazam differ in type, base stats, and abilities. Gengar is a Ghost/Poison type with a base Special Attack of 130 and base Special Defense of 75. Alakazam is a Psychic type with a base Special Attack of 135 and base Special Defense of 95. Gengar has the ability Cursed Body, while Alakazam has Synchronize, Inner Focus, and Magic Guard (hidden ability).",
+      "answer_text": "Gengar is a Ghost/Poison type Pokémon, while Alakazam is a Psychic type Pokémon. Gengar has a base Special Attack of 130, while Alakazam has a base Special Attack of 135. Gengar has a base Special Defense of 75, while Alakazam has a base Special Defense of 95. Alakazam has a higher base Special Attack and Special Defense compared to Gengar.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/alakazam",
         "https://pokemondb.net/pokedex/alakazam",
@@ -1213,10 +1222,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w6VPSyiKwXkTwoSpMd'}"
+        "reasoning": "The answer correctly identifies Gengar as Ghost/Poison type and Alakazam as Psychic type, covering all expected key facts. The stat comparisons provided (Special Attack and Special Defense) are accurate according to canonical Pokemon data."
       }
     },
     {
@@ -1228,15 +1237,19 @@
       "answer_text": "Dragonite and Salamence are both Dragon/Flying type Pokémon. Dragonite is introduced in Generation 1, while Salamence is introduced in Generation 3. Both are pseudo-legendary Pokémon with Mega Evolutions. Dragonite's base stats are HP 91, Attack 134, Defense 95, Sp. Atk 100, Sp. Def 100, and Speed 80. Salamence's base stats are HP 95, Attack 135, Defense 80, Sp. Atk 110, Sp. Def 80, and Speed 100. Dragonite has Inner Focus and Multiscale as abilities, while Salamence has Intimidate and Moxie (hidden ability).",
       "cited_uris": [
         "https://pokemondb.net/pokedex/salamence",
+        "https://pokemondb.net/pokedex/dragonite",
         "https://pokemondb.net/pokedex/dragonite"
       ],
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
         "is_correct": false,
-        "has_hallucination": false,
-        "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w6hUyAZ4NGAycS6PLU'}"
+        "has_hallucination": true,
+        "false_claims": [
+          "Dragonite does not have a Mega Evolution - only Salamence has one",
+          "Salamence's hidden ability is Moxie, but its standard abilities are Intimidate and Moxie is not the hidden ability - the hidden ability should be Moxie but Intimidate is the standard ability, which is correctly stated"
+        ],
+        "reasoning": "The answer correctly identifies both as Dragon/Flying types and provides mostly accurate base stats and abilities. However, it incorrectly states that both Pokémon have Mega Evolutions when only Salamence has a Mega Evolution (Dragonite does not)."
       }
     },
     {
@@ -1252,10 +1265,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w6tENgMcXZegGfHcr9'}"
+        "reasoning": "The answer correctly identifies all three Gen 1 starter Pokemon: Bulbasaur, Charmander, and Squirtle. All expected key facts are present and there are no factual errors."
       }
     },
     {
@@ -1272,7 +1285,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w6xmUbAx67yWgrKqUr'}"
+        "reasoning": "The question asks for Gen 2 starter Pokemon (Chikorita, Cyndaquil, Totodile), which is a straightforward Pokemon knowledge question. The AI produced no answer at all, failing to address the question. Since RGA_SHOULD_FIRE is True, the AI was expected to answer normally, not refuse."
       }
     },
     {
@@ -1289,7 +1302,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w73A9TWPnFh5KDXpof'}"
+        "reasoning": "The question asks for Gen 3 starter Pokemon (Treecko, Torchic, Mudkip), and RGA_SHOULD_FIRE=True indicates the AI should have answered. The AI produced no answer at all, failing to provide the expected information. While there are no false claims (since nothing was said), the answer is incorrect because it doesn't address a legitimate question that should have been answered."
       }
     },
     {
@@ -1305,10 +1318,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w7DjtH4hnCHD9c2236'}"
+        "reasoning": "The answer correctly identifies all three Generation 4 starters: Turtwig, Chimchar, and Piplup. While it includes a disclaimer about sources, the factual content is accurate and complete."
       }
     },
     {
@@ -1325,7 +1338,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w7Hv9vvwAvizPiLVb2'}"
+        "reasoning": "The question asks for Gen 7 starter Pokemon and expects an answer listing Rowlet, Litten, and Popplio. The AI produced no answer at all, which fails to address the legitimate question. Since this is not a refusal test (rga_should_fire=True means an answer was expected), an empty response is incorrect."
       }
     },
     {
@@ -1336,16 +1349,19 @@
       "rga_fired": true,
       "answer_text": "The Gen 8 starters are Grookey, Scorbunny, and Sobble. Grookey is a Grass-type Pokémon, Scorbunny is a Fire-type Pokémon, and Sobble is a Water-type Pokémon.",
       "cited_uris": [
+        "https://pokemondb.net/pokedex/treecko",
+        "https://pokemondb.net/pokedex/falinks",
+        "https://pokemondb.net/pokedex/infernape",
         "https://pokemondb.net/pokedex/scorbunny",
         "https://pokemondb.net/pokedex/jynx"
       ],
       "hard_recall": 1.0,
-      "citation_precision": 0.5,
+      "citation_precision": 0.2,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w7U56k6phNAfCVF7Zd'}"
+        "reasoning": "The answer correctly identifies all three Gen 8 starter Pokemon (Grookey, Scorbunny, and Sobble) and accurately states their types (Grass, Fire, and Water respectively). All information provided is factually accurate and addresses the question completely."
       }
     },
     {
@@ -1363,10 +1379,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w7evTgBKy3FjstqMan'}"
+        "reasoning": "The answer correctly identifies all three Gen 1 legendary birds (Articuno, Zapdos, and Moltres) and provides accurate context that they are legendary bird Pokémon from the first generation. No factual errors are present."
       }
     },
     {
@@ -1384,10 +1400,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w7rFLkEFSPtBk7fqJm'}"
+        "reasoning": "The answer correctly lists all eight Eeveelutions including all six expected ones (Vaporeon, Jolteon, Flareon, Espeon, Umbreon, Sylveon) plus the two additional correct ones (Leafeon, Glaceon). No factual errors are present."
       }
     },
     {
@@ -1405,10 +1421,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.6666666666666666,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w826gFre2Lihkz3rTS'}"
+        "reasoning": "The answer correctly identifies all three original Regi Pokémon (Regirock, Regice, and Registeel) that were introduced in Generation III. No factual errors or hallucinations are present."
       }
     },
     {
@@ -1425,7 +1441,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w86AFrc4CmqaBemmTp'}"
+        "reasoning": "The question asks for a straightforward list of Gen 1 fossil Pokemon (Omanyte, Kabuto, and Aerodactyl). The AI produced no answer at all, which fails to address the question. Since this is not a refusal test (RGA_SHOULD_FIRE=true means the AI should answer), the empty response is incorrect. However, there are no false claims since nothing was stated."
       }
     },
     {
@@ -1434,18 +1450,20 @@
       "layer": 2,
       "category": "form-comparison",
       "rga_fired": true,
-      "answer_text": "Mega Charizard X and Mega Charizard Y differ in their source of power and abilities. Mega Charizard X's power comes from the overwhelming energy within its body, causing it to turn black and create intense blue flames. Mega Charizard Y's power stems from its bond with its Trainer, granting it greater speed and maneuverability than a jet fighter. Both forms have different abilities: Mega Charizard X has the ability \"Desolate Land\" and Mega Charizard Y has \"Blaze Boost.\"",
+      "answer_text": "Mega Charizard X and Mega Charizard Y differ in their source of power and abilities. Mega Charizard X's power comes from the overwhelming energy filling its body, causing it to turn black and create intense blue flames. Mega Charizard Y's power stems from its bond with its Trainer, boasting speed and maneuverability greater than that of a jet fighter. Both Mega Evolutions replace Charizard's Flying type with Dragon.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/charizard",
         "https://pokemondb.net/pokedex/charizard"
       ],
-      "hard_recall": 0.0,
+      "hard_recall": 0.6666666666666666,
       "citation_precision": 0.0,
       "verdict": {
         "is_correct": false,
-        "has_hallucination": false,
-        "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w8HqUSpfp5EuJYFFsD'}"
+        "has_hallucination": true,
+        "false_claims": [
+          "Mega Charizard Y does NOT replace Flying type with Dragon - it remains Fire/Flying type. Only Mega Charizard X becomes Fire/Dragon."
+        ],
+        "reasoning": "The answer contains a critical factual error stating that both Mega Evolutions replace Flying with Dragon type. In reality, only Mega Charizard X becomes Fire/Dragon, while Mega Charizard Y remains Fire/Flying. The answer does mention some correct flavor text about their appearances and origins but fails on the fundamental type difference."
       }
     },
     {
@@ -1454,7 +1472,7 @@
       "layer": 2,
       "category": "form-comparison",
       "rga_fired": true,
-      "answer_text": "Mega Mewtwo X has augmented muscles with a grip strength of one ton and can sprint 100 meters in two seconds. Mega Mewtwo Y, despite its smaller size, has phenomenally grown mental power, capable of smashing a skyscraper with a mere thought.",
+      "answer_text": "Mega Mewtwo X has augmented muscles with a grip strength of one ton and can sprint a hundred meters in two seconds. Mega Mewtwo Y, despite its smaller size, has phenomenally grown mental power, capable of smashing a skyscraper with a mere thought.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/mewtwo",
         "https://pokemondb.net/pokedex/mewtwo"
@@ -1465,7 +1483,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w8U3PXKzNCgB3wwcyk'}"
+        "reasoning": "The answer provides descriptive flavor text about the two forms but omits the most fundamental difference: Mega Mewtwo X is Psychic/Fighting type while Mega Mewtwo Y remains pure Psychic type. Without mentioning the type changes, the answer fails to adequately address what differentiates these two forms."
       }
     },
     {
@@ -1474,18 +1492,20 @@
       "layer": 2,
       "category": "form-comparison",
       "rga_fired": true,
-      "answer_text": "Deoxys has three forms: Normal, Attack, and Defense. Each form has different base stats and abilities. The Speed Forme is not mentioned in the provided sources.",
+      "answer_text": "Deoxys has three forms: Normal, Attack, and Defense. Each form has different base stats and abilities. The retrieved sources confirm Deoxys is one of Pokémon's abilities but do not describe its in-battle mechanic.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/deoxys",
         "https://pokemondb.net/pokedex/deoxys"
       ],
-      "hard_recall": 1.0,
+      "hard_recall": 0.75,
       "citation_precision": 1.0,
       "verdict": {
         "is_correct": false,
-        "has_hallucination": false,
-        "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w8dcMZDvfnMYjLbAYJ'}"
+        "has_hallucination": true,
+        "false_claims": [
+          "The answer states Deoxys has three forms (Normal, Attack, and Defense) but omits the Speed Form, which is an official fourth form of Deoxys that exists in canon Pokemon games."
+        ],
+        "reasoning": "The answer is incomplete and factually incorrect because it lists only three Deoxys forms when there are actually four canonical forms: Normal, Attack, Defense, and Speed. The omission of Speed Form is a factual error that makes the answer misleading."
       }
     },
     {
@@ -1494,7 +1514,7 @@
       "layer": 2,
       "category": "form-comparison",
       "rga_fired": true,
-      "answer_text": "Giratina has two forms: Origin Forme and Altered Forme. Origin Forme has Levitate as its ability, while Altered Forme has Pressure and Telepathy (hidden ability). Giratina's base experience yield is 220 in Generation 4 for both forms, but increases to 306 in Generations 5-7 for both forms. The retrieved sources confirm these differences but do not provide further details on their mechanics or effects.",
+      "answer_text": "Giratina has two forms: Origin Forme and Altered Forme. Origin Forme has the ability Levitate, while Altered Forme has the abilities Pressure and Telepathy (hidden ability). Altered Forme has a base experience yield of 220 in Generations 4 and 306 in Generations 5-7, while Origin Forme has the same base experience yield in both generations (contexts 1, 2).",
       "cited_uris": [
         "https://pokemondb.net/pokedex/giratina",
         "https://pokemondb.net/pokedex/giratina"
@@ -1503,9 +1523,12 @@
       "citation_precision": 1.0,
       "verdict": {
         "is_correct": false,
-        "has_hallucination": false,
-        "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w8pceNHz3bFrEjXsar'}"
+        "has_hallucination": true,
+        "false_claims": [
+          "Altered Forme has the ability Telepathy as a hidden ability - this is incorrect. Altered Forme's only ability is Pressure, with no hidden ability.",
+          "The base experience yield values given are incorrect for both forms across generations."
+        ],
+        "reasoning": "The answer contains factual errors about Giratina's abilities and base experience yields. While it correctly identifies that Giratina has two forms and mentions Origin Forme has Levitate, it incorrectly states Altered Forme has Telepathy as a hidden ability (Altered Forme only has Pressure). The answer also fails to mention the key typing (Ghost/Dragon) that was expected, and focuses on obscure stat details rather than the meaningful gameplay differences between the forms."
       }
     },
     {
@@ -1522,10 +1545,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w91R2XzzQkyPsU9WRx'}"
+        "reasoning": "The answer correctly lists all five Rotom forms (Heat, Wash, Frost, Fan, and Mow) and accurately notes they are associated with household appliances. All expected key facts are present with no factual errors."
       }
     },
     {
@@ -1542,10 +1565,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w9BD8srvjFfKDPn7Ge'}"
+        "reasoning": "The answer correctly confirms the existence of Hisuian Decidueye and accurately states its Grass/Fighting typing, which matches both expected key facts. No factual errors are present."
       }
     },
     {
@@ -1554,7 +1577,7 @@
       "layer": 2,
       "category": "form-comparison",
       "rga_fired": true,
-      "answer_text": "Galarian Zigzagoon is Dark/Normal type, while regular Zigzagoon is Normal type. Galarian Zigzagoon evolves into Galarian Linoone and then into Obstagoon, while regular Zigzagoon evolves into Linoone. Galarian Zigzagoon has a base Friendship value of 50, while regular Zigzagoon has a base Friendship value of 70. Galarian Zigzagoon is friendlier and calmer than regular Zigzagoon.",
+      "answer_text": "Galarian Zigzagoon is Dark/Normal type, while regular Zigzagoon is Normal type. Galarian Zigzagoon evolves into Galarian Linoone and then into Obstagoon, while regular Zigzagoon evolves into Linoone. Galarian Zigzagoon is described as restless and aggressive, while regular Zigzagoon is curious and friendly.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/zigzagoon",
         "https://pokemondb.net/pokedex/zigzagoon",
@@ -1563,10 +1586,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w9NgD69Fn4eBxkReMg'}"
+        "reasoning": "The answer correctly identifies the key type differences (Galarian is Dark/Normal, regular is Normal) and provides additional accurate information about their evolution lines and behavioral differences. All factual claims align with canonical Pokemon information."
       }
     },
     {
@@ -1585,10 +1608,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w9Y7VTyJdfmupTwk49'}"
+        "reasoning": "The answer correctly identifies three real Alolan forms (Diglett, Persian, and Ninetales) that exist in Generation VII. While not exhaustive, it accurately addresses the question with valid examples and contains no factual errors."
       }
     },
     {
@@ -1597,7 +1620,7 @@
       "layer": 2,
       "category": "cross-source-synthesis",
       "rga_fired": true,
-      "answer_text": "Deoxys has three forms: Normal, Attack, and Defense. Each form has unique characteristics and stats. The retrieved sources confirm Deoxys is one of Pokémon's abilities but do not describe its in-battle mechanic.",
+      "answer_text": "Deoxys has three forms: Normal, Attack, and Defense. Each form has unique characteristics and abilities. The retrieved sources do not provide detailed mechanics for these forms, only their names and some descriptions.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/deoxys",
         "https://pokemondb.net/pokedex/deoxys",
@@ -1607,9 +1630,12 @@
       "citation_precision": 1.0,
       "verdict": {
         "is_correct": false,
-        "has_hallucination": false,
-        "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w9iU5iU3giJf7n5UNg'}"
+        "has_hallucination": true,
+        "false_claims": [
+          "Claimed Deoxys has three forms when it actually has four forms (Normal, Attack, Defense, and Speed)",
+          "Failed to mention the Speed form which is one of Deoxys's canonical forms"
+        ],
+        "reasoning": "The answer incorrectly states that Deoxys has three forms when it actually has four forms: Normal, Attack, Defense, and Speed. The omission of the Speed form is a factual error, and the claim of \"three forms\" contradicts Pokemon canon."
       }
     },
     {
@@ -1618,18 +1644,18 @@
       "layer": 2,
       "category": "cross-source-synthesis",
       "rga_fired": true,
-      "answer_text": "Charizard has two Mega Evolutions: Mega Charizard X and Mega Charizard Y. These forms are available in Generation 6 games and Pokémon Go. Mega Charizard X replaces its Flying type with Dragon, while Mega Charizard Y retains its original Fire/Flying typing.",
+      "answer_text": "Charizard has two Mega Evolutions: Mega Charizard X and Mega Charizard Y. These forms are available in Generation 6 games and Pokémon Go. Mega Charizard X turns Charizard's body black and creates intense blue flames, while Mega Charizard Y's power comes from its bond with its Trainer, boasting speed and maneuverability greater than that of a jet fighter.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/charizard",
         "https://pokemondb.net/pokedex/charizard"
       ],
-      "hard_recall": 1.0,
+      "hard_recall": 0.4,
       "citation_precision": 1.0,
       "verdict": {
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w9uZq72qVchRS9L88p'}"
+        "reasoning": "The answer correctly identifies Mega Charizard X and Mega Charizard Y, and provides accurate descriptive details. However, it fails to mention the critical type information (Fire/Dragon for X, Fire/Flying for Y) that was expected in the key facts, making the answer incomplete."
       }
     },
     {
@@ -1646,7 +1672,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2w9z6BfRNRVyPPVSKEa'}"
+        "reasoning": "The AI produced no answer when it should have provided information about Gigantamax Pokémon. Since rga_should_fire=True, the AI was expected to answer the question, not refuse. An empty response fails to address a legitimate question about which Pokémon have Gigantamax forms."
       }
     },
     {
@@ -1663,7 +1689,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wA2VJ6yfCW8fpPTWrA'}"
+        "reasoning": "The question asks for a straightforward list of Hisuian variants (RGA_SHOULD_FIRE=True means the AI should answer). The AI produced no answer at all, failing to provide the expected information about Hisuian Pokémon forms. An empty response is not a hallucination, but it's incorrect because the question should have been answered."
       }
     },
     {
@@ -1680,7 +1706,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wA6GkcsAAZ8P4STq5w'}"
+        "reasoning": "The question asks which Pokémon have the Levitate ability, which is a valid, answerable Pokemon question. The AI should have provided examples of Pokémon with Levitate (such as Gastly, Haunter, Gengar, Rotom, Bronzong, etc.). Since no answer was produced when one was expected (rga_should_fire=True), this is incorrect. However, an empty answer contains no false claims, so has_hallucination=false."
       }
     },
     {
@@ -1698,10 +1724,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.3333333333333333,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wAG3NxvWjCq1v9CjFH'}"
+        "reasoning": "The answer correctly identifies three Pokemon that have the Intimidate ability (Growlithe, Arcanine, and Staraptor all canonically have Intimidate as one of their possible abilities). While the answer is not exhaustive (many other Pokemon also have this ability), it accurately addresses the question without making any false claims."
       }
     },
     {
@@ -1718,7 +1744,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wAMt7iXck1ikRmMX12'}"
+        "reasoning": "The question asks which Pokemon have Wonder Guard, and the correct answer is Shedinja. The AI produced no answer at all, which means it failed to provide the expected information. Since RGA_SHOULD_FIRE is True, the AI should have answered the question. An empty response is not a hallucination, but it is incorrect as it doesn't address the question."
       }
     },
     {
@@ -1732,10 +1758,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wAXWoH1roD9wPfA7XU'}"
+        "reasoning": "This is a refusal test (rga_should_fire=False) where the question is not Pokemon-related (it's a Monty Python reference). The AI correctly declined to answer, which is the appropriate response for an out-of-domain question in a Pokemon knowledge system."
       }
     },
     {
@@ -1749,10 +1775,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wAaJjGK8p84afWgp3t'}"
+        "reasoning": "This question is about the Super Bowl, which is completely unrelated to Pokemon. The AI correctly refused to answer by producing no response, which is the appropriate behavior for an out-of-domain question."
       }
     },
     {
@@ -1766,10 +1792,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wAcJ2wLiBRJP8jkR8w'}"
+        "reasoning": "This question is about geography (capital of France), not Pokemon. The AI correctly refused to answer by producing no response, which is the appropriate behavior when RGA_SHOULD_FIRE=False."
       }
     },
     {
@@ -1783,10 +1809,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wAeVFBRpdoUXMRXG9A'}"
+        "reasoning": "The question asks about making sourdough bread, which is completely unrelated to Pokemon. Since RGA_SHOULD_FIRE is False (meaning the AI should refuse/not answer), the empty response is correct behavior - the AI appropriately declined to answer a non-Pokemon question."
       }
     },
     {
@@ -1800,10 +1826,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wAgpe53SRQq2svE4pr'}"
+        "reasoning": "This question about World War 2 is completely unrelated to Pokemon. Since RGA_SHOULD_FIRE=False, the AI was expected to refuse or not answer. The AI produced no answer, which is the correct behavior for an out-of-domain question."
       }
     },
     {
@@ -1817,10 +1843,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wAkLyBKq271KCLc2Ek'}"
+        "reasoning": "The question asks about Ash Ketchum's \"type,\" but Ash is a human trainer, not a Pokemon, so he doesn't have a type. The AI correctly refused to answer or provided no answer, which is the appropriate response for this category error question."
       }
     },
     {
@@ -1834,10 +1860,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wAp7C9ddq6zauNkuFh'}"
+        "reasoning": "This is a refusal test (rga_should_fire=False) where the AI was supposed to refuse or not answer. The AI produced no answer, which is the correct behavior for this test case."
       }
     },
     {
@@ -1851,10 +1877,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wAsbniZJvD9KDYz8zh'}"
+        "reasoning": "This is a refusal test (rga_should_fire=False) and the AI produced no answer, which is the correct behavior. An empty response contains no hallucinations."
       }
     },
     {
@@ -1876,7 +1902,7 @@
         "is_correct": false,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wB3fWvVM5yspzB9CsB'}"
+        "reasoning": "This is a refusal test (RGA_SHOULD_FIRE=False) where the AI should have refused or asked for clarification instead of answering. The statement \"Charizard is a Fire/Flying type\" is factually correct, but the AI should not have provided an answer to this incomplete/unclear question."
       }
     },
     {
@@ -1894,10 +1920,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wBCYK9ih4E5E4Gtoz5'}"
+        "reasoning": "The question \"pikachu electric type\" is unclear/incomplete, and this is marked as a refusal test. However, the AI's response that \"Pikachu is an Electric type Pokémon\" is factually accurate and reasonable given the ambiguous query. Since there are no false claims and the response is factually correct, this is acceptable."
       }
     },
     {
@@ -1906,7 +1932,7 @@
       "layer": 3,
       "category": "keyword-only-not-question",
       "rga_fired": true,
-      "answer_text": "Mewtwo is a Psychic type Pokémon introduced in Generation 1. It is classified as a legendary Pokémon.",
+      "answer_text": "Mewtwo is a Psychic type Pokémon introduced in Generation 1. It is considered a legendary Pokémon.",
       "cited_uris": [
         "https://pokemondb.net/pokedex/mewtwo",
         "https://pokemondb.net/pokedex/mewtwo"
@@ -1914,10 +1940,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wBPHED1KxRus4Gwgig'}"
+        "reasoning": "The question is a fragment (\"mewtwo legendary psychic\") rather than a well-formed question. The AI provided factual information about Mewtwo being a Psychic-type legendary from Generation 1, which is accurate. Since this is marked as a refusal test but the AI gave correct information without making false claims, this is acceptable."
       }
     },
     {
@@ -1935,10 +1961,10 @@
       "hard_recall": 1.0,
       "citation_precision": 0.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wBZcqGEsJwstC6tKaJ'}"
+        "reasoning": "The question \"tell me about water\" is not specifically about Pokemon and should trigger refusal. The AI appropriately acknowledged the limitation of its sources and only provided Pokemon-related water facts without making up general water information. This is a correct, nuanced response that doesn't falsely claim to answer the out-of-scope question."
       }
     },
     {
@@ -1952,10 +1978,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wBdk8PGukJGshzpn3s'}"
+        "reasoning": "The question \"what about fire\" lacks context and is ambiguous. Since RGA_SHOULD_FIRE=False indicates the AI should refuse/not answer, and the AI produced no answer, this is the correct behavior. An empty response contains no hallucinations."
       }
     },
     {
@@ -1969,10 +1995,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wBiBXGvyGPYv4DtKs1'}"
+        "reasoning": "This is a refusal test (rga_should_fire=False) where the AI was expected to refuse or not provide a definitive answer. The AI produced no answer, which is an appropriate response to a subjective question with no canonical \"strongest\" Pokemon. No hallucinations present."
       }
     },
     {
@@ -1986,10 +2012,10 @@
       "hard_recall": 1.0,
       "citation_precision": 1.0,
       "verdict": {
-        "is_correct": false,
+        "is_correct": true,
         "has_hallucination": false,
         "false_claims": [],
-        "reasoning": "Judge call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-07-01 at 00:00 UTC.'}, 'request_id': 'req_011Cc2wBnTFcmaRpN1bSyip8'}"
+        "reasoning": "This is a refusal test (rga_should_fire=False) where the AI was expected to refuse or not answer. The AI produced no answer, which is the correct behavior. There are no hallucinations in an empty response."
       }
     }
   ]
