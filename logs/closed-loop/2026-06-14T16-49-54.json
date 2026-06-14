@@ -1,0 +1,76 @@
+{
+  "started_at": "2026-06-14T16:49:20.886849+00:00",
+  "args": {
+    "dry_run": false,
+    "skip_analyzer": false,
+    "no_rollback_check": false
+  },
+  "exit_code": 0,
+  "window_runs": [
+    "2026-06-10-full.json",
+    "2026-06-11-full.json",
+    "2026-06-12-full.json",
+    "2026-06-13-full.json",
+    "2026-06-14-full.json"
+  ],
+  "latest_run": "2026-06-14-full.json",
+  "prior_run": "2026-06-13-full.json",
+  "latest_overall_accuracy": 0.0,
+  "current_yaml_version": "1.1.0",
+  "rollback_decision": {
+    "should_rollback": false,
+    "reason": "last apply was 13d 11h ago (> 36h rollback window). Today's regression has a different cause; no rollback.",
+    "accuracy_drop_pts": 0.78
+  },
+  "analyzer_window_size": 5,
+  "analyzer_worst_categories": [
+    {
+      "key": "L2:list-by-criterion",
+      "latest_accuracy": 0.0,
+      "persistence": 5,
+      "drift": 0.2
+    },
+    {
+      "key": "L2:form-comparison",
+      "latest_accuracy": 0.0,
+      "persistence": 5,
+      "drift": 0.125
+    },
+    {
+      "key": "L2:cross-source-synthesis",
+      "latest_accuracy": 0.0,
+      "persistence": 5,
+      "drift": 0.08333333333333334
+    }
+  ],
+  "proposal_confidence": 0.95,
+  "proposal_new_prompt_chars": 1892,
+  "proposal_rationale_first200": "The eval run from 2026-06-14 shows 0% overall accuracy with 100% precision and 85.3% hard recall, but all three worst categories (list-by-criterion, form-comparison, cross-source-synthesis) dropped to",
+  "guardrails": [
+    {
+      "name": "no_op",
+      "passed": false,
+      "reason": "proposed prompt is identical to current \u2014 analyzer says no change needed"
+    },
+    {
+      "name": "confidence",
+      "passed": true,
+      "reason": "analyzer confidence 0.95 \u2265 threshold 0.80"
+    },
+    {
+      "name": "lift_threshold",
+      "passed": false,
+      "reason": "predicted overall_accuracy lift +0.0% below threshold +5.0%"
+    },
+    {
+      "name": "sanity",
+      "passed": true,
+      "reason": "length 1892 chars; all anchors present"
+    },
+    {
+      "name": "rate_limit",
+      "passed": true,
+      "reason": "last apply was 13d 11h ago (\u2265 3d threshold)"
+    }
+  ]
+}
