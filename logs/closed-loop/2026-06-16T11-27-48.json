@@ -1,0 +1,76 @@
+{
+  "started_at": "2026-06-16T11:27:11.657481+00:00",
+  "args": {
+    "dry_run": false,
+    "skip_analyzer": false,
+    "no_rollback_check": false
+  },
+  "exit_code": 0,
+  "window_runs": [
+    "2026-06-12-full.json",
+    "2026-06-13-full.json",
+    "2026-06-14-full.json",
+    "2026-06-15-full.json",
+    "2026-06-16-full.json"
+  ],
+  "latest_run": "2026-06-16-full.json",
+  "prior_run": "2026-06-15-full.json",
+  "latest_overall_accuracy": 0.76,
+  "current_yaml_version": "1.1.0",
+  "rollback_decision": {
+    "should_rollback": false,
+    "reason": "last apply was 15d 5h ago (> 36h rollback window). Today's regression has a different cause; no rollback.",
+    "accuracy_drop_pts": 0.010000000000000009
+  },
+  "analyzer_window_size": 5,
+  "analyzer_worst_categories": [
+    {
+      "key": "L2:cross-source-synthesis",
+      "latest_accuracy": 0.0,
+      "persistence": 5,
+      "drift": 0.16666666666666669
+    },
+    {
+      "key": "L2:list-by-criterion",
+      "latest_accuracy": 0.6,
+      "persistence": 5,
+      "drift": 0.0
+    },
+    {
+      "key": "L2:ability-across-pokemon",
+      "latest_accuracy": 0.0,
+      "persistence": 5,
+      "drift": -0.1111111111111111
+    }
+  ],
+  "proposal_confidence": 0.75,
+  "proposal_new_prompt_chars": 2939,
+  "proposal_rationale_first200": "## Analysis of Failing Categories\n\nThe eval shows three chronic failure categories, all with 5/5 persistence (below 70% for all five runs):\n\n### 1. **L2 cross-source-synthesis (0% latest, +16.7% drift",
+  "guardrails": [
+    {
+      "name": "no_op",
+      "passed": true,
+      "reason": "proposed prompt differs from current"
+    },
+    {
+      "name": "confidence",
+      "passed": false,
+      "reason": "analyzer confidence 0.75 < threshold 0.80"
+    },
+    {
+      "name": "lift_threshold",
+      "passed": true,
+      "reason": "predicted overall_accuracy lift +6.0% \u2265 threshold +5.0%"
+    },
+    {
+      "name": "sanity",
+      "passed": true,
+      "reason": "length 2939 chars; all anchors present"
+    },
+    {
+      "name": "rate_limit",
+      "passed": true,
+      "reason": "last apply was 15d 5h ago (\u2265 3d threshold)"
+    }
+  ]
+}
