@@ -20,8 +20,12 @@ name: RGA daily eval
 on:
   # 06:00 UTC daily so results are fresh by Eastern business hours.
   # GitHub schedules are best-effort — runs may slip by up to ~15 min under load.
-  schedule:
-    - cron: "0 6 * * *"
+  #
+  # DISABLED 2026-06-18 to stop Anthropic/Coveo token consumption from the
+  # daily full run (~$0.60/run). Re-enable by uncommenting the two lines below.
+  # The manual workflow_dispatch button still works for on-demand runs.
+  # schedule:
+  #   - cron: "0 6 * * *"
 
   # Manual trigger button. Inputs let us pick mode + question limit from the UI.
   workflow_dispatch:
